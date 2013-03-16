@@ -1,25 +1,50 @@
-Chunks = new Meteor.Collection("chunks");
 
-console.log('models.js: ', 'loaded Chunks')
-if (Meteor.isServer) {
-	Meteor.startup(function() {
-		if (Chunks.find().count() === 0) {
-			var a = new Array(256);
-			for (var i = 0; i < a.length; i++) { a[i] = 0};
-			Chunks.insert({
-				x:0,
-				y:0,
-				map:null, 
-				tiles:a
-			});
-		}; // if there are no documents
-	}); // startup function
-};
 
-Meteor.methods({
-	getChunk: function(x, y, map){
+// Meteor.methods({
+//   getChunk: function(x, y, map){
 
-	}
-});
+//   },
+// });
 
-//console.log('models.js tiles length:', Chunks.findOne().tiles.length);
+/* 
+Elements
+- Chunk
+  - mapName
+  - width, height
+  - xCoord (within Map)
+  - yCoord (within Map)
+  - layerNames [array of names]
+  - layers {layerName: [data0, data1, ...] }
+
+- TileSet
+  - name
+  - imagePath
+  - imageWidth, Height
+  - cellWidth, Height
+  - tileWidth, Height
+  - width, height
+
+- Map
+  - name
+  - chunkWidth
+  - chunkHeight
+
+- Layers (Don't implement this until I actually need it)
+  - name [ground, plant, ]
+  - tileSetName
+
+- GameObjects
+
+Permissions
+- Chunk
+  - publish
+    - publish all chunks
+  - allow
+    - create - only on the server
+    - update - for now, anyone
+    - destroy - no one
+
+
+
+
+*/

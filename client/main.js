@@ -11,7 +11,6 @@ Template.hello.events({
   }
 });
 
-
 var onImageLoad = function(){
   // Where are we taking from the image
   var xClip;
@@ -24,34 +23,30 @@ var onImageLoad = function(){
   // for convenience
   var tileSet = Beautiful.tileSet;
 
-  var chunk = Chunks.find({x:0, y:0}).fetch()[0];
-  console.log('TILES', chunk);
+  var chunk = Chunks.find({xCoord:0, yCoord:0}).fetch()[0];
+  if (!chunk) return;
 
-  if (!chunk || !chunk.tiles) {
-    console.log('main.js: onImageLoad: no chunk!');
-    return;
-  };
-  console.log('chunk', chunk);
-  console.log('!chunk', !chunk);
-  console.log('chunk.tiles', chunk.tiles);
-  console.log('length', chunk.tiles.length);
+  // iterate over layers
+  for (var layerIndex = 0; layerIndex < chunk.layerNames.length; layerIndex++) {
+    var layerName = chunk.layerNames[layerIndex];
 
-  for (var i=0; i < Beautiful.chunk.width * Beautiful.chunk.height; i++) {
+    // iterate over layer Data
+    for (var i=0; i < chunk.width * chunk.height; i++) {
+      var tileIndex = chunk.layerData[layerName][i];
 
-    //var tileIndex = tileSet.validIndexes[Math.floor( (Math.random()*tileSet.validIndexes.length) )];
-    var tileIndex = chunk.tiles[i];
+      xClip = tileSet.getUpperLeftX(tileIndex % 27);
+      yClip = tileSet.getUpperLeftY(tileIndex % 27);
+      xCursor = tileSet.tileWidth * (i % chunk.width);
+      yCursor = tileSet.tileHeight * (Math.floor(i / chunk.width));
 
-    xClip = tileSet.getUpperLeftX(tileIndex % 27);
-    yClip = tileSet.getUpperLeftY(tileIndex % 27);
-    xCursor = tileSet.tileWidth * (i % Beautiful.chunk.width);
-    yCursor = tileSet.tileHeight * (Math.floor(i / Beautiful.chunk.width));
+      Beautiful.canvasContext.drawImage(tileSet.image,
+        xClip, yClip,
+        tileSet.tileWidth, tileSet.tileHeight,
+        xCursor, yCursor,
+        tileSet.tileWidth, tileSet.tileHeight);
 
-    Beautiful.canvasContext.drawImage(tileSet.image, 
-      xClip, yClip, 
-      tileSet.tileWidth, tileSet.tileHeight, 
-      xCursor, yCursor, 
-      tileSet.tileWidth, tileSet.tileHeight);
-  }; // for loop
+    } // iterate over layer data
+  } // iterate over layers
 };
 
 
@@ -72,21 +67,11 @@ var setup = function() {
   Beautiful.canvas = canvas;
   Beautiful.canvasContext = context;
 
-  // chunk specification. VERY temporary
-  Beautiful.chunk = {
-    height: 16,
-    width: 16,
-    x: 0,
-    y: 0,
-    map: null,
-    tiles: new Array(256)
-  }
-
   // now let's set up the tileSet
   // for now, let's just have a single tileSet
-  var tileSet =  new TileSet( 
-    9, 3, 
-    28, 35, 
+  var tileSet =  new TileSet(
+    9, 3,
+    28, 35,
     30, 37,
     [0, 9, 10, 11, 12, 13, 14, 15, 16, 17]
   );
@@ -95,6 +80,7 @@ var setup = function() {
 };
 
 var f = function(){console.log('Calling "f"', Chunks.find({x:0}).tiles[0]);};
+
 
 window.onload = setup;
 Meteor.autorun(onImageLoad);
