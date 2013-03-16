@@ -1,11 +1,3 @@
-
-
-// Meteor.methods({
-//   getChunk: function(x, y, map){
-
-//   },
-// });
-
 /* 
 Elements
 - Chunk
@@ -29,7 +21,7 @@ Elements
   - chunkWidth
   - chunkHeight
 
-- Layers (Don't implement this until I actually need it)
+- Layers (Don't implement this until I actually need it!!)
   - name [ground, plant, ]
   - tileSetName
 
