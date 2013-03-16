@@ -2,7 +2,7 @@
 // var ts = new TileSet( 4, 5, tileWidthInPixels, tileHeightInPixels, ... );
 // ts.loadImage('filename', onload function);;
 
-var TileSet = function(width, height, tileWidth, tileHeight, cellWidth, cellHeight, validIndexes) 
+var Tileset = function(width, height, tileWidth, tileHeight, cellWidth, cellHeight, validIndexes, firstgid) 
 {
   this.width = width; // number tiles wide
   this.height = height; // number tiles tall
@@ -10,16 +10,17 @@ var TileSet = function(width, height, tileWidth, tileHeight, cellWidth, cellHeig
   this.tileHeight = tileHeight;
   this.cellWidth = cellWidth || tileWidth;
   this.cellHeight = cellHeight || tileHeight;
-  this.length = width * height;
-  this.validIndexes = validIndexes || new Array(this.length);
+  this.firstgid = firstgid || 1;
+
+  this.validIndexes = validIndexes || new Array(width * height);
   if (!validIndexes) {
-    for (var i=0; i<this.length; i ++){
+    for (var i = 0; i < width * height; i++) {
       this.validIndexes[i] = i;
     };
   };
 };
 
-TileSet.prototype = {
+Tileset.prototype = {
   getUpperLeftX: function(i) {
     return ((i % this.width) * this.cellWidth) + 1;
   },
@@ -35,3 +36,13 @@ TileSet.prototype = {
     this.image.src = src;
   }
 };
+
+// now let's set up the tileSet
+// for now, let's just have a single tileSet
+Beautiful.tileset =  new Tileset(
+  9, 3,
+  28, 35,
+  30, 37,
+  [0, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+);
+

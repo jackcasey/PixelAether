@@ -29,14 +29,20 @@ Elements
 
 Permissions
 - Chunk
-  - publish
+  - publishings
     - publish all chunks
   - allow
     - create - only on the server
     - update - for now, anyone
     - destroy - no one
 
+- Map
 
+- TileSet
+  - publishings
+    - publish all tilesets
+  - permissions 
+    - permit nothing
 
 
 */

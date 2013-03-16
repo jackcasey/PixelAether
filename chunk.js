@@ -1,5 +1,5 @@
 /*------------------------------------------------------------
-Create a new map chunk, and insert it into chunks collection
+Create a new map chunk, insert it into chunks collection
 
 chunkId     - mongodb style chunk identifier 
 layerNames  - optional array of layer names, default ['ground', 'plant']
@@ -39,10 +39,10 @@ Chunk.create = function(chunkId, layerNames) {
     // populate layerData
     for (var j = 0; j < size; j++) {
       if (layerName === 'plant') {
-        data[j] = 0; // 0 = tree
+        data[j] = 1; // 1 = tree
       } 
       else { 
-        data[j] = 9; // 9 = grass
+        data[j] = 10; // 10 = grass
       }
     } // populate layer data loop
 
@@ -55,6 +55,11 @@ Chunk.create = function(chunkId, layerNames) {
 
 /*------------------------------------------------------------
 Edit a single tile in the chunk identified by chunkId
+TODO: Broken!
+
+THIS WORKS:
+   Chunks.update({xCoord:0}, {$set:{'layerData.plant.29':12}})
+db.chunks.update({xCoord:0}, {$set:{'layerData.plant.29':12}})
 ------------------------------------------------------------*/
 Chunk.setTile = function (chunkId, x, y, i, layerName) {
   chunkId.mapName = chunkId.mapName || 'main';
