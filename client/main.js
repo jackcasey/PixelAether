@@ -75,5 +75,5 @@ var setup = function() {
 
 
 window.onload = setup;
-Meteor.autorun(onImageLoad);
+Deps.autorun(onImageLoad);
 
