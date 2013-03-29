@@ -6,6 +6,7 @@ Beautiful.Renderer Wraps a canvas
 Beautiful.Renderer = function () {
   self = this;
   self.canvas = document.createElement('canvas');
+  blockContextMenu(self.canvas);
   self.context = self.canvas.getContext('2d');
   self.canvas.height = 16 * gGame.tileset.tileHeight; // Static Chunk size for now. 
   self.canvas.width = 16 * gGame.tileset.tileWidth;
