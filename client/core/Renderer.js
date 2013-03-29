@@ -3,12 +3,12 @@ Beautiful.Renderer Wraps a canvas
 ------------------------------------------------------------*/
 
 
-Beautiful.Renderer = function (canvas, width, height) {
+Beautiful.Renderer = function () {
   self = this;
-  self.canvas = canvas;
-  self.context = canvas.getContext('2d');
-  self.canvas.height = height || 16 * gGame.tileset.tileHeight; // Static Chunk size for now. 
-  self.canvas.width = width || 16 * gGame.tileset.tileWidth;
+  self.canvas = document.createElement('canvas');
+  self.context = self.canvas.getContext('2d');
+  self.canvas.height = 16 * gGame.tileset.tileHeight; // Static Chunk size for now. 
+  self.canvas.width = 16 * gGame.tileset.tileWidth;
 
   // the most recent mouse position
   self.mouse = {

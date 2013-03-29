@@ -16,11 +16,11 @@ Beautiful.renderer = {};
 
 
 var setup = function() {
-  // Create the canvas/context for our game
-  var canvas = document.getElementById('canvas');
-  var context = canvas.getContext('2d');
 
-  gGame.renderer = new Beautiful.Renderer(canvas);
+  gGame.renderer = new Beautiful.Renderer();
+
+  var content = document.getElementById('content');
+  content.appendChild(gGame.renderer.canvas);
 
   gGame.tileset.loadImage('elements9x3.png', 
     function(){
