@@ -2,7 +2,7 @@
 // var ts = new TileSet( 4, 5, tileWidthInPixels, tileHeightInPixels, ... );
 // ts.loadImage('filename', onload function);;
 
-var Tileset = function(width, height, tileWidth, tileHeight, cellWidth, cellHeight, validIndexes, firstgid) 
+Beautiful.Tileset = function(width, height, tileWidth, tileHeight, cellWidth, cellHeight, validIndexes, firstgid) 
 {
   this.width = width; // number tiles wide
   this.height = height; // number tiles tall
@@ -20,37 +20,35 @@ var Tileset = function(width, height, tileWidth, tileHeight, cellWidth, cellHeig
   };
 };
 
-Tileset.prototype = {
-  getUpperLeftX: function(i) {
+Beautiful.Tileset.prototype.getUpperLeftX = function(i) {
     return ((i % this.width) * this.cellWidth) + 1;
-  },
+};
 
-  getUpperLeftY: function(i) {
+Beautiful.Tileset.prototype.getUpperLeftY = function(i) {
     return (Math.floor(i / this.width) * this.cellHeight) + 1;
-  },
+};
 
-  loadImage: function(src, onload) {
+Beautiful.Tileset.prototype.loadImage = function(src, onload) {
     this.src = src
     this.image = new Image();
     this.image.onload = onload;
     this.image.src = src;
-  },
+};
 
-  /*------------------------------------------------------------
-  Given x,y coordinates in pixels, find the tile coordinates on
-  an arbitrary map. 
-  ------------------------------------------------------------*/
-  getMapCoord: function(pixelX, pixelY) {
-    return {
-      x: Math.floor(pixelX / this.tileWidth),
-      y: Math.floor(pixelY / this.tileHeight)
-    };
-  }
+/*------------------------------------------------------------
+Given x,y coordinates in pixels, find the tile coordinates on
+an arbitrary map. 
+------------------------------------------------------------*/
+Beautiful.Tileset.prototype.getMapCoord = function(pixelX, pixelY) {
+  return {
+    x: Math.floor(pixelX / this.tileWidth),
+    y: Math.floor(pixelY / this.tileHeight)
+  };
 };
 
 // now let's set up the tileSet
 // for now, let's just have a single tileSet
-Beautiful.tileset =  new Tileset(
+gGame.tileset =  new Beautiful.Tileset(
   9, 3,
   28, 35,
   30, 37,

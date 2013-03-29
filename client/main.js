@@ -20,15 +20,15 @@ var setup = function() {
   var canvas = document.getElementById('canvas');
   var context = canvas.getContext('2d');
 
-  Beautiful.renderer = new Beautiful.Renderer(canvas);
+  gGame.renderer = new Beautiful.Renderer(canvas);
 
-  Beautiful.tileset.loadImage('elements9x3.png', 
+  gGame.tileset.loadImage('elements9x3.png', 
     function(){
-      Beautiful.renderer.renderChunk({xCoord:0, yCoord:0});
+      gGame.renderer.renderChunk({xCoord:0, yCoord:0});
     }
   );
 
-  Deps.autorun(function(){Beautiful.renderer.renderChunk({xCoord:0, yCoord:0});});
+  Deps.autorun(function(){gGame.renderer.renderChunk({xCoord:0, yCoord:0});});
 };
 
 

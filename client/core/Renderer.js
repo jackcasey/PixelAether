@@ -1,10 +1,14 @@
+/*------------------------------------------------------------
+Beautiful.Renderer Wraps a canvas
+------------------------------------------------------------*/
+
+
 Beautiful.Renderer = function (canvas, width, height) {
   self = this;
-  self.tileset = Beautiful.tileset;
   self.canvas = canvas;
   self.context = canvas.getContext('2d');
-  self.canvas.height = height || 16 * self.tileset.tileHeight; // Static Chunk size for now. 
-  self.canvas.width = width || 16 * self.tileset.tileWidth;
+  self.canvas.height = height || 16 * gGame.tileset.tileHeight; // Static Chunk size for now. 
+  self.canvas.width = width || 16 * gGame.tileset.tileWidth;
 
   // the most recent mouse position
   self.mouse = {
@@ -46,7 +50,7 @@ Beautiful.Renderer.prototype.mousemove = function(event) {
 
   this.mouse.x = event.pageX - totalOffsetX;
   this.mouse.y = event.pageY - totalOffsetY;
-  this.mouseTile = Beautiful.tileset.getMapCoord(
+  this.mouseTile = gGame.tileset.getMapCoord(
     this.mouse.x, this.mouse.y);
 };
 
@@ -62,7 +66,7 @@ Beautiful.Renderer.prototype.renderChunk = function(chunkId){
   var yCursor = 0;
 
   // for convenience
-  var tileset = Beautiful.tileset;
+  var tileset = gGame.tileset;
   var tilesetSize = tileset.width * tileset.height;
 
   var chunk = Chunks.findOne(chunkId);
