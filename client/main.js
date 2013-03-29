@@ -12,9 +12,6 @@ Template.hello.events({
 });
 
 
-Beautiful.renderer = {};
-
-
 var setup = function() {
 
   gGame.renderer = new Beautiful.Renderer();
