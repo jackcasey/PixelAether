@@ -14,6 +14,7 @@ Template.hello.events({
 
 var setup = function() {
 
+  gGame.map = Beautiful.Maps.main;
   gGame.renderer = new Beautiful.Renderer();
 
   var content = document.getElementById('content');

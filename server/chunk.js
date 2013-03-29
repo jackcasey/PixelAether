@@ -3,6 +3,9 @@ Create a new map chunk, insert it into chunks collection
 
 chunkId     - mongodb style chunk identifier 
 layerNames  - optional array of layer names, default ['ground', 'plant']
+
+Assume:
+  gGame.map[chunkId.mapName] has a width and height
 ------------------------------------------------------------*/
 Chunk.create = function(chunkId, layerNames) {
 
@@ -10,20 +13,25 @@ Chunk.create = function(chunkId, layerNames) {
 
   // verify that the chunkId specifies a location
   if (!(isInt(chunkId.xCoord) && isInt(chunkId.yCoord)))
-    return false, 'Chunk.create error: chunkId must specify xCoord and yCoord';
+    return [false, 'Chunk.create error: chunkId must specify xCoord and yCoord'];
+
+  // verify that there is a map with this name
+  if (typeof Beautiful.Maps[chunkId.mapName] === 'undefined')
+    return [false, 'Chunk.create error: chunkId.mapName is not in Beautiful.Maps:', chunkId.mapName];
 
   // verify that it doesn't already exist
   var chunk = Chunks.findOne(chunkId);
   if (chunk) 
-    return false, 'Chunk.create: Chunk exists, not creating - ' + chunkId.mapName + ' ' + chunkId.xCoord + ', ' + chunkId.yCoord;
+    return [false, 'Chunk.create: Chunk exists, not creating - ' + chunkId.mapName + ' ' + chunkId.xCoord + ', ' + chunkId.yCoord];
+
 
   // build the chunk
   chunk = {
     mapName:    chunkId.mapName, 
     xCoord:     chunkId.xCoord, 
     yCoord:     chunkId.yCoord, 
-    width:      16, 
-    height:     16,
+    width:      Beautiful.Maps[chunkId.mapName].chunkWidth, 
+    height:     Beautiful.Maps[chunkId.mapName].chunkHeight,
     layerNames: layerNames || ['ground', 'plant'],
     layerData:  {}
   };

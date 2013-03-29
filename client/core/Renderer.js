@@ -8,8 +8,6 @@ Beautiful.Renderer = function () {
   self.canvas = document.createElement('canvas');
   preventContextMenu(self.canvas);
   self.context = self.canvas.getContext('2d');
-  self.canvas.height = 16 * gGame.tileset.tileHeight; // Static Chunk size for now. 
-  self.canvas.width = 16 * gGame.tileset.tileWidth;
 
   // the most recent mouse position
   self.mouse = {
@@ -29,11 +27,9 @@ Beautiful.Renderer = function () {
 }
 
 Beautiful.Renderer.prototype.mousedown = function(event) {
-  console.log(this.mouseTile);
   var chunk = Chunks.findOne() // hack! only works if there IS ONLY ONE DOCUMENT
   var tileIndex = (chunk.width * this.mouseTile.y) + this.mouseTile.x;
   var tileValue = chunk.layerData.plant[tileIndex];
-  console.log('tv', tileValue);
   tileValue = (tileValue == 1) ? 0 : 1; // if it's a tree, make it nothing else, make it a tree
   Meteor.call('setTile', {}, this.mouseTile.x, this.mouseTile.y, tileValue, 'plant');
 };
@@ -80,8 +76,15 @@ Beautiful.Renderer.prototype.renderChunk = function(chunkId){
   var tileset = gGame.tileset;
   var tilesetSize = tileset.width * tileset.height;
 
+  // get the chunk
   var chunk = Chunks.findOne(chunkId);
   if (!chunk) return;
+
+  // make sure that the canvas width and height are correct
+  if (this.canvas.width !== chunk.width * tileset.tileWidth)
+    this.canvas.width = chunk.width * tileset.tileWidth;
+  if (this.canvas.height !== chunk.height * tileset.tileHeight)
+    this.canvas.height = chunk.height * tileset.tileHeight;
 
   this.clear();
 

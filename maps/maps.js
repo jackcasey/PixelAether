@@ -5,5 +5,3 @@ Beautiful.Maps = {
     chunkHeight: 16
   }
 }
-
-Beautiful.map = Beautiful.Maps.main;
