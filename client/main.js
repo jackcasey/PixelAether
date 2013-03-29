@@ -1,32 +1,23 @@
-// Boilerplate from the sample project
-Template.hello.greeting = function () {
-  return "Welcome to beautiful.";
-};
-
-Template.hello.events({
-  'click input' : function () {
-  // template data, if any, is available in 'this'
-  if (typeof console !== 'undefined')
-    console.log("You pressed the button");
-  }
-});
-
-
 var setup = function() {
 
+  // set up our game session data
   gGame.map = Beautiful.Maps.main;
   gGame.renderer = new Beautiful.Renderer();
 
+  // create a canvas 
+  var canvas = document.createElement('canvas');
   var content = document.getElementById('content');
-  content.appendChild(gGame.renderer.canvas);
+  content.appendChild(canvas);
 
   gGame.tileset.loadImage('elements9x3.png', 
-    function(){
-      gGame.renderer.renderChunk({xCoord:0, yCoord:0});
+    function() {
+      Deps.autorun(function(){gGame.renderer.renderChunk({xCoord:0, yCoord:0});});
     }
   );
 
-  Deps.autorun(function(){gGame.renderer.renderChunk({xCoord:0, yCoord:0});});
+  
+
+  
 };
 
 

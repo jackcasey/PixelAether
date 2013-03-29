@@ -30,8 +30,9 @@ Beautiful.Renderer.prototype.mousedown = function(event) {
   var chunk = Chunks.findOne() // hack! only works if there IS ONLY ONE DOCUMENT
   var tileIndex = (chunk.width * this.mouseTile.y) + this.mouseTile.x;
   var tileValue = chunk.layerData.plant[tileIndex];
-  tileValue = (tileValue == 1) ? 0 : 1; // if it's a tree, make it nothing else, make it a tree
+  tileValue = (tileValue === 1) ? 0 : 1; // if it's a tree, make it nothing else, make it a tree
   Meteor.call('setTile', {}, this.mouseTile.x, this.mouseTile.y, tileValue, 'plant');
+  //console.log(this.mouseTile);
 };
 
 Beautiful.Renderer.prototype.mouseup  = function(event) {
