@@ -54,6 +54,10 @@ Beautiful.Renderer.prototype.mousemove = function(event) {
     this.mouse.x, this.mouse.y);
 };
 
+Beautiful.Renderer.prototype.clear = function() {
+  this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+}
+
 
 Beautiful.Renderer.prototype.renderChunk = function(chunkId){
 
@@ -71,6 +75,8 @@ Beautiful.Renderer.prototype.renderChunk = function(chunkId){
 
   var chunk = Chunks.findOne(chunkId);
   if (!chunk) return;
+
+  this.clear();
 
   // iterate over layers
   for (var layerIndex = 0; layerIndex < chunk.layerNames.length; layerIndex++) {
