@@ -1,7 +1,10 @@
 /* CSS declarations go here */
 
 canvas#canvas{
-	border-style:solid;
-	border-width:1px;
-	border-color:black;
+
+}
+
+div#content {
+	background-color: black;
+	color:black;
 }

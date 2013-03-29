@@ -63,8 +63,8 @@ var setup = function() {
   // Create the canvas/context for our game
   var canvas = document.getElementById('canvas');
   var context = canvas.getContext('2d');
-  canvas.setAttribute('width', 500);
-  canvas.setAttribute('height', 700);
+
+  bCanvas = new Beautiful.Renderer(canvas);
 
   // save the canvas and context in our service locator object
   Beautiful.canvas = canvas;
