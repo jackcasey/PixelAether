@@ -1,6 +1,6 @@
 Beautiful.Renderer = function (canvas, width, height) {
   self = this;
-  this.canvas = canvas;
+  self.canvas = canvas;
   self.context = canvas.getContext('2d');
   self.canvas.height = height || 600;
   self.canvas.width = width || 500;
@@ -39,8 +39,48 @@ Beautiful.Renderer.prototype.mousemove = function(event) {
 
   this.mouse.x = event.pageX - totalOffsetX;
   this.mouse.y = event.pageY - totalOffsetY;
+};
 
-  console.log('status:')
-  console.log(this.mouse);
-  console.log(event.offsetX, event.offsetY);
+
+Beautiful.Renderer.prototype.renderChunk = function(chunkId){
+  // Where are we taking from the image
+  var xClip;
+  var yClip;
+
+  //Where do we position the tiles on the canvas
+  var xCursor = 0;
+  var yCursor = 0;
+
+  // for convenience
+  var tileset = Beautiful.tileset;
+  var tilesetSize = tileset.width * tileset.height;
+
+  var chunk = Chunks.findOne(chunkId);
+  if (!chunk) return;
+
+  // iterate over layers
+  for (var layerIndex = 0; layerIndex < chunk.layerNames.length; layerIndex++) {
+    var layerName = chunk.layerNames[layerIndex];
+
+    // iterate over layer Data
+    for (var i=0; i < chunk.width * chunk.height; i++) {
+      var tileIndex = chunk.layerData[layerName][i];
+
+      if (!tileIndex) continue;
+
+      // Get the coordinates of the tile in the tileset
+      tileIndex = tileIndex - tileset.firstgid;
+      xClip = tileset.getUpperLeftX(tileIndex % tilesetSize); 
+      yClip = tileset.getUpperLeftY(tileIndex % tilesetSize);
+      xCursor = tileset.tileWidth * (i % chunk.width);
+      yCursor = tileset.tileHeight * (Math.floor(i / chunk.width));
+
+      this.context.drawImage(tileset.image,
+        xClip, yClip,
+        tileset.tileWidth, tileset.tileHeight,
+        xCursor, yCursor,
+        tileset.tileWidth, tileset.tileHeight);
+
+    } // iterate over layer data
+  } // iterate over layers
 };

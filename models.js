@@ -71,7 +71,7 @@ Meteor.methods ({
     if (typeof i !== 'number')
       return false, 'Chunk.setTile: Fail! Index is not a number!';
 
-    var tileIndex = y * chunk.width + x; // convert xy to i
+    var tileIndex = y * chunk.width + x; // convert xy to index
 
     var setOptions = {$set:{}};
     setOptions.$set['layerData.' + layerName + '.' + tileIndex] = i; 

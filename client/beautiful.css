@@ -1,10 +1,7 @@
-/* CSS declarations go here */
-
 canvas#canvas{
-
+	background-color: red;
 }
 
 div#content {
 	background-color: black;
-	color:black;
 }
