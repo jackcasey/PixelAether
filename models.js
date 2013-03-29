@@ -65,11 +65,11 @@ Meteor.methods ({
     var chunk = Chunks.findOne(chunkId, {width: true, height: true});
 
     // sanity check x, y, i
-    if (x >= chunk.width || y >= chunk.height ) 
-      return false, 'Chunk.setTile: Fail! x or y out of bounds!';
+    if ( x >= chunk.width || y >= chunk.height || x < 0 || y < 0) 
+      return [false, 'Chunk.setTile: Fail! x or y out of bounds!'];
 
     if (typeof i !== 'number')
-      return false, 'Chunk.setTile: Fail! Index is not a number!';
+      return [false, 'Chunk.setTile: Fail! Index is not a number!'];
 
     var tileIndex = y * chunk.width + x; // convert xy to index
 
