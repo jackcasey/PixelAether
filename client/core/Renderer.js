@@ -1,14 +1,21 @@
 Beautiful.Renderer = function (canvas, width, height) {
   self = this;
+  self.tileset = Beautiful.tileset;
   self.canvas = canvas;
   self.context = canvas.getContext('2d');
-  self.canvas.height = height || 600;
-  self.canvas.width = width || 500;
+  self.canvas.height = height || 16 * self.tileset.tileHeight; // Static Chunk size for now. 
+  self.canvas.width = width || 16 * self.tileset.tileWidth;
+
   // the most recent mouse position
   self.mouse = {
     x: 0, 
     y: 0
   };
+  // what tile is the mouse over?
+  self.mouseTile = {
+    x: 0,
+    y: 0
+  }
 
   // wrap to bind functions to this object
   window.addEventListener('mousedown', function(event) {self.mousedown(event)});
@@ -17,7 +24,7 @@ Beautiful.Renderer = function (canvas, width, height) {
 }
 
 Beautiful.Renderer.prototype.mousedown = function(event) {
-  console.log(this);
+  console.log(this.mouseTile);
 };
 
 Beautiful.Renderer.prototype.mouseup  = function(event) {
@@ -39,10 +46,13 @@ Beautiful.Renderer.prototype.mousemove = function(event) {
 
   this.mouse.x = event.pageX - totalOffsetX;
   this.mouse.y = event.pageY - totalOffsetY;
+  this.mouseTile = Beautiful.tileset.getMapCoord(
+    this.mouse.x, this.mouse.y);
 };
 
 
 Beautiful.Renderer.prototype.renderChunk = function(chunkId){
+
   // Where are we taking from the image
   var xClip;
   var yClip;

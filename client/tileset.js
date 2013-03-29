@@ -34,6 +34,17 @@ Tileset.prototype = {
     this.image = new Image();
     this.image.onload = onload;
     this.image.src = src;
+  },
+
+  /*------------------------------------------------------------
+  Given x,y coordinates in pixels, find the tile coordinates on
+  an arbitrary map. 
+  ------------------------------------------------------------*/
+  getMapCoord: function(pixelX, pixelY) {
+    return {
+      x: Math.floor(pixelX / this.tileWidth),
+      y: Math.floor(pixelY / this.tileHeight)
+    };
   }
 };
 
