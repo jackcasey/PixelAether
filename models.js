@@ -1,4 +1,9 @@
 /* 
+gGame.map
+gGame.view - Wraps the canvas that is displayed in the DOM
+gGame.view.canvas
+gGame.view.context
+
 Elements
 - Chunk
   - mapName
