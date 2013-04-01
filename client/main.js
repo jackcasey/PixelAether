@@ -16,8 +16,8 @@ Session.setDefault('viewChunk', {
   yCoord:0, 
 });
 Session.setDefault('viewChunkPosition', {
-  x:0, 
-  y:0,
+  x: 0,
+  y: 0, 
 });
 
 var setup = function() {
@@ -46,8 +46,14 @@ var setup = function() {
   var lastFrameTime = null;
   var draw = function() {
     gGame.view.clear();
+    var center = gGame.view.center;
     var mouse = gGame.view.mouse;
-    context.drawImage(gGame.renderer.canvas, mouse.x, mouse.y);
+    var viewChunkPosition = Session.get('viewChunkPosition');
+
+    context.drawImage(gGame.renderer.canvas, 
+      center.x - viewChunkPosition.x, 
+      center.y - viewChunkPosition.y
+    );
 
     // time
     var now = new Date();

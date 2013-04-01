@@ -81,7 +81,7 @@ Meteor.methods ({
     var setOptions = {$set:{}};
     setOptions.$set['layerData.' + layerName + '.' + tileIndex] = i; 
 
-    // everything except the Chunks.update call can probably  be done on the client side
+    // everything except the Chunks.update call can probably be done on the client side
     Chunks.update(chunkId, setOptions); // what happens when layerName does not exist?
   },
 });
