@@ -30,8 +30,8 @@ Beautiful.Input = function() {
 
 /*------------------------------------------------------------
 bind
-down
 hold
+isDown
 tap
 
 _keyDown
@@ -56,16 +56,6 @@ bind: function(keyCode, actionString) {
   };
 },
 
-down: function(actionName) {
-  var action = this.actions[actionName];
-  if (!action) return null;
-
-  if (action.downFrameCount > action.upFrameCount) 
-    return true;
-
-  return false;
-},
-
 hold: function(actionName) {
   var action = this.actions[actionName];
   if (!action) return null;
@@ -75,6 +65,16 @@ hold: function(actionName) {
 
   if (action.downFrameCount > action.upFrameCount && // action is down
     downDuration > this.TAP_THRESH) // and has been down for a while
+    return true;
+
+  return false;
+},
+
+isDown: function(actionName) {
+  var action = this.actions[actionName];
+  if (!action) return null;
+
+  if (action.downFrameCount > action.upFrameCount) 
     return true;
 
   return false;
@@ -94,6 +94,16 @@ tap: function(actionName) {
   }
 
   return false
+},
+
+up: function(actionName) {
+  var action = this.actions[actionName];
+  if (!action) return null; 
+
+  if (action.upFrameCount === gGame.simulation.frameCount)
+    return true;
+
+  return false;
 },
 
 _keyDown: function(keyCode, event) {
@@ -117,6 +127,9 @@ _keyDown: function(keyCode, event) {
 _keyUp: function(keyCode, event) {
   var actionName = this.bindings[keyCode];
   if (!actionName) return;
+
+  // if the action is up, don't do keyUp again
+  if (!this.isDown(actionName)) return;
   var action = this.actions[actionName];
   var sim = gGame.simulation;
   action.upTime = sim.frameTime;

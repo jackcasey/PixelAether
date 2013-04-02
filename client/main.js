@@ -60,7 +60,7 @@ var setup = function() {
 
     if (gGame.input.tap('fire')) console.log('fire!!');
     if (gGame.input.tap('edit')) console.log('edit');
-    if (gGame.input.down('edit')) console.log('edit down');
+    if (gGame.input.up('edit')) console.log('edit up');
     if (gGame.input.hold('fire')) console.log('hold fire!');
 
     gGame.simulation.step();
