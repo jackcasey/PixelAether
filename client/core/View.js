@@ -27,13 +27,15 @@ Beautiful.View = function() {
   window.addEventListener('mousemove', function(event) {self.mousemove(event)});
 };
 
+
+
 Beautiful.View.prototype.mousedown = function(event) {
   var chunk = Chunks.findOne({xCoord:0, yCoord:0}) // hack! only works if there IS ONLY ONE DOCUMENT
   var tileIndex = (chunk.width * this.mouseTile.y) + this.mouseTile.x;
   var tileValue = chunk.layerData.plant[tileIndex];
   tileValue = (tileValue === 1) ? 0 : 1; // if it's a tree, make it nothing. else, make it a tree
   Meteor.call('setTile', {}, this.mouseTile.x, this.mouseTile.y, tileValue, 'plant');
-  //console.log(this.mouseTile);
+  console.log(this.mouse);
 };
 
 Beautiful.View.prototype.mouseup  = function(event) {
@@ -53,8 +55,8 @@ Beautiful.View.prototype.mousemove = function(event) {
     currentElement = currentElement.offsetParent;
   }
 
-  this.mouse.x = event.pageX - totalOffsetX;
-  this.mouse.y = event.pageY - totalOffsetY;
+  this.mouse.x = event.pageX - totalOffsetX - this.center.x;
+  this.mouse.y = event.pageY - totalOffsetY - this.center.y;
   this.mouseTile = gGame.tileset.getMapCoord(
     this.mouse.x, this.mouse.y);
 };

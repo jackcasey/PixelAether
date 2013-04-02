@@ -9,12 +9,11 @@ Beautiful.Renderer = function () {
   self.chunk = null;
   self.canvas = document.createElement('canvas');
   self.context = self.canvas.getContext('2d');
-}
+};
 
 Beautiful.Renderer.prototype.clear = function() {
   this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-}
-
+};
 
 Beautiful.Renderer.prototype.renderChunk = function(chunkId){
 
@@ -31,9 +30,10 @@ Beautiful.Renderer.prototype.renderChunk = function(chunkId){
   var tilesetSize = tileset.width * tileset.height;
 
   // get the chunk
-  var chunk = Chunks.findOne(chunkId);
-  if (!chunk) return;
-
+  this.chunk = Chunks.findOne(chunkId);
+  if (!this.chunk) return;
+  var chunk = this.chunk;
+  
   // make sure that the canvas width and height are correct
   if (this.canvas.width !== chunk.width * tileset.tileWidth)
     this.canvas.width = chunk.width * tileset.tileWidth;
