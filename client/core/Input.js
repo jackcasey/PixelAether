@@ -30,6 +30,7 @@ Beautiful.Input = function() {
 
 /*------------------------------------------------------------
 bind
+down
 hold
 tap
 
@@ -53,6 +54,16 @@ bind: function(keyCode, actionString) {
     upTime: sim.frameTime,
     upFrameCount: sim.frameCount,
   };
+},
+
+down: function(actionName) {
+  var action = this.actions[actionName];
+  if (!action) return null;
+
+  if (action.downFrameCount > action.upFrameCount) 
+    return true;
+
+  return false;
 },
 
 hold: function(actionName) {
