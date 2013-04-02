@@ -24,7 +24,7 @@ var setup = function() {
 
   // create a canvas 
   gGame.view = new Beautiful.View();
-  gGame.view.setSize(1000, 800);
+  gGame.view.setSize(1000, 600);
   var canvas = gGame.view.canvas;
   var context = canvas.getContext('2d');
 
@@ -40,7 +40,7 @@ var setup = function() {
   // global data about our simulation
   gGame.simulation = new Beautiful.Simulation();
 
-  // not that we have a sumulation, we can set up input
+  // now that we have a simulation, we can set up input
   gGame.input = new Beautiful.Input();
   gGame.input.bind(
     gGame.input.KEY.SPACE,
