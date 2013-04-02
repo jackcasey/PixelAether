@@ -21,8 +21,20 @@ Beautiful.Input = function() {
 
 
 /*------------------------------------------------------------
+bind
+tap
+
+_keyDown
+_keyUp
+_mouseDown
+_mouseUp
+
+TAP_THRESH
+KEY
 ------------------------------------------------------------*/
-Beautiful.Input.prototype.bind = function(keyCode, actionString) {
+Beautiful.Input.prototype = {
+
+bind: function(keyCode, actionString) {
   var sim = gGame.simulation;
   this.bindings[keyCode] = actionString;
   this.actions[actionString] = {
@@ -31,9 +43,9 @@ Beautiful.Input.prototype.bind = function(keyCode, actionString) {
     upTime: sim.frameTime,
     upFrame: sim.frameCount,
   };
-};
+},
 
-Beautiful.Input.prototype.tap = function(actionName) {
+tap: function(actionName) {
   var action = this.actions[actionName];
   if (!action) return null; 
 
@@ -47,13 +59,17 @@ Beautiful.Input.prototype.tap = function(actionName) {
     return true; }
 
   return false
-};
+},
 
-Beautiful.Input.prototype._keyDown = function(event) {
+_keyDown: function(event) {
   // if there is no action associated with this key, ignore
   var actionName = this.bindings[event.keyCode];
   if (!actionName) return;
+
   var action = this.actions[actionName];
+
+  // don't let the browser handle this key
+  if (event.cancelable) event.preventDefault();
 
   // if the last event was a key down don't re-trigger!
   if (action.downFrame > action.upFrame) return;
@@ -61,9 +77,9 @@ Beautiful.Input.prototype._keyDown = function(event) {
   var sim = gGame.simulation;
   action.downTime = sim.frameTime;
   action.downFrame = sim.frameCount;
-};
+},
 
-Beautiful.Input.prototype._keyUp = function(event) {
+_keyUp: function(event) {
   var actionName = this.bindings[event.keyCode];
   if (!actionName) return;
 
@@ -71,19 +87,19 @@ Beautiful.Input.prototype._keyUp = function(event) {
   var sim = gGame.simulation;
   action.upTime = sim.frameTime;
   action.upFrame = sim.frameCount;
-};
+},
 
-Beautiful.Input.prototype._mouseDown = function(event) {
+_mouseDown: function(event) {
 
-};
+},
 
-Beautiful.Input.prototype._mouseDown = function(event) {
+_mouseDown: function(event) {
 
-};
+},
 
-Beautiful.Input.prototype.TAP_THRESH = 130; // in milisec
+TAP_THRESH: 130, // in milisec
 
-Beautiful.Input.prototype.KEY = {
+KEY: {
   'MOUSE1': -1,
   'MOUSE2': -3,
   'MWHEEL_UP': -4,
@@ -176,4 +192,6 @@ Beautiful.Input.prototype.KEY = {
   'COMMA': 188,
   'MINUS': 189,
   'PERIOD': 190
-};
+}
+
+}; // Beautiful.Input.prototype

@@ -6,9 +6,16 @@ Beautiful.View = function() {
 
   // the most recent mouse position
   self.mouse = {
-    x: 0, 
-    y: 0
+    canvas: {
+      x: 0, 
+      y: 0
+    },
+    sim: {
+      x:0,
+      y:0
+    }
   };
+
   // what tile is the mouse over?
   self.mouseTile = {
     x: 0,
@@ -58,7 +65,6 @@ Beautiful.View.prototype.drawRenderer = function(renderer, x, y) {
 }
 
 Beautiful.View.prototype.keydown = function(event) {
-  event.preventDefault(); // HACK to stop spacebar from scrolling down
   gGame.input._keyDown(event);
 }
 
@@ -72,7 +78,9 @@ Beautiful.View.prototype.mousedown = function(event) {
   var tileValue = chunk.layerData.plant[tileIndex];
   tileValue = (tileValue === 1) ? 0 : 1; // if it's a tree, make it nothing. else, make it a tree
   Meteor.call('setTile', {}, this.mouseTile.x, this.mouseTile.y, tileValue, 'plant');
-  console.log(this.mouse);
+  console.log('sim, canvas');
+  console.log(this.mouse.sim);
+  console.log(this.mouse.canvas);
 };
 
 Beautiful.View.prototype.mousemove = function(event) {
@@ -88,10 +96,15 @@ Beautiful.View.prototype.mousemove = function(event) {
     currentElement = currentElement.offsetParent;
   }
 
-  this.mouse.x = event.pageX - totalOffsetX - this.center.x;
-  this.mouse.y = (event.pageY - totalOffsetY - this.center.y) * -1;
-  this.mouseTile = gGame.tileset.getMapCoord(
-    this.mouse.x, this.mouse.y);
+  var mc = this.mouse.canvas;
+  var ms = this.mouse.sim;
+  mc.x = event.pageX - totalOffsetX;
+  mc.y = event.pageY - totalOffsetY;
+
+  ms.x =  mc.x - this.center.x;
+  ms.y = (mc.y - this.center.y) * -1 - 1;
+
+  this.mouseTile = gGame.tileset.getMapCoord(ms.x, ms.y);
 };
 
 Beautiful.View.prototype.mouseup  = function(event) {
