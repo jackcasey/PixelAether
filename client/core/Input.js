@@ -18,7 +18,7 @@ Beautiful.Input = function() {
   // }
   this.actions = {};
 
-  // always keeping track of the mouse, even if no action is bound
+  // always keep track of mouse movement, even if no action is bound
   this.mouse = {
     simPos:           {x:0, y:0},
     deltaPos:         {x:0, y:0},
@@ -49,10 +49,10 @@ bind: function(keyCode, actionString) {
   var sim = gGame.simulation;
   this.bindings[keyCode] = actionString;
   this.actions[actionString] = {
-    downTime: sim.frameTime,
-    downFrameCount: sim.frameCount,
-    upTime: sim.frameTime,
-    upFrameCount: sim.frameCount,
+    downTime: new Date(0),
+    downFrameCount: -2,
+    upTime: new Date(1),
+    upFrameCount: -1,
   };
 },
 
