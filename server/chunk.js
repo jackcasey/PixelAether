@@ -1,7 +1,7 @@
 /*------------------------------------------------------------
 Create a new map chunk, insert it into chunks collection
 
-chunkId     - mongodb style chunk identifier 
+chunkId     - mongodb style selector 
 layerNames  - optional array of layer names, default ['ground', 'plant']
 
 Assume:
