@@ -5,9 +5,13 @@ Beautiful.Simulation = function() {
 };
 
 
-Beautiful.Simulation.prototype.step = function() {
+Beautiful.Simulation.prototype = {
+  
+step: function() {
   this.frameCount++;
   var now = new Date();
   this.deltaTime = now - this.frameTime;
   this.frameTime = now;
-};
+}
+
+}; // Beautiful.Simulation.prototype

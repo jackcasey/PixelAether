@@ -48,31 +48,33 @@ mouseup
 setSize
 ------------------------------------------------------------*/
 
-Beautiful.View.prototype.clear = function() {
+Beautiful.View.prototype = {
+clear: function() {
   this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-}
+},
 
-Beautiful.View.prototype.drawRenderer = function(renderer, x, y) {
+drawRenderer: function(renderer, x, y) {
   // x, y are simulation style coords to place the bottom left 
   // corner of the renderer canvas
 
   // window style coordinates to draw the canvas at
   var drawX = this.center.x + x;
   var drawY = this.center.y - y - renderer.canvas.height;
+  drawY++; // fix the fencpost error
 
   this.context.drawImage(renderer.canvas, drawX, drawY);
 
-}
+},
 
-Beautiful.View.prototype.keydown = function(event) {
+keydown: function(event) {
   gGame.input._keyDown(event);
-}
+},
 
-Beautiful.View.prototype.keyup = function(event) {
+keyup: function(event) {
   gGame.input._keyUp(event);
-}
+},
 
-Beautiful.View.prototype.mousedown = function(event) {
+mousedown: function(event) {
   var chunk = Chunks.findOne({xCoord:0, yCoord:0}) // hack! only works if there IS ONLY ONE DOCUMENT
   var tileIndex = (chunk.width * this.mouseTile.y) + this.mouseTile.x;
   var tileValue = chunk.layerData.plant[tileIndex];
@@ -81,9 +83,9 @@ Beautiful.View.prototype.mousedown = function(event) {
   console.log('sim, canvas');
   console.log(this.mouse.sim);
   console.log(this.mouse.canvas);
-};
+},
 
-Beautiful.View.prototype.mousemove = function(event) {
+mousemove: function(event) {
   var totalOffsetX = 0;
   var totalOffsetY = 0;
   var canvasX = 0;
@@ -102,19 +104,21 @@ Beautiful.View.prototype.mousemove = function(event) {
   mc.y = event.pageY - totalOffsetY;
 
   ms.x =  mc.x - this.center.x;
-  ms.y = (mc.y - this.center.y) * -1 - 1;
+  ms.y = (mc.y - this.center.y) * -1;
 
   this.mouseTile = gGame.tileset.getMapCoord(ms.x, ms.y);
-};
+},
 
-Beautiful.View.prototype.mouseup  = function(event) {
+mouseup: function(event) {
 
-};
+},
 
-Beautiful.View.prototype.setSize = function(width, height) {
+setSize: function(width, height) {
   this.canvas.width = width;
   this.canvas.height = height;
 
   this.center.x = Math.floor(width * 0.5);
   this.center.y = Math.floor(height * 0.5);
 }
+
+}; // Beautiful.View.prototype
