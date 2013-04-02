@@ -11,6 +11,10 @@ Beautiful.Renderer = function () {
   self.context = self.canvas.getContext('2d');
 };
 
+/*------------------------------------------------------------
+clear
+renderChunk
+------------------------------------------------------------*/
 Beautiful.Renderer.prototype.clear = function() {
   this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 };
