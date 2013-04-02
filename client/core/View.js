@@ -6,14 +6,8 @@ Beautiful.View = function() {
 
   // the most recent mouse position
   self.mouse = {
-    canvas: {
       x: 0, 
       y: 0
-    },
-    sim: {
-      x:0,
-      y:0
-    }
   };
 
   // what tile is the mouse over?
@@ -29,15 +23,17 @@ Beautiful.View = function() {
   self.setSize(self.canvas.width, self.canvas.height);
 
   // wrap to bind functions to this object
-  window.addEventListener('mousedown', function(event) {self.mousedown(event)});
-  window.addEventListener('mouseup', function(event) {self.mouseup(event)});
-  window.addEventListener('mousemove', function(event) {self.mousemove(event)});
+  self.canvas.addEventListener('mousedown', function(event) {self.mousedown(event)});
+  self.canvas.addEventListener('mouseup', function(event) {self.mouseup(event)});
+  self.canvas.addEventListener('mousemove', function(event) {self.mousemove(event)});
   window.addEventListener('keydown', function(event) {self.keydown(event)});
   window.addEventListener('keyup', function(event) {self.keyup(event)});
 };
 
 
 /*------------------------------------------------------------
+canvasToSimulation
+canvasToWorld
 clear
 drawRenderer
 keydown
@@ -47,8 +43,19 @@ mousemove
 mouseup
 setSize
 ------------------------------------------------------------*/
-
 Beautiful.View.prototype = {
+
+canvasToSimulation: function(coords) {
+  return {
+  x:  coords.x - this.center.x,
+  y: (coords.y - this.center.y) * -1
+ };
+},
+
+canvasToWorld: function(coords) {
+
+},
+
 clear: function() {
   this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 },
@@ -67,11 +74,11 @@ drawRenderer: function(renderer, x, y) {
 },
 
 keydown: function(event) {
-  gGame.input._keyDown(event);
+  gGame.input._keyDown(event.keyCode, event);
 },
 
 keyup: function(event) {
-  gGame.input._keyUp(event);
+  gGame.input._keyUp(event.keyCode, event);
 },
 
 mousedown: function(event) {
@@ -80,16 +87,13 @@ mousedown: function(event) {
   var tileValue = chunk.layerData.plant[tileIndex];
   tileValue = (tileValue === 1) ? 0 : 1; // if it's a tree, make it nothing. else, make it a tree
   Meteor.call('setTile', {}, this.mouseTile.x, this.mouseTile.y, tileValue, 'plant');
-  console.log('sim, canvas');
-  console.log(this.mouse.sim);
-  console.log(this.mouse.canvas);
+  // NOT HACK:
+  gGame.input._mouseDown(event);
 },
 
 mousemove: function(event) {
   var totalOffsetX = 0;
   var totalOffsetY = 0;
-  var canvasX = 0;
-  var canvasY = 0;
   var currentElement = this.canvas;
 
   while (currentElement != null) {
@@ -98,19 +102,23 @@ mousemove: function(event) {
     currentElement = currentElement.offsetParent;
   }
 
-  var mc = this.mouse.canvas;
-  var ms = this.mouse.sim;
-  mc.x = event.pageX - totalOffsetX;
-  mc.y = event.pageY - totalOffsetY;
+  var canvasX = event.pageX - totalOffsetX;
+  var canvasY = event.pageY - totalOffsetY;
 
-  ms.x =  mc.x - this.center.x;
-  ms.y = (mc.y - this.center.y) * -1;
+  this.mouse = this.canvasToSimulation({
+    x: canvasX,
+    y: canvasY
+  });
 
-  this.mouseTile = gGame.tileset.getMapCoord(ms.x, ms.y);
+  // pass simulation position to the Input Manager
+  gGame.input._mouseMove(this.mouse, event);
+
+  //hack
+  this.mouseTile = gGame.tileset.getMapCoord(this.mouse.x, this.mouse.y);
 },
 
 mouseup: function(event) {
-
+  gGame.input._mouseUp(event);
 },
 
 setSize: function(width, height) {

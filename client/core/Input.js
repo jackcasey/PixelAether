@@ -9,8 +9,8 @@ Beautiful.Input = function() {
   this.bindings = {};
 
   // actionName strings mapped to input state
-  // keys are actionName strings 
-  // value: {
+  // keys: actionName strings 
+  // values: {
   //      downTime 
   //      downCount 
   //      upTime 
@@ -27,6 +27,7 @@ tap
 _keyDown
 _keyUp
 _mouseDown
+_mouseMove
 _mouseUp
 
 TAP_THRESH
@@ -61,9 +62,9 @@ tap: function(actionName) {
   return false
 },
 
-_keyDown: function(event) {
+_keyDown: function(keyCode, event) {
   // if there is no action associated with this key, ignore
-  var actionName = this.bindings[event.keyCode];
+  var actionName = this.bindings[keyCode];
   if (!actionName) return;
 
   var action = this.actions[actionName];
@@ -79,10 +80,9 @@ _keyDown: function(event) {
   action.downFrame = sim.frameCount;
 },
 
-_keyUp: function(event) {
-  var actionName = this.bindings[event.keyCode];
+_keyUp: function(keyCode, event) {
+  var actionName = this.bindings[keyCode];
   if (!actionName) return;
-
   var action = this.actions[actionName];
   var sim = gGame.simulation;
   action.upTime = sim.frameTime;
@@ -90,20 +90,26 @@ _keyUp: function(event) {
 },
 
 _mouseDown: function(event) {
+  var keyCode = (event.button === 0) ? this.KEY.MOUSE1 : this.KEY.MOUSE2;
+  this._keyDown(keyCode, event);
+},
+
+_mouseMove: function(position, event) {
 
 },
 
-_mouseDown: function(event) {
-
+_mouseUp: function(event) {
+  var keyCode= (event.button === 0) ? this.KEY.MOUSE1 : this.KEY.MOUSE2;
+  this._keyUp(keyCode, event);
 },
 
-TAP_THRESH: 130, // in milisec
+TAP_THRESH: 200, // in milisec
 
 KEY: {
   'MOUSE1': -1,
   'MOUSE2': -3,
-  'MWHEEL_UP': -4,
-  'MWHEEL_DOWN': -5,
+  //'MWHEEL_UP': -4,
+  //'MWHEEL_DOWN': -5,
 
   'BACKSPACE': 8,
   'TAB': 9,

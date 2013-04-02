@@ -46,6 +46,9 @@ var setup = function() {
     gGame.input.KEY.SPACE,
     'fire');
 
+  gGame.input.bind(
+    gGame.input.KEY.MOUSE1,
+    'edit');
 
   // NEXT: read mouse input from proper canvas!
   // Convert to tile correctly!
@@ -56,6 +59,7 @@ var setup = function() {
     gGame.view.drawRenderer(gGame.renderer, 0, 0);
 
     if (gGame.input.tap('fire')) console.log('fire!!');
+    if (gGame.input.tap('edit')) console.log('edit');
 
     window.requestAnimFrame(gameLoop);
   };
