@@ -39,6 +39,7 @@ var setup = function() {
   
   // global data about our simulation
   gGame.simulation = new Beautiful.Simulation();
+  gGame.simulation.step();
 
   // now that we have a simulation, we can set up input
   gGame.input = new Beautiful.Input();
@@ -54,17 +55,18 @@ var setup = function() {
   // Convert to tile correctly!
   var lastFrameTime = null;
   var gameLoop = function() {
-    gGame.simulation.step();
     gGame.view.clear();
     gGame.view.drawRenderer(gGame.renderer, 0, 0);
 
     if (gGame.input.tap('fire')) console.log('fire!!');
     if (gGame.input.tap('edit')) console.log('edit');
+    if (gGame.input.hold('fire')) console.log('hold fire!');
 
+    gGame.simulation.step();
     window.requestAnimFrame(gameLoop);
   };
+
   window.requestAnimFrame(gameLoop);
-  
 };
 
 window.onload = function() {

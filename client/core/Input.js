@@ -12,16 +12,25 @@ Beautiful.Input = function() {
   // keys: actionName strings 
   // values: {
   //      downTime 
-  //      downCount 
-  //      upTime 
-  //      upCount
+  //      downFrameCount 
+  //      upTime
+  //      upFrameCountCount
   // }
   this.actions = {};
+
+  // always keeping track of the mouse, even if no action is bound
+  this.mouse = {
+    simPos:           {x:0, y:0},
+    deltaPos:         {x:0, y:0},
+    moveTime:         new Date(),
+    moveFrameCount:   0,
+  };
 };
 
 
 /*------------------------------------------------------------
 bind
+hold
 tap
 
 _keyDown
@@ -40,10 +49,24 @@ bind: function(keyCode, actionString) {
   this.bindings[keyCode] = actionString;
   this.actions[actionString] = {
     downTime: sim.frameTime,
-    downFrame: sim.frameCount,
+    downFrameCount: sim.frameCount,
     upTime: sim.frameTime,
-    upFrame: sim.frameCount,
+    upFrameCount: sim.frameCount,
   };
+},
+
+hold: function(actionName) {
+  var action = this.actions[actionName];
+  if (!action) return null;
+
+  var sim = gGame.simulation;
+  var downDuration = sim.frameTime - action.downTime;
+
+  if (action.downFrameCount > action.upFrameCount && // action is down
+    downDuration > this.TAP_THRESH) // and has been down for a while
+    return true;
+
+  return false;
 },
 
 tap: function(actionName) {
@@ -51,13 +74,13 @@ tap: function(actionName) {
   if (!action) return null; 
 
   var sim = gGame.simulation;
-  var downDuration = action.upTime - action.downTime;
+  var downDuration = action.upTime - action.downTime; // accurate when upTime happened in this frame
  
   if (downDuration > 0 &&
-    action.upFrame === sim.frameCount - 1 && // keyUp happened in the previousFrame
+    action.upFrameCount === sim.frameCount && // keyUp happened in this Frame
     downDuration <= this.TAP_THRESH) {
-    console.log(downDuration);
-    return true; }
+    return true; 
+  }
 
   return false
 },
@@ -73,11 +96,11 @@ _keyDown: function(keyCode, event) {
   if (event.cancelable) event.preventDefault();
 
   // if the last event was a key down don't re-trigger!
-  if (action.downFrame > action.upFrame) return;
+  if (action.downFrameCount > action.upFrameCount) return;
 
   var sim = gGame.simulation;
   action.downTime = sim.frameTime;
-  action.downFrame = sim.frameCount;
+  action.downFrameCount = sim.frameCount;
 },
 
 _keyUp: function(keyCode, event) {
@@ -86,7 +109,7 @@ _keyUp: function(keyCode, event) {
   var action = this.actions[actionName];
   var sim = gGame.simulation;
   action.upTime = sim.frameTime;
-  action.upFrame = sim.frameCount;
+  action.upFrameCount = sim.frameCount;
 },
 
 _mouseDown: function(event) {
@@ -95,7 +118,13 @@ _mouseDown: function(event) {
 },
 
 _mouseMove: function(position, event) {
-
+  this.mouse.deltaPos.x = position.x - this.mouse.simPos.x;
+  this.mouse.deltaPos.y = position.y - this.mouse.simPos.y;
+  this.mouse.simPos.x = position.x;
+  this.mouse.simPos.y = position.y;
+  this.mouse.moveTime = gGame.simulation.frameTime;
+  this.mouse.moveFrameCount = gGame.simulation.frameCount;
+  //console.log(this.mouse.deltaPos);
 },
 
 _mouseUp: function(event) {
