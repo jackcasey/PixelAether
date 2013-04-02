@@ -28,6 +28,16 @@ Beautiful.View = function() {
 };
 
 
+/*------------------------------------------------------------
+clear
+mousedown
+mousemove
+mouseup
+setSize
+------------------------------------------------------------*/
+Beautiful.View.prototype.clear = function() {
+  this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+}
 
 Beautiful.View.prototype.mousedown = function(event) {
   var chunk = Chunks.findOne({xCoord:0, yCoord:0}) // hack! only works if there IS ONLY ONE DOCUMENT
@@ -36,10 +46,6 @@ Beautiful.View.prototype.mousedown = function(event) {
   tileValue = (tileValue === 1) ? 0 : 1; // if it's a tree, make it nothing. else, make it a tree
   Meteor.call('setTile', {}, this.mouseTile.x, this.mouseTile.y, tileValue, 'plant');
   console.log(this.mouse);
-};
-
-Beautiful.View.prototype.mouseup  = function(event) {
-
 };
 
 Beautiful.View.prototype.mousemove = function(event) {
@@ -61,9 +67,9 @@ Beautiful.View.prototype.mousemove = function(event) {
     this.mouse.x, this.mouse.y);
 };
 
-Beautiful.View.prototype.clear = function() {
-  this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-}
+Beautiful.View.prototype.mouseup  = function(event) {
+
+};
 
 Beautiful.View.prototype.setSize = function(width, height) {
   this.canvas.width = width;
