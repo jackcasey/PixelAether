@@ -30,13 +30,27 @@ Beautiful.View = function() {
 
 /*------------------------------------------------------------
 clear
+drawRenderer
 mousedown
 mousemove
 mouseup
 setSize
 ------------------------------------------------------------*/
+
 Beautiful.View.prototype.clear = function() {
   this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+}
+
+Beautiful.View.prototype.drawRenderer = function(renderer, x, y) {
+  // x, y are simulation style coords to place the bottom left 
+  // corner of the renderer canvas
+
+  // window style coordinates to draw the canvas at
+  var drawX = this.center.x + x;
+  var drawY = this.center.y - y - renderer.canvas.height;
+
+  this.context.drawImage(renderer.canvas, drawX, drawY);
+
 }
 
 Beautiful.View.prototype.mousedown = function(event) {
@@ -62,7 +76,7 @@ Beautiful.View.prototype.mousemove = function(event) {
   }
 
   this.mouse.x = event.pageX - totalOffsetX - this.center.x;
-  this.mouse.y = event.pageY - totalOffsetY - this.center.y;
+  this.mouse.y = (event.pageY - totalOffsetY - this.center.y) * -1;
   this.mouseTile = gGame.tileset.getMapCoord(
     this.mouse.x, this.mouse.y);
 };

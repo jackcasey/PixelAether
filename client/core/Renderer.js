@@ -1,5 +1,5 @@
 /*------------------------------------------------------------
-Beautiful.Renderer Wraps a canvas
+Beautiful.Renderer Wraps a canvas and a chunk
 ------------------------------------------------------------*/
 
 
@@ -61,7 +61,8 @@ Beautiful.Renderer.prototype.renderChunk = function(chunkId){
       xClip = tileset.getUpperLeftX(tileIndex % tilesetSize); 
       yClip = tileset.getUpperLeftY(tileIndex % tilesetSize);
       xCursor = tileset.tileWidth * (i % chunk.width);
-      yCursor = tileset.tileHeight * (Math.floor(i / chunk.width));
+      // position the first tile in the bottom left
+      yCursor = tileset.tileHeight * (chunk.height - (Math.floor(i / chunk.width)) - 1);
 
       this.context.drawImage(tileset.image,
         xClip, yClip,
