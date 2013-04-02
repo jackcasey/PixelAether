@@ -25,12 +25,16 @@ Beautiful.View = function() {
   window.addEventListener('mousedown', function(event) {self.mousedown(event)});
   window.addEventListener('mouseup', function(event) {self.mouseup(event)});
   window.addEventListener('mousemove', function(event) {self.mousemove(event)});
+  window.addEventListener('keydown', function(event) {self.keydown(event)});
+  window.addEventListener('keyup', function(event) {self.keyup(event)});
 };
 
 
 /*------------------------------------------------------------
 clear
 drawRenderer
+keydown
+keyup
 mousedown
 mousemove
 mouseup
@@ -51,6 +55,15 @@ Beautiful.View.prototype.drawRenderer = function(renderer, x, y) {
 
   this.context.drawImage(renderer.canvas, drawX, drawY);
 
+}
+
+Beautiful.View.prototype.keydown = function(event) {
+  event.preventDefault(); // HACK to stop spacebar from scrolling down
+  gGame.input._keyDown(event);
+}
+
+Beautiful.View.prototype.keyup = function(event) {
+  gGame.input._keyUp(event);
 }
 
 Beautiful.View.prototype.mousedown = function(event) {

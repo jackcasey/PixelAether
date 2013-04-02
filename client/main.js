@@ -32,30 +32,34 @@ var setup = function() {
   var content = document.getElementById('content');
   content.appendChild(canvas);
   
-
+  // HACK
   Deps.autorun(function() {
     gGame.renderer.renderChunk(Session.get('viewChunk'))
   });
   
+  // global data about our simulation
+  gGame.simulation = new Beautiful.Simulation();
+
+  // not that we have a sumulation, we can set up input
+  gGame.input = new Beautiful.Input();
+  gGame.input.bind(
+    gGame.input.KEY.SPACE,
+    'fire');
+
+
   // NEXT: read mouse input from proper canvas!
   // Convert to tile correctly!
   var lastFrameTime = null;
-  var draw = function() {
+  var gameLoop = function() {
+    gGame.simulation.step();
     gGame.view.clear();
-    var mouse = gGame.view.mouse;
-
     gGame.view.drawRenderer(gGame.renderer, 0, 0);
 
-    // time
-    var now = new Date();
-    var delta = now - lastFrameTime;
-    if (delta > 50)
-      console.log(1000/delta);
-    lastFrameTime = now;
-    window.requestAnimFrame(draw);
+    if (gGame.input.tap('fire')) console.log('fire!!');
+
+    window.requestAnimFrame(gameLoop);
   };
-  lastFrameTime = new Date();
-  draw();
+  window.requestAnimFrame(gameLoop);
   
 };
 
