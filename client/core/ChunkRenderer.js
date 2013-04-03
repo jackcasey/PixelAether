@@ -5,7 +5,6 @@ Beautiful.Renderer Wraps a canvas and a chunk
 
 Beautiful.ChunkRenderer = function () {
   var self = this;
-  self.computation = null; // Meteor Deps.Computation object (when the chunk is set)
   self.chunk = null;
   self.canvas = document.createElement('canvas');
   self.context = self.canvas.getContext('2d');
