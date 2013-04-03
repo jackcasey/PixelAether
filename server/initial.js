@@ -2,6 +2,12 @@
 Meteor.startup(function() {
   console.log('The server is starting up!');
   // Create a chunk if there isn't one already
-  console.log('Checking for initial data...',     Chunk.create({xCoord: 0, yCoord:0}));
-  console.log('Shall we create a second chunk?',  Chunk.create({xCoord:-1, yCoord:0}));
+  for (var y = -5; y < 5; y++) {
+    for (var x = -5; x < 5; x++) {
+      console.log(
+        'Creating chunk if it doesn\'t exist:', x, y,
+        Chunk.create({xCoord:x, yCoord:y})
+      );
+    }
+  }
 });

@@ -68,6 +68,10 @@ drawRenderer: function(renderer, x, y) {
   var drawX = this.center.x + x;
   var drawY = this.center.y - y - renderer.canvas.height;
   drawY++; // fix the fencpost error
+  if (renderer.center) {
+    drawX -= renderer.center.x;
+    drawY += renderer.center.y;
+  }
 
   this.context.drawImage(renderer.canvas, drawX, drawY);
 

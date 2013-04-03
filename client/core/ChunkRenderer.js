@@ -8,6 +8,10 @@ Beautiful.ChunkRenderer = function () {
   self.chunk = null;
   self.canvas = document.createElement('canvas');
   self.context = self.canvas.getContext('2d');
+  self.center = {
+    x: Math.floor(this.canvas.width * 0.5),
+    y: Math.floor(this.canvas.height * 0.5)
+  };
 };
 
 
@@ -39,12 +43,16 @@ renderChunk: function(chunkSelector) {
   if (!this.chunk) return;
   var chunk = this.chunk;
   
-  // make sure that the canvas width and height are correct
-  if (this.canvas.width !== chunk.width * tileset.tileWidth)
+  //setup our 
+  if (this.canvas.width !== chunk.width * tileset.tileWidth) {
     this.canvas.width = chunk.width * tileset.tileWidth;
-  if (this.canvas.height !== chunk.height * tileset.tileHeight)
+    this.center.x = Math.floor(this.canvas.width * 0.5);
+  }
+  if (this.canvas.height !== chunk.height * tileset.tileHeight) {
     this.canvas.height = chunk.height * tileset.tileHeight;
-
+    this.center.y = Math.floor(this.canvas.height * 0.5);
+  }
+ 
   this.clear();
 
   // iterate over layers

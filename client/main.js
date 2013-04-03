@@ -9,12 +9,16 @@ window.requestAnimFrame = (function(){
           };
 })();
 
+Session.set('chunkSelector', {xCoord: 0, yCoord:0, mapName:'main'});
+
+// HACK
 function treeClicker(tileXY) {
-  var chunk = Chunks.findOne({xCoord:0, yCoord:0}) // hack! only works if there IS ONLY ONE DOCUMENT
+  var selector = Session.get('chunkSelector');
+  var chunk = Chunks.findOne(selector) 
   var tileIndex = (chunk.width * tileXY.y) + tileXY.x;
   var tileValue = chunk.layerData.plant[tileIndex];
   tileValue = (tileValue === 1) ? 0 : 1; // if it's a tree, make it nothing. else, make it a tree
-  Meteor.call('setTile', {}, tileXY.x, tileXY.y, tileValue, 'plant');
+  Meteor.call('setTile', selector, tileXY.x, tileXY.y, tileValue, 'plant');
 }
 
 
