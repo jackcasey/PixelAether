@@ -20,17 +20,31 @@ Beautiful.World = function() {
 };
 
 /*------------------------------------------------------------
+moveCamera
+render
+simToWorld
 ------------------------------------------------------------*/
 Beautiful.World.prototype = {
 
 moveCamera: function(deltaXY) {
   this.camera.x += deltaXY.x;
   this.camera.y += deltaXY.y;
+  //console.log('camera:', this.camera);
 },
 
 // render to gGame.view
 render: function() {
-  gGame.view.drawRenderer(this.chunkRenderer, this.camera.x, this.camera.y);
+  gGame.view.drawRenderer(this.chunkRenderer, -this.camera.x, -this.camera.y);
+},
+
+simToWorld: function(xy) {
+
+  var pixelX = xy.x + this.camera.x
+  var pixelY = xy.y + this.camera.y
+  return {
+    x: Math.floor(pixelX / gGame.tileset.tileWidth),
+    y: Math.floor(pixelY / gGame.tileset.tileHeight)
+  };
 }
 
 }; // Beautiful.World.prototype

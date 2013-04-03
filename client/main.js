@@ -9,12 +9,14 @@ window.requestAnimFrame = (function(){
           };
 })();
 
-// Location where the user is currently looking. 
-Session.setDefault('viewChunk', {
-  mapName:'main', 
-  xCoord:0,
-  yCoord:0, 
-});
+function treeClicker(tileXY) {
+  var chunk = Chunks.findOne({xCoord:0, yCoord:0}) // hack! only works if there IS ONLY ONE DOCUMENT
+  var tileIndex = (chunk.width * tileXY.y) + tileXY.x;
+  var tileValue = chunk.layerData.plant[tileIndex];
+  tileValue = (tileValue === 1) ? 0 : 1; // if it's a tree, make it nothing. else, make it a tree
+  Meteor.call('setTile', {}, tileXY.x, tileXY.y, tileValue, 'plant');
+}
+
 
 var setup = function() {
 
@@ -46,7 +48,7 @@ var setup = function() {
 
   gGame.input.bind(
     gGame.input.KEY.MOUSE2,
-    'edit');
+    'world');
 
   gGame.input.bind(
     gGame.input.KEY.MOUSE1,
@@ -59,10 +61,20 @@ var setup = function() {
 
     var i = gGame.input;
 
+    // for testing
     if (i.tap('fire')) console.log('fire!!');
-    if (i.hold('edit')) console.log('holding rmb');
-    if (i.drag('build')) 
-      gGame.world.moveCamera(i.mouse.deltaPos);
+
+    // simulation to world coords
+    if (i.up('build')) {
+      var tileXY = gGame.world.simToWorld(i.mouse.simPos);
+      console.log(tileXY);
+      treeClicker(tileXY);
+    }
+    // move camera
+    if (i.drag('world')) {
+      var delta = i.mouse.deltaPos;
+      gGame.world.moveCamera({x: -delta.x, y: -delta.y});
+    }
 
     gGame.simulation.step();
     window.requestAnimFrame(gameLoop);
