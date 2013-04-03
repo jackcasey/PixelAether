@@ -20,9 +20,8 @@ var setup = function() {
 
   // set up our game session data
   gGame.map = Beautiful.Maps.main;
-  gGame.chunkRenderer = new Beautiful.ChunkRenderer();
 
-  // create a canvas 
+  // create View for our game, wrapping the main HTML5 canvas 
   gGame.view = new Beautiful.View();
   gGame.view.setSize(1000, 600);
   var canvas = gGame.view.canvas;
@@ -31,11 +30,9 @@ var setup = function() {
   // add the game canvas to the DOM
   var content = document.getElementById('content');
   content.appendChild(canvas);
-  
-  // HACK
-  Deps.autorun(function() {
-    gGame.chunkRenderer.renderChunk(Session.get('viewChunk'))
-  });
+
+  // Wraps chunkRenderers 
+  gGame.world = new Beautiful.World();
   
   // global data about our simulation
   gGame.simulation = new Beautiful.Simulation();
@@ -58,13 +55,14 @@ var setup = function() {
 
   var gameLoop = function() {
     gGame.view.clear();
-    gGame.view.drawRenderer(gGame.chunkRenderer, 0, 0);
+    gGame.world.render();
 
     var i = gGame.input;
 
     if (i.tap('fire')) console.log('fire!!');
     if (i.hold('edit')) console.log('holding rmb');
-    if (i.drag('build')) console.log('drag', i.mouse.deltaPos);
+    if (i.drag('build')) 
+      gGame.world.moveCamera(i.mouse.deltaPos);
 
     gGame.simulation.step();
     window.requestAnimFrame(gameLoop);

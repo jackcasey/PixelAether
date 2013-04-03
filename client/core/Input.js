@@ -168,7 +168,7 @@ _mouseUp: function(event) {
   this._keyUp(keyCode, event);
 },
 
-TAP_THRESH: 200, // in milisec
+TAP_THRESH: 100, // in milisec
 
 KEY: {
   'MOUSE1': -1,
