@@ -48,20 +48,23 @@ var setup = function() {
     'fire');
 
   gGame.input.bind(
-    gGame.input.KEY.MOUSE1,
+    gGame.input.KEY.MOUSE2,
     'edit');
 
-  // NEXT: read mouse input from proper canvas!
-  // Convert to tile correctly!
-  var lastFrameTime = null;
+  // TODO: Play with gesture binding interface
+  var gMouseGesture = new Beautiful.Gesture(
+    gGame.input.KEY.MOUSE1, 
+    'pointer');
+
   var gameLoop = function() {
     gGame.view.clear();
     gGame.view.drawRenderer(gGame.renderer, 0, 0);
 
     if (gGame.input.tap('fire')) console.log('fire!!');
-    if (gGame.input.tap('edit')) console.log('edit');
-    if (gGame.input.up('edit')) console.log('edit up');
-    if (gGame.input.hold('fire')) console.log('hold fire!');
+    if (gGame.input.hold('edit')) console.log('holding rmb');
+
+    var drag = gMouseGesture.drag();
+    if (drag) console.log(drag);
 
     gGame.simulation.step();
     window.requestAnimFrame(gameLoop);
