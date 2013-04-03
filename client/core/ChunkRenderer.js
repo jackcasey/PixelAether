@@ -3,7 +3,7 @@ Beautiful.Renderer Wraps a canvas and a chunk
 ------------------------------------------------------------*/
 
 
-Beautiful.Renderer = function () {
+Beautiful.ChunkRenderer = function () {
   var self = this;
   self.computation = null; // Meteor Deps.Computation object (when the chunk is set)
   self.chunk = null;
@@ -15,12 +15,13 @@ Beautiful.Renderer = function () {
 clear
 renderChunk
 ------------------------------------------------------------*/
-Beautiful.Renderer.prototype.clear = function() {
+
+Beautiful.ChunkRenderer.prototype = {
+clear: function() {
   this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-};
+},
 
-Beautiful.Renderer.prototype.renderChunk = function(chunkId){
-
+renderChunk: function(chunkSelector) {
   // Where are we taking from the image
   var xClip;
   var yClip;
@@ -34,7 +35,7 @@ Beautiful.Renderer.prototype.renderChunk = function(chunkId){
   var tilesetSize = tileset.width * tileset.height;
 
   // get the chunk
-  this.chunk = Chunks.findOne(chunkId);
+  this.chunk = Chunks.findOne(chunkSelector);
   if (!this.chunk) return;
   var chunk = this.chunk;
   
@@ -72,4 +73,6 @@ Beautiful.Renderer.prototype.renderChunk = function(chunkId){
 
     } // iterate over layer data
   } // iterate over layers
-};
+},
+
+}; // Beautiful.ChunkRenderer.prototype

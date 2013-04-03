@@ -126,7 +126,7 @@ _keyDown: function(keyCode, event) {
   var action = this.actions[actionName];
 
   // don't let the browser handle this key
-  if (event.cancelable) event.preventDefault();
+  if (keyCode >= 0 && event.cancelable) event.preventDefault();
 
   // if the last event was a key down don't re-trigger!
   if (action.downFrameCount > action.upFrameCount) return;

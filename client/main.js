@@ -20,7 +20,7 @@ var setup = function() {
 
   // set up our game session data
   gGame.map = Beautiful.Maps.main;
-  gGame.renderer = new Beautiful.Renderer();
+  gGame.chunkRenderer = new Beautiful.ChunkRenderer();
 
   // create a canvas 
   gGame.view = new Beautiful.View();
@@ -34,7 +34,7 @@ var setup = function() {
   
   // HACK
   Deps.autorun(function() {
-    gGame.renderer.renderChunk(Session.get('viewChunk'))
+    gGame.chunkRenderer.renderChunk(Session.get('viewChunk'))
   });
   
   // global data about our simulation
@@ -58,7 +58,7 @@ var setup = function() {
 
   var gameLoop = function() {
     gGame.view.clear();
-    gGame.view.drawRenderer(gGame.renderer, 0, 0);
+    gGame.view.drawRenderer(gGame.chunkRenderer, 0, 0);
 
     var i = gGame.input;
 
