@@ -22,7 +22,7 @@ Beautiful.View = function() {
   };
   self.setSize(self.canvas.width, self.canvas.height);
 
-  // wrap to bind functions to this object
+  // wrap input event listeners
   self.canvas.addEventListener('mousedown', function(event) {self.mousedown(event)});
   self.canvas.addEventListener('mouseup', function(event) {self.mouseup(event)});
   self.canvas.addEventListener('mousemove', function(event) {self.mousemove(event)});
