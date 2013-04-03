@@ -10,7 +10,7 @@ Beautiful.Input = function() {
 
   // actionName strings mapped to input state
   // keys: actionName strings 
-  // values: {
+  // values: actions - JS objects with the format: {
   //      downTime 
   //      downFrameCount 
   //      upTime
@@ -30,6 +30,7 @@ Beautiful.Input = function() {
 
 /*------------------------------------------------------------
 bind
+drag
 hold
 isDown
 tap
@@ -54,6 +55,17 @@ bind: function(keyCode, actionString) {
     upTime: new Date(1),
     upFrameCount: -1,
   };
+},
+
+drag: function(actionName) {
+  var action = this.actions[actionName];
+  if (!action) return null;
+
+  if (this.hold(actionName) && // the action is holding
+    this.mouse.moveFrameCount === gGame.simulation.frameCount) // mouse moved this frame
+    return true;
+
+  return false;
 },
 
 hold: function(actionName) {

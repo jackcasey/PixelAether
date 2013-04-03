@@ -51,20 +51,20 @@ var setup = function() {
     gGame.input.KEY.MOUSE2,
     'edit');
 
-  // TODO: Play with gesture binding interface
-  var gMouseGesture = new Beautiful.Gesture(
-    gGame.input.KEY.MOUSE1, 
-    'pointer');
+  gGame.input.bind(
+    gGame.input.KEY.MOUSE1,
+    'build');
+
 
   var gameLoop = function() {
     gGame.view.clear();
     gGame.view.drawRenderer(gGame.renderer, 0, 0);
 
-    if (gGame.input.tap('fire')) console.log('fire!!');
-    if (gGame.input.hold('edit')) console.log('holding rmb');
+    var i = gGame.input;
 
-    var drag = gMouseGesture.drag();
-    if (drag) console.log(drag);
+    if (i.tap('fire')) console.log('fire!!');
+    if (i.hold('edit')) console.log('holding rmb');
+    if (i.drag('build')) console.log('drag', i.mouse.deltaPos);
 
     gGame.simulation.step();
     window.requestAnimFrame(gameLoop);

@@ -23,9 +23,9 @@ Beautiful.View = function() {
   self.setSize(self.canvas.width, self.canvas.height);
 
   // wrap input event listeners
-  self.canvas.addEventListener('mousedown', function(event) {self.mousedown(event)});
-  self.canvas.addEventListener('mouseup', function(event) {self.mouseup(event)});
-  self.canvas.addEventListener('mousemove', function(event) {self.mousemove(event)});
+  window.addEventListener('mousedown', function(event) {self.mousedown(event)});
+  window.addEventListener('mouseup', function(event) {self.mouseup(event)});
+  window.addEventListener('mousemove', function(event) {self.mousemove(event)});
   window.addEventListener('keydown', function(event) {self.keydown(event)});
   window.addEventListener('keyup', function(event) {self.keyup(event)});
 };
