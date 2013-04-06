@@ -20,7 +20,7 @@ Beautiful.View = function() {
     x:0,
     y:0
   };
-  self.setSize(self.canvas.width, self.canvas.height);
+  self.setPixelSize(self.canvas.width, self.canvas.height);
 
   // wrap input event listeners
   window.addEventListener('mousedown', function(event) {self.mousedown(event)});
@@ -119,7 +119,7 @@ mouseup: function(event) {
   gGame.input._mouseUp(event);
 },
 
-setSize: function(width, height) {
+setPixelSize: function(width, height) {
   this.canvas.width = width;
   this.canvas.height = height;
 

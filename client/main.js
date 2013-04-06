@@ -29,7 +29,7 @@ var setup = function() {
 
   // create View for our game, wrapping the main HTML5 canvas 
   gGame.view = new Beautiful.View();
-  gGame.view.setSize(1000, 600);
+  gGame.view.setPixelSize(1000, 600);
   var canvas = gGame.view.canvas;
   var context = canvas.getContext('2d');
 

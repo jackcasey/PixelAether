@@ -1,5 +1,19 @@
 /*------------------------------------------------------------
+Because the world is very dependent on the map chunksize,
+tileset tile size, and view size, the global world object,
+gGame.world should be created AFTER the map, view, and tileset
+have been initialized.
 
+Keeps Track of
+  Where the Camera is looking in the world,
+  Which chunks we need to be rendering
+  Which chunks are we currently rendering
+  Where on the view we should render chunks to
+
+Expects the following to exist on instantiation:
+  gGame.view (view size has been set)
+  gGame.tileset
+  gGame.map
 ------------------------------------------------------------*/
 Beautiful.World = function() {
   var self = this;
@@ -10,8 +24,22 @@ Beautiful.World = function() {
     y: 0,
   };
 
-  self.chunkRenderer = new Beautiful.ChunkRenderer();
+  var chunkPixelWidth = gGame.map.chunkWidth * gGame.tileset.tileWidth;
+  var chunkPixelHeight = gGame.map.chunkHeight * gGame.tileset.tileHeight;
 
+  // how many chunks does it take to span the width of the view
+  self.width = gGame.view.canvas.width / chunkPixelWidth;
+  self.height = gGame.view.canvas.height / chunkPixelHeight;
+
+  // what is the most chunks we could ever use
+  self.width = (gGame.view.canvas.width % chunkPixelWidth > 1) ?
+    Math.ceil(self.width + 1) : Math.chunkRenderer(self.width);
+
+  self.height = (gGame.view.canvas.height % chunkPixelHeight > 1) ?
+    Math.ceil(self.height + 1) : Math.ceil(self.height);
+
+  self.chunkRenderer = new Beautiful.ChunkRenderer();
+  self.cr2 = new Beautiful.ChunkRenderer();
 
   Deps.autorun(function() {
     self.chunkRenderer.renderChunk(Session.get('chunkSelector'));
@@ -69,6 +97,7 @@ moveCamera: function(deltaXY) {
 // render to gGame.view
 render: function() {
   gGame.view.drawRenderer(this.chunkRenderer, -this.camera.x, -this.camera.y);
+  gGame.view.drawRenderer(this.cr2, -this.camera.x + this.cr2.canvas.width, -this.camera.y);
 },
 
 simToWorld: function(xy) {

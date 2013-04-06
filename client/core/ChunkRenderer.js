@@ -8,21 +8,37 @@ Beautiful.ChunkRenderer = function () {
   self.chunk = null;
   self.canvas = document.createElement('canvas');
   self.context = self.canvas.getContext('2d');
+
+  // HACK -- setting the initial sized this way requires that gGame.map and gGame.tileset are initialized
+  self.canvas.width = gGame.map.chunkWidth * gGame.tileset.tileWidth;
+  self.canvas.height = gGame.map.chunkHeight * gGame.tileset.tileHeight;
   self.center = {
     x: Math.floor(this.canvas.width * 0.5),
     y: Math.floor(this.canvas.height * 0.5)
   };
+
+  self.fill(); // to make it easier to figure out what's goin on!
 };
 
 
 /*------------------------------------------------------------
 clear
+fill
 renderChunk
 ------------------------------------------------------------*/
 Beautiful.ChunkRenderer.prototype = {
 
 clear: function() {
   this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+},
+
+fill: function(fillColor, strokeColor) {
+  this.context.fillStyle = fillColor || getRandomColor();
+  this.context.strokeStyle = strokeColor || getRandomColor();
+  this.context.lineWidth = 4;
+
+  this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+  this.context.strokeRect(0, 0, this.canvas.width, this.canvas.height);
 },
 
 renderChunk: function(chunkSelector) {
