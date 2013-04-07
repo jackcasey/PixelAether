@@ -9,7 +9,7 @@ Beautiful.ChunkRenderer = function () {
   self.canvas = document.createElement('canvas');
   self.context = self.canvas.getContext('2d');
 
-  // HACK -- setting the initial sized this way requires that gGame.map and gGame.tileset are initialized
+  // HACK -- setting the initial sizes this way requires that gGame.map and gGame.tileset are initialized
   self.canvas.width = gGame.map.chunkWidth * gGame.tileset.tileWidth;
   self.canvas.height = gGame.map.chunkHeight * gGame.tileset.tileHeight;
   self.center = {
@@ -17,7 +17,14 @@ Beautiful.ChunkRenderer = function () {
     y: Math.floor(this.canvas.height * 0.5)
   };
 
-  self.fill(); // to make it easier to figure out what's goin on!
+  self.fill(); // for testing!
+
+  // Reactivity
+  self.chunkAddress = new Beautiful.ChunkAddress();
+  Deps.autorun(function() {
+    self.renderChunk(self.chunkAddress.get());
+    console.log('ChunkRenderer autorun:', self.chunkAddress._private);
+  });
 };
 
 
@@ -25,6 +32,7 @@ Beautiful.ChunkRenderer = function () {
 clear
 fill
 renderChunk
+setChunk
 ------------------------------------------------------------*/
 Beautiful.ChunkRenderer.prototype = {
 
@@ -42,6 +50,11 @@ fill: function(fillColor, strokeColor) {
 },
 
 renderChunk: function(chunkSelector) {
+  // get the chunk
+  this.chunk = Chunks.findOne(chunkSelector);
+  if (!this.chunk) return;
+  var chunk = this.chunk;
+
   // Where are we taking from the image
   var xClip;
   var yClip;
@@ -54,12 +67,7 @@ renderChunk: function(chunkSelector) {
   var tileset = gGame.tileset;
   var tilesetSize = tileset.width * tileset.height;
 
-  // get the chunk
-  this.chunk = Chunks.findOne(chunkSelector);
-  if (!this.chunk) return;
-  var chunk = this.chunk;
-  
-  //setup our 
+  // re-size and set center of Canvas only if needed 
   if (this.canvas.width !== chunk.width * tileset.tileWidth) {
     this.canvas.width = chunk.width * tileset.tileWidth;
     this.center.x = Math.floor(this.canvas.width * 0.5);
@@ -97,6 +105,10 @@ renderChunk: function(chunkSelector) {
 
     } // iterate over layer data
   } // iterate over layers
+},
+
+setChunk: function(chunkSelector) {
+  this.chunkAddress.set(chunkSelector);
 },
 
 }; // Beautiful.ChunkRenderer.prototype

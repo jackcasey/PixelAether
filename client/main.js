@@ -9,11 +9,9 @@ window.requestAnimFrame = (function(){
           };
 })();
 
-Session.set('chunkSelector', {xCoord: 0, yCoord:0, mapName:'main'});
-
 // HACK
 function treeClicker(tileXY) {
-  var selector = Session.get('chunkSelector');
+  var selector = gGame.world.chunkRenderer.chunkAddress.get();
   var chunk = Chunks.findOne(selector) 
   var tileIndex = (chunk.width * tileXY.y) + tileXY.x;
   var tileValue = chunk.layerData.plant[tileIndex];

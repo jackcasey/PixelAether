@@ -18,8 +18,8 @@ Expects the following to exist on instantiation:
 Beautiful.World = function() {
   var self = this;
   self.camera = {
-    xCoord: 0, // doesn't init to SessionValue
-    yCoord: 0, // ditto
+    xCoord: 0,
+    yCoord: 0,
     x: 0,
     y: 0,
   };
@@ -31,19 +31,24 @@ Beautiful.World = function() {
   self.width = gGame.view.canvas.width / chunkPixelWidth;
   self.height = gGame.view.canvas.height / chunkPixelHeight;
 
-  // what is the most chunks we could ever use
+  // find max number of chunks we could ever need to fill the World View
   self.width = (gGame.view.canvas.width % chunkPixelWidth > 1) ?
     Math.ceil(self.width + 1) : Math.chunkRenderer(self.width);
 
   self.height = (gGame.view.canvas.height % chunkPixelHeight > 1) ?
     Math.ceil(self.height + 1) : Math.ceil(self.height);
 
-  self.chunkRenderer = new Beautiful.ChunkRenderer();
-  self.cr2 = new Beautiful.ChunkRenderer();
+  // We will reuse renderers, setting the chunk based on where we focus on the map
+  self.renderers = new Array(self.width);
+  for (var i = 0; i < self.renderers.length; i++) {
+    self.renderers[i] = new Beautiful.ChunkRenderer();
+  }
 
-  Deps.autorun(function() {
-    self.chunkRenderer.renderChunk(Session.get('chunkSelector'));
-  });
+  console.log('init chunkRenderer:');
+  self.chunkRenderer = new Beautiful.ChunkRenderer();
+  console.log('set Chunk:');
+  self.chunkRenderer.setChunk({xCoord:0, yCoord:0, mapName:'main'});
+  //self.cr2 = new Beautiful.ChunkRenderer();
 };
 
 /*------------------------------------------------------------
@@ -84,8 +89,7 @@ moveCamera: function(deltaXY) {
   }
 
   if (changedChunk) {
-    this.chunkRenderer.renderChunk
-    Session.set('chunkSelector', {
+    this.chunkRenderer.setChunk({
       xCoord: this.camera.xCoord,
       yCoord: this.camera.yCoord,
       mapName: 'main'
@@ -96,8 +100,26 @@ moveCamera: function(deltaXY) {
 
 // render to gGame.view
 render: function() {
+
+  // the distnce between the camera and the left edge of the center tile
+  var xOffsetCamera = this.camera.x + this.chunkRenderer.center.x;
+
+  // the distance between the edge of the chunk and the edge of the screen
+  var xOffsetCenterChunk = gGame.view.center.x - xOffsetCamera;
+
+  // how many chunks do we render to the right of this one?
+  var chunksToRight = Math.ceil(xOffsetCenterChunk / this.chunkRenderer.canvas.width);
+
+  // where do we position our first chunk
+  var xStart = -this.camera.x - (this.chunkRenderer.canvas.width * chunksToRight);
+
+  for (var i = 0; i < this.renderers.length; i ++) {
+    var renderer = this.renderers[i];
+    gGame.view.drawRenderer(renderer, xStart, -this.camera.y);
+    xStart += this.chunkRenderer.canvas.width;
+  }
+
   gGame.view.drawRenderer(this.chunkRenderer, -this.camera.x, -this.camera.y);
-  gGame.view.drawRenderer(this.cr2, -this.camera.x + this.cr2.canvas.width, -this.camera.y);
 },
 
 simToWorld: function(xy) {
