@@ -38,17 +38,12 @@ Beautiful.World = function() {
   self.height = (gGame.view.canvas.height % chunkPixelHeight > 1) ?
     Math.ceil(self.height + 1) : Math.ceil(self.height);
 
-  // We will reuse renderers, setting the chunk based on where we focus on the map
-  self.renderers = new Array(self.width);
-  for (var i = 0; i < self.renderers.length; i++) {
-    self.renderers[i] = new Beautiful.ChunkRenderer();
-  }
+  self.grid = new Beautiful.ChunkGrid();
+  //self.grid.setXRange(-1, 2); // HACK
 
-  console.log('init chunkRenderer:');
+  // HACK -original method 
   self.chunkRenderer = new Beautiful.ChunkRenderer();
-  console.log('set Chunk:');
   self.chunkRenderer.setChunk({xCoord:0, yCoord:0, mapName:'main'});
-  //self.cr2 = new Beautiful.ChunkRenderer();
 };
 
 /*------------------------------------------------------------
@@ -94,7 +89,7 @@ moveCamera: function(deltaXY) {
       yCoord: this.camera.yCoord,
       mapName: 'main'
     });
-    console.log('camera:', this.camera);
+    //console.log('World.js - camera:', this.camera);
   }
 },
 
@@ -107,14 +102,19 @@ render: function() {
   // the distance between the edge of the chunk and the edge of the screen
   var xOffsetCenterChunk = gGame.view.center.x - xOffsetCamera;
 
-  // how many chunks do we render to the right of this one?
-  var chunksToRight = Math.ceil(xOffsetCenterChunk / this.chunkRenderer.canvas.width);
+  // how many chunks do we render to the left of this one?
+  var chunksToLeft = Math.ceil(xOffsetCenterChunk / this.chunkRenderer.canvas.width);
 
   // where do we position our first chunk
-  var xStart = -this.camera.x - (this.chunkRenderer.canvas.width * chunksToRight);
+  var xStart = -this.camera.x - (this.chunkRenderer.canvas.width * chunksToLeft);
 
-  for (var i = 0; i < this.renderers.length; i ++) {
-    var renderer = this.renderers[i];
+  // what is the xCoord of our left most chunk?
+  var xCoordLeft = this.camera.xCoord - chunksToLeft;
+  var xCoordRight = xCoordLeft + this.width - 1;
+  this.grid.setXRange(xCoordLeft, xCoordRight);
+
+  for (var xCoord = xCoordLeft; xCoord <= xCoordRight; xCoord ++) {
+    var renderer = this.grid.getRenderer(xCoord, 0, gGame.map.name);
     gGame.view.drawRenderer(renderer, xStart, -this.camera.y);
     xStart += this.chunkRenderer.canvas.width;
   }

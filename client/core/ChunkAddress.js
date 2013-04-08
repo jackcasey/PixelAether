@@ -20,16 +20,12 @@ Beautiful.ChunkAddress.prototype = {
   }, 
 
   set: function(selector) {
-    console.log('ChunkAddress: calling set with selector:', selector);
-
     // if the chunk doesn't exist assume we have a good 
     // selector, and we are just waiting for the chunk to 
     // change. In that case, the selector may not have _id 
     var chunk = Chunks.findOne(selector) || selector;
-    console.log('ChunkAddress: chunk', chunk);
 
     if (!chunk._id || !this._private._id || chunk._id !== this._private._id) {
-      console.log('ChunkAddress: Dependency changed');
       this.dep.changed();
       this._private = {
         xCoord: chunk.xCoord,

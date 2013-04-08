@@ -1,8 +1,6 @@
 /*------------------------------------------------------------
 Beautiful.Renderer Wraps a canvas and a chunk
 ------------------------------------------------------------*/
-
-
 Beautiful.ChunkRenderer = function () {
   var self = this;
   self.chunk = null;
@@ -23,7 +21,6 @@ Beautiful.ChunkRenderer = function () {
   self.chunkAddress = new Beautiful.ChunkAddress();
   Deps.autorun(function() {
     self.renderChunk(self.chunkAddress.get());
-    console.log('ChunkRenderer autorun:', self.chunkAddress._private);
   });
 };
 
@@ -105,6 +102,7 @@ renderChunk: function(chunkSelector) {
 
     } // iterate over layer data
   } // iterate over layers
+  this.context.strokeRect(0, 0, this.canvas.width, this.canvas.height); // outline chunk for debugging
 },
 
 setChunk: function(chunkSelector) {
