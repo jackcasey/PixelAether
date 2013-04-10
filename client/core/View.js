@@ -3,6 +3,7 @@ Beautiful.View = function() {
   self.canvas = document.createElement('canvas');
   preventContextMenu(self.canvas);
   self.context = self.canvas.getContext('2d');
+  self.size = new Beautiful.Size2D(null, null, self.canvas);
 
   // the most recent mouse position
   self.mouse = {
@@ -15,12 +16,6 @@ Beautiful.View = function() {
     x: 0,
     y: 0
   };
-  // Where is the center of the canvas?
-  self.center = {
-    x:0,
-    y:0
-  };
-  self.setPixelSize(self.canvas.width, self.canvas.height);
 
   // wrap input event listeners
   window.addEventListener('mousedown', function(event) {self.mousedown(event)});
@@ -46,9 +41,10 @@ setSize
 Beautiful.View.prototype = {
 
 canvasToSimulation: function(coords) {
+  var center = this.size.getCenter();
   return {
-  x:  coords.x - this.center.x,
-  y: (coords.y - this.center.y) * -1
+  x:  coords.x - center.x,
+  y: (coords.y - center.y) * -1
  };
 },
 
@@ -63,10 +59,11 @@ clear: function() {
 drawRenderer: function(renderer, x, y) {
   // x, y are simulation style coords to place the bottom left 
   // corner of the renderer canvas
+  var center = this.size.getCenter();
 
   // window style coordinates to draw the canvas at
-  var drawX = this.center.x + x;
-  var drawY = this.center.y - y - renderer.canvas.height;
+  var drawX = center.x + x;
+  var drawY = center.y - y - renderer.canvas.height;
   drawY++; // fix the fencpost error
   if (renderer.center) {
     drawX -= renderer.center.x;
@@ -118,13 +115,5 @@ mousemove: function(event) {
 mouseup: function(event) {
   gGame.input._mouseUp(event);
 },
-
-setPixelSize: function(width, height) {
-  this.canvas.width = width;
-  this.canvas.height = height;
-
-  this.center.x = Math.floor(width * 0.5);
-  this.center.y = Math.floor(height * 0.5);
-}
 
 }; // Beautiful.View.prototype

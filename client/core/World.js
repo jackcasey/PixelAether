@@ -100,7 +100,7 @@ render: function() {
   var xOffsetCamera = this.camera.x + this.chunkRenderer.center.x;
 
   // the distance between the edge of the chunk and the edge of the screen
-  var xOffsetCenterChunk = gGame.view.center.x - xOffsetCamera;
+  var xOffsetCenterChunk = gGame.view.size.getCenter().x - xOffsetCamera;
 
   // how many chunks do we render to the left of this one?
   var chunksToLeft = Math.ceil(xOffsetCenterChunk / this.chunkRenderer.canvas.width);

@@ -106,6 +106,9 @@ getRenderer: function(xCoord, yCoord, mapName) {
 
 }; // Beautiful.ChunkGrid.prototype
 
+
+/*------------------------------------------------------------
+------------------------------------------------------------*/
 deflateChunkAddr = function(addr) {
   if (!addr.hasOwnProperty('xCoord') || 
       !addr.hasOwnProperty('yCoord') || 
