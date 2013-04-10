@@ -13,7 +13,7 @@ will sort through it's collection of ChunkRenderers, leaving
 the ones within our range untouched, and calling setChunk
 with new coordinates on the previously obsolete Renderers.
 
-How it works
+How it works:
 When the range changes, Create:
   neededRenderers - an object were the keys are the deflated 
                     names of renderers that we need, and the 
