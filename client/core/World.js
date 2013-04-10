@@ -24,8 +24,9 @@ Beautiful.World = function() {
     y: 0,
   };
 
-  var chunkPixelWidth = gGame.map.chunkWidth * gGame.tileset.tileWidth;
-  var chunkPixelHeight = gGame.map.chunkHeight * gGame.tileset.tileHeight;
+  var tileSize = gGame.tileset.tileSize.get();
+  var chunkPixelWidth = gGame.map.chunkWidth * tileSize.width;
+  var chunkPixelHeight = gGame.map.chunkHeight * tileSize.height;
 
   // how many chunks does it take to span the width of the view
   self.width = gGame.view.canvas.width / chunkPixelWidth;
@@ -123,12 +124,12 @@ render: function() {
 },
 
 simToWorld: function(xy) {
-
+  var tileSize = gGame.tileset.tileSize.get()
   var pixelX = xy.x + this.camera.x + this.chunkRenderer.center.x;
   var pixelY = xy.y + this.camera.y + this.chunkRenderer.center.y;
   return {
-    x: Math.floor(pixelX / gGame.tileset.tileWidth),
-    y: Math.floor(pixelY / gGame.tileset.tileHeight)
+    x: Math.floor(pixelX / tileSize.width),
+    y: Math.floor(pixelY / tileSize.height)
   };
 }
 

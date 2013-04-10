@@ -6,8 +6,7 @@ Beautiful.Tileset = function(width, height, tileWidth, tileHeight, cellWidth, ce
 {
   this.width = width; // number tiles wide
   this.height = height; // number tiles tall
-  this.tileWidth = tileWidth;
-  this.tileHeight = tileHeight;
+  this.tileSize = new Beautiful.Size2D(tileWidth, tileHeight);
   this.cellWidth = cellWidth || tileWidth;
   this.cellHeight = cellHeight || tileHeight;
   this.firstgid = firstgid || 1;
@@ -44,6 +43,6 @@ gGame.tileset =  new Beautiful.Tileset(
   9, 3,
   28, 35,
   30, 37,
-  [0, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+  [0, 1, 10, 11, 12, 13, 14, 15, 16, 17, 18]
 );
 

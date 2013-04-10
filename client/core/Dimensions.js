@@ -10,8 +10,8 @@ Beautiful.Size2D = function(width, height, object) {
   this._centerX = 0;
   this._centerY = 0;
   this.set(
-    width  || this._hidden.width  || 0, 
-    height || this._hidden.height || 0);
+    width  || this._hidden.width  || 2, 
+    height || this._hidden.height || 2);
 }
 
 Beautiful.Size2D.prototype = {
