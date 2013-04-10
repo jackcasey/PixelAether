@@ -24,13 +24,23 @@ Elements
   - imagePath
   - imageWidth, Height
   - cellWidth, Height
-  - tileWidth, Height
+  - tileSize
   - width, height
 
 - Map
   - name
   - chunkWidth
   - chunkHeight
+
+- View
+  - size
+
+- World
+  - grid
+  - camera
+
+- Grid
+  - size
 
 - Layers (Don't implement this until I actually need it!!)
   - name [ground, plant, ]

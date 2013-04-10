@@ -50,7 +50,10 @@ fill: function(fillColor, strokeColor) {
 renderChunk: function(chunkSelector) {
   // get the chunk
   this.chunk = Chunks.findOne(chunkSelector);
-  if (!this.chunk) return;
+  if (!this.chunk) {
+    this.fill();
+    return;
+  }
   var chunk = this.chunk;
 
   // Where are we taking from the image
