@@ -11,12 +11,6 @@ Beautiful.View = function() {
       y: 0
   };
 
-  // what tile is the mouse over?
-  self.mouseTile = {
-    x: 0,
-    y: 0
-  };
-
   // wrap input event listeners
   window.addEventListener('mousedown', function(event) {self.mousedown(event)});
   window.addEventListener('mouseup', function(event) {self.mouseup(event)});
@@ -107,9 +101,6 @@ mousemove: function(event) {
 
   // pass simulation position to the Input Manager
   gGame.input._mouseMove(this.mouse, event);
-
-  //hack
-  this.mouseTile = gGame.tileset.getMapCoord(this.mouse.x, this.mouse.y);
 },
 
 mouseup: function(event) {

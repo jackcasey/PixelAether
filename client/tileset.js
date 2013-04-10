@@ -35,19 +35,11 @@ Beautiful.Tileset.prototype.loadImage = function(src, onload) {
     this.image.src = src;
 };
 
-/*------------------------------------------------------------
-Given x,y coordinates in pixels, find the tile coordinates on
-an arbitrary map. 
-------------------------------------------------------------*/
-Beautiful.Tileset.prototype.getMapCoord = function(pixelX, pixelY) {
-  return {
-    x: Math.floor(pixelX / this.tileWidth),
-    y: Math.floor(pixelY / this.tileHeight)
-  };
-};
 
-// now let's set up the tileSet
-// for now, let's just have a single tileSet
+/*------------------------------------------------------------
+now let's set up the tileSet
+for now, let's just have a single tileSet
+------------------------------------------------------------*/
 gGame.tileset =  new Beautiful.Tileset(
   9, 3,
   28, 35,
