@@ -58,9 +58,25 @@ Beautiful.Datum = function(datum) {
 
 Beautiful.Datum.prototype = {
 
+dec:function() {
+  if (typeof this._datum === 'number') {
+    this._datum--;
+    this._dep.changed();
+    return this._datum;
+  }
+},
+
 get:function() {
   this._dep.depend();
   return this._datum;
+},
+
+inc:function() {
+  if (typeof this._datum === 'number') {
+    this._datum++;
+    this._dep.changed();
+    return this._datum;
+  }
 },
 
 set:function(datum) {
