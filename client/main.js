@@ -17,33 +17,37 @@ function treeClicker(tileXY) {
   var tileValue = chunk.layerData.plant[tileIndex];
   tileValue = (tileValue === 1) ? 0 : 1; // if it's a tree, make it nothing. else, make it a tree
   Meteor.call('setTile', selector, tileXY.x, tileXY.y, tileValue, 'plant');
-}
+};
 
+images = {}; // HACK (global variable);
+var filenames = ['elements9x3.png'];
+var loadedImageCount = 0;
+
+for (var i = 0; i < filenames.length; i++) {
+  var image = new Image();
+  var filename = filenames[i];
+  images[filename] = image;
+
+  // call setup if we are ready
+  image.onload = function() {
+    loadedImageCount++;
+    if (loadedImageCount >= filenames.length) {
+      setup();
+    }
+  };
+  image.src = filename;
+};
 
 var setup = function() {
 
-  // set up our game session data
-  gGame.map = Beautiful.Maps.main;
-
-  // create View for our game, wrapping the main HTML5 canvas 
-  gGame.view = new Beautiful.View();
-  gGame.view.size.set(1000, 600);
-  var canvas = gGame.view.canvas;
-  var context = canvas.getContext('2d');
+  gGame = new Beautiful.Game();
+  gGame.init();
 
   // add the game canvas to the DOM
+  var canvas = gGame.view.canvas;
   var content = document.getElementById('content');
   content.appendChild(canvas);
 
-  // Wraps chunkRenderers 
-  gGame.world = new Beautiful.World();
-  
-  // global data about our simulation
-  gGame.simulation = new Beautiful.Simulation();
-  gGame.simulation.step();
-
-  // now that we have a simulation, we can set up input
-  gGame.input = new Beautiful.Input();
   gGame.input.bind(
     gGame.input.KEY.SPACE,
     'fire');
@@ -83,10 +87,6 @@ var setup = function() {
   };
 
   window.requestAnimFrame(gameLoop);
-};
-
-window.onload = function() {
-  gGame.tileset.loadImage('elements9x3.png', setup);
 };
 
 

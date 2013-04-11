@@ -7,6 +7,8 @@ have been initialized.
 Keeps Track of
   Where the Camera is looking in the world,
   Which chunks we need to be rendering
+
+Creates a .grid which keeps track of
   Which chunks are we currently rendering
   Where on the view we should render chunks to
 
