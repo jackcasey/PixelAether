@@ -19,7 +19,7 @@ function treeClicker(tileXY) {
   Meteor.call('setTile', selector, tileXY.x, tileXY.y, tileValue, 'plant');
 };
 
-images = {}; // HACK (global variable);
+images = {}; // HACK (low quality image manager);
 var filenames = ['elements9x3.png'];
 var loadedImageCount = 0;
 
