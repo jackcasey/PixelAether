@@ -11,7 +11,12 @@ window.requestAnimFrame = (function(){
 
 // HACK
 function treeClicker(tileXY) {
-  var selector = gGame.world.chunkRenderer.chunkAddress.get();
+  var selector = {
+    xCoord:gGame.world.camera.xCoord,
+    yCoord:gGame.world.camera.yCoord,
+    mapName: gGame.world.getMap().name
+  };
+  console.log('Click Map Selector:', selector);
   var chunk = Chunks.findOne(selector) 
   var tileIndex = (chunk.width * tileXY.y) + tileXY.x;
   var tileValue = chunk.layerData.plant[tileIndex];

@@ -7,6 +7,7 @@ have been initialized.
 Keeps Track of
   Where the Camera is looking in the world,
   Which chunks we need to be rendering
+  What current tileset and current map
 
 Creates a .grid which keeps track of
   Which chunks are we currently rendering
@@ -17,46 +18,43 @@ Expects the following to exist on instantiation:
   gGame.tileset
   gGame.map
 ------------------------------------------------------------*/
-Beautiful.World = function() {
+Beautiful.World = function(map, tileset) {
   var self = this;
 
-  self._map = null;
-  self._tileset = null;
   self._tilesetDep = new Deps.Dependency;
   self._mapDep = new Deps.Dependency;
+
+  self.chunkPixelSize = new Beautiful.Size2D;
+  self.setMap(map || Beautiful.Maps.main);
+  self.setTileset(tileset || new Beautiful.Tileset(
+    images['elements9x3.png'],
+    9, 3,
+    28, 35,
+    30, 37 ));
 
   self.camera = {
     xCoord: 0,
     yCoord: 0,
     x: 0,
-    y: 0,
-  };
+    y: 0 };
 
-  var tileSize = {height:gGame.tileset.tileHeight, width:gGame.tileset.tileWidth}; // HACK HACK HACK use getChunkPixelSize
-  var chunkPixelWidth = gGame.map.chunkWidth * tileSize.width;
-  var chunkPixelHeight = gGame.map.chunkHeight * tileSize.height;
+  var cpSize = self.chunkPixelSize.get();
 
   // how many chunks does it take to span the width of the view
-  self.width = gGame.view.canvas.width / chunkPixelWidth;
-  self.height = gGame.view.canvas.height / chunkPixelHeight;
+  self.width = gGame.view.canvas.width / cpSize.width;
+  self.height = gGame.view.canvas.height / cpSize.height;
 
   // find max number of chunks we could ever need to fill the World View
-  self.width = (gGame.view.canvas.width % chunkPixelWidth > 1) ?
-    Math.ceil(self.width + 1) : Math.chunkRenderer(self.width);
+  self.width = (gGame.view.canvas.width % cpSize.width > 1) ?
+    Math.ceil(self.width + 1) : Math.ceil(self.width);
 
-  self.height = (gGame.view.canvas.height % chunkPixelHeight > 1) ?
+  self.height = (gGame.view.canvas.height % cpSize.height > 1) ?
     Math.ceil(self.height + 1) : Math.ceil(self.height);
 
   self.grid = new Beautiful.ChunkGrid();
-  //self.grid.setXRange(-1, 2); // HACK
-
-  // HACK -original method 
-  self.chunkRenderer = new Beautiful.ChunkRenderer();
-  self.chunkRenderer.setChunk({xCoord:0, yCoord:0, mapName:'main'});
 };
 
 /*------------------------------------------------------------
-getChunkPixelSize
 getMap
 getTileset
 moveCamera
@@ -66,15 +64,6 @@ setTileset
 simToWorld
 ------------------------------------------------------------*/
 Beautiful.World.prototype = {
-
-getChunkPixelSize: function() {
-  this._mapDep.depend();
-  this._tilesetDep.depend();
-  return {
-    width: this._map.chunkWidth * this._tileset.tileWidth,
-    height: this._map.chunkHeight * this._tileset.tileHeight
-  };
-},
 
 getMap: function() {
   this._mapDep.depend();
@@ -90,56 +79,57 @@ moveCamera: function(deltaXY) {
   var newX = this.camera.x += deltaXY.x;
   var newY = this.camera.y += deltaXY.y;
 
+  var cpSize = this.chunkPixelSize.get();
+  var cpCenter = this.chunkPixelSize.getCenter();
+
   var changedChunk = false;
   // check if the camera is no longer looking over the chunk
-  var checkX = newX + this.chunkRenderer.center.x;
-  if (checkX >= this.chunkRenderer.canvas.width) {
-    this.camera.x -= this.chunkRenderer.canvas.width;
+  var checkX = newX + cpCenter.x;
+  if (checkX >= cpSize.width) {
+    this.camera.x -= cpSize.width;
     this.camera.xCoord += 1;
     changedChunk = true;
   }
   else if (checkX < 0) {
-    this.camera.x += this.chunkRenderer.canvas.width;
+    this.camera.x += cpSize.width;
     this.camera.xCoord -= 1;
     changedChunk = true;
   }
 
-  var checkY = newY + this.chunkRenderer.center.y;
-  if (checkY >= this.chunkRenderer.canvas.height) {
-    this.camera.y -= this.chunkRenderer.canvas.height;
+  var checkY = newY + cpCenter.y;
+  if (checkY >= cpSize.height) {
+    this.camera.y -= cpSize.height;
     this.camera.yCoord += 1;
     changedChunk = true;
   }
   else if (checkY < 0) {
-    this.camera.y += this.chunkRenderer.canvas.height;
+    this.camera.y += cpSize.height;
     this.camera.yCoord -= 1;
     changedChunk = true;
   }
 
   if (changedChunk) {
-    this.chunkRenderer.setChunk({
-      xCoord: this.camera.xCoord,
-      yCoord: this.camera.yCoord,
-      mapName: 'main'
-    });
-    //console.log('World.js - camera:', this.camera);
+    console.log('World.js - camera:', this.camera);
   }
 },
 
 // render to gGame.view
 render: function() {
 
+  var cpSize = this.chunkPixelSize.get();
+  var cpCenter = this.chunkPixelSize.getCenter();
+
   // the distnce between the camera and the left edge of the center tile
-  var xOffsetCamera = this.camera.x + this.chunkRenderer.center.x;
+  var xOffsetCamera = this.camera.x + cpCenter.x;
 
   // the distance between the edge of the chunk and the edge of the screen
   var xOffsetCenterChunk = gGame.view.size.getCenter().x - xOffsetCamera;
 
   // how many chunks do we render to the left of this one?
-  var chunksToLeft = Math.ceil(xOffsetCenterChunk / this.chunkRenderer.canvas.width);
+  var chunksToLeft = Math.ceil(xOffsetCenterChunk / cpSize.width);
 
   // where do we position our first chunk
-  var xStart = -this.camera.x - (this.chunkRenderer.canvas.width * chunksToLeft);
+  var xStart = -this.camera.x - (cpSize.width * chunksToLeft);
 
   // what is the xCoord of our left most chunk?
   var xCoordLeft = this.camera.xCoord - chunksToLeft;
@@ -149,26 +139,35 @@ render: function() {
   for (var xCoord = xCoordLeft; xCoord <= xCoordRight; xCoord ++) {
     var renderer = this.grid.getRenderer(xCoord, 0, gGame.map.name);
     gGame.view.drawRenderer(renderer, xStart, -this.camera.y);
-    xStart += this.chunkRenderer.canvas.width;
+    xStart += cpSize.width;
   }
-
-  gGame.view.drawRenderer(this.chunkRenderer, -this.camera.x, -this.camera.y);
 },
 
 setMap: function(map) {
   this._map = map;
+    if (this._tileset && this._map)
+    this.chunkPixelSize.set(
+      this._tileset.tileWidth * this._map.chunkWidth,
+      this._tileset.tileHeight * this._map.chunkHeight);
+
   this._mapDep.changed();
 },
 
 setTileset: function(tileset) {
   this._tileset = tileset;
+  if (this._tileset && this._map)
+    this.chunkPixelSize.set(
+      this._tileset.tileWidth * this._map.chunkWidth,
+      this._tileset.tileHeight * this._map.chunkHeight);
+
   this._tilesetDep.changed();
 },
 
 simToWorld: function(xy) {
   var tileset = gGame.tileset;
-  var pixelX = xy.x + this.camera.x + this.chunkRenderer.center.x;
-  var pixelY = xy.y + this.camera.y + this.chunkRenderer.center.y;
+  var cpCenter = this.chunkPixelSize.getCenter();
+  var pixelX = xy.x + this.camera.x + cpCenter.x;
+  var pixelY = xy.y + this.camera.y + cpCenter.y;
   return {
     x: Math.floor(pixelX / tileset.tileWidth),
     y: Math.floor(pixelY / tileset.tileHeight)
