@@ -7,10 +7,9 @@ Beautiful.ChunkRenderer = function () {
   self.canvas = document.createElement('canvas');
   self.context = self.canvas.getContext('2d');
 
-  var tileSize = gGame.tileset.tileSize.get();
-  // HACK -- setting the initial sizes this way requires that gGame.map and gGame.tileset are initialized
-  self.canvas.width = gGame.map.chunkWidth * tileSize.width;
-  self.canvas.height = gGame.map.chunkHeight * tileSize.height;
+  // HACK -- use getChunkPixelSize()
+  self.canvas.width = gGame.map.chunkWidth * gGame.tileset.tileWidth;
+  self.canvas.height = gGame.map.chunkHeight * gGame.tileset.tileHeight;
   self.center = {
     x: Math.floor(this.canvas.width * 0.5),
     y: Math.floor(this.canvas.height * 0.5)
@@ -66,16 +65,15 @@ renderChunk: function(chunkSelector) {
 
   // for convenience
   var tileset = gGame.tileset;
-  var tileSize = tileset.tileSize.get();
-  var tilesetLength = tileSize.width * tileSize.height;
+  var tilesetLength = tileset.tileWidth * tileset.tileHeight;
 
   // re-size and set center of Canvas only if needed 
-  if (this.canvas.width !== chunk.width * tileSize.width) {
-    this.canvas.width = chunk.width * tileSize.width;
+  if (this.canvas.width !== chunk.width * tileset.tileWidth) {
+    this.canvas.width = chunk.width * tileset.tileWidth;
     this.center.x = Math.floor(this.canvas.width * 0.5);
   }
-  if (this.canvas.height !== chunk.height * tileSize.height) {
-    this.canvas.height = chunk.height * tileSize.height;
+  if (this.canvas.height !== chunk.height * tileset.tileHeight) {
+    this.canvas.height = chunk.height * tileset.tileHeight;
     this.center.y = Math.floor(this.canvas.height * 0.5);
   }
  
@@ -95,15 +93,15 @@ renderChunk: function(chunkSelector) {
       tileIndex = tileIndex - tileset.firstgid;
       xClip = tileset.getUpperLeftX(tileIndex % tilesetLength);
       yClip = tileset.getUpperLeftY(tileIndex % tilesetLength);
-      xCursor = tileSize.width * (i % chunk.width);
+      xCursor = tileset.tileWidth * (i % chunk.width);
       // position the first tile in the bottom left
-      yCursor = tileSize.height * (chunk.height - (Math.floor(i / chunk.width)) - 1);
+      yCursor = tileset.tileHeight * (chunk.height - (Math.floor(i / chunk.width)) - 1);
 
       this.context.drawImage(tileset.image,
         xClip, yClip,
-        tileSize.width, tileSize.height,
+        tileset.tileWidth, tileset.tileHeight,
         xCursor, yCursor,
-        tileSize.width, tileSize.height);
+        tileset.tileWidth, tileset.tileHeight);
 
     } // iterate over layer data
   } // iterate over layers

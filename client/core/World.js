@@ -19,6 +19,12 @@ Expects the following to exist on instantiation:
 ------------------------------------------------------------*/
 Beautiful.World = function() {
   var self = this;
+
+  self._map = null;
+  self._tileset = null;
+  self._tilesetDep = new Deps.Dependency;
+  self._mapDep = new Deps.Dependency;
+
   self.camera = {
     xCoord: 0,
     yCoord: 0,
@@ -26,7 +32,7 @@ Beautiful.World = function() {
     y: 0,
   };
 
-  var tileSize = gGame.tileset.tileSize.get();
+  var tileSize = {height:gGame.tileset.tileHeight, width:gGame.tileset.tileWidth}; // HACK HACK HACK use getChunkPixelSize
   var chunkPixelWidth = gGame.map.chunkWidth * tileSize.width;
   var chunkPixelHeight = gGame.map.chunkHeight * tileSize.height;
 
@@ -50,11 +56,35 @@ Beautiful.World = function() {
 };
 
 /*------------------------------------------------------------
+getChunkPixelSize
+getMap
+getTileset
 moveCamera
 render
+setMap
+setTileset
 simToWorld
 ------------------------------------------------------------*/
 Beautiful.World.prototype = {
+
+getChunkPixelSize: function() {
+  this._mapDep.depend();
+  this._tilesetDep.depend();
+  return {
+    width: this._map.chunkWidth * this._tileset.tileWidth,
+    height: this._map.chunkHeight * this._tileset.tileHeight
+  };
+},
+
+getMap: function() {
+  this._mapDep.depend();
+  return this._map;
+},
+
+getTileset: function() {
+  this._tilesetDep.depend();
+  return this._tileset;
+},
 
 moveCamera: function(deltaXY) {
   var newX = this.camera.x += deltaXY.x;
@@ -125,13 +155,23 @@ render: function() {
   gGame.view.drawRenderer(this.chunkRenderer, -this.camera.x, -this.camera.y);
 },
 
+setMap: function(map) {
+  this._map = map;
+  this._mapDep.changed();
+},
+
+setTileset: function(tileset) {
+  this._tileset = tileset;
+  this._tilesetDep.changed();
+},
+
 simToWorld: function(xy) {
-  var tileSize = gGame.tileset.tileSize.get()
+  var tileset = gGame.tileset;
   var pixelX = xy.x + this.camera.x + this.chunkRenderer.center.x;
   var pixelY = xy.y + this.camera.y + this.chunkRenderer.center.y;
   return {
-    x: Math.floor(pixelX / tileSize.width),
-    y: Math.floor(pixelY / tileSize.height)
+    x: Math.floor(pixelX / tileset.tileWidth),
+    y: Math.floor(pixelY / tileset.tileHeight)
   };
 }
 
