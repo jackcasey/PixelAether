@@ -6,7 +6,7 @@ have been initialized.
 
 Keeps Track of
   Where the Camera is looking in the world,
-  Which chunks we need to be rendering
+  Range of chunks to render given the view, chunkPixelSize
   What current tileset and current map
 
 Creates a .grid which keeps track of
@@ -15,7 +15,7 @@ Creates a .grid which keeps track of
 
 Expects the following to exist on instantiation:
   gGame.view (view size has been set)
-  gGame.tileset
+  gGame.world
   gGame.map
 ------------------------------------------------------------*/
 Beautiful.World = function(map, tileset) {
@@ -45,11 +45,8 @@ Beautiful.World = function(map, tileset) {
   self.height = gGame.view.canvas.height / cpSize.height;
 
   // find max number of chunks we could ever need to fill the World View
-  self.width = (gGame.view.canvas.width % cpSize.width > 1) ?
-    Math.ceil(self.width + 1) : Math.ceil(self.width);
-
-  self.height = (gGame.view.canvas.height % cpSize.height > 1) ?
-    Math.ceil(self.height + 1) : Math.ceil(self.height);
+  self.width = Math.ceil(self.width + 1);
+  self.height = Math.ceil(self.height + 1);
 
   self.grid = new Beautiful.ChunkGrid();
 };
@@ -118,29 +115,40 @@ render: function() {
 
   var cpSize = this.chunkPixelSize.get();
   var cpCenter = this.chunkPixelSize.getCenter();
+  var viewCenter = gGame.view.size.getCenter();
 
   // the distnce between the camera and the left edge of the center tile
   var xOffsetCamera = this.camera.x + cpCenter.x;
-
+  var yOffsetCamera = this.camera.y + cpCenter.y;
   // the distance between the edge of the chunk and the edge of the screen
-  var xOffsetCenterChunk = gGame.view.size.getCenter().x - xOffsetCamera;
-
+  var xOffsetCenterChunk = viewCenter.x - xOffsetCamera;
+  var yOffsetCenterChunk = viewCenter.y - yOffsetCamera;
   // how many chunks do we render to the left of this one?
   var chunksToLeft = Math.ceil(xOffsetCenterChunk / cpSize.width);
-
+  var chunksBelow = Math.ceil(yOffsetCenterChunk / cpSize.height);
   // where do we position our first chunk
   var xStart = -this.camera.x - (cpSize.width * chunksToLeft);
-
+  var yStart = -this.camera.y - (cpSize.height * chunksBelow);
   // what is the xCoord of our left most chunk?
   var xCoordLeft = this.camera.xCoord - chunksToLeft;
   var xCoordRight = xCoordLeft + this.width - 1;
-  this.grid.setXRange(xCoordLeft, xCoordRight);
 
-  for (var xCoord = xCoordLeft; xCoord <= xCoordRight; xCoord ++) {
-    var renderer = this.grid.getRenderer(xCoord, 0, gGame.map.name);
-    gGame.view.drawRenderer(renderer, xStart, -this.camera.y);
-    xStart += cpSize.width;
-  }
+  var yCoordBottom = this.camera.yCoord - chunksBelow;
+  var yCoordTop = yCoordBottom + this.height - 1;
+
+  this.grid.setRange(xCoordLeft, xCoordRight, yCoordBottom, yCoordTop);
+  var xCursor = xStart;
+  var yCursor = yStart;
+
+  for (var yCoord = yCoordBottom; yCoord <= yCoordTop; yCoord++) {
+    for (var xCoord = xCoordLeft; xCoord <= xCoordRight; xCoord ++) {
+      var renderer = this.grid.getRenderer(xCoord, yCoord, gGame.map.name);
+      gGame.view.drawRenderer(renderer, xCursor, yCursor);
+      xCursor += cpSize.width;
+    } // xCoord for loop
+    yCursor += cpSize.height;
+    xCursor = xStart;
+  } // yCoord for loop
 },
 
 setMap: function(map) {

@@ -54,24 +54,29 @@ Beautiful.ChunkGrid = function() {
 ------------------------------------------------------------*/
 Beautiful.ChunkGrid.prototype = {
 
-setXRange: function(xMin, xMax) {
+setRange: function(xMin, xMax, yMin, yMax) {
 
-  if (xMin === this.xMin && xMax === this.xMax) return;
-  console.log('ChunkGrid.setXRange: new min or max', xMin, xMax);
+  if (xMin === this.xMin && xMax === this.xMax &&
+    yMin === this.yMin && yMax === this.yMax) return;
+  console.log('ChunkGrid.setXRange: new min or max', xMin, xMax, yMin, yMax);
   this.xMin = xMin;
   this.xMax = xMax;
+  this.yMin = yMin;
+  this.yMax = yMax;
   this.width = xMax - xMin + 1;
+  this.height = yMax - yMin + 1;
   this.size = this.width * this.height;
 
   var neededRenderers = {};
   var reuseables = {};
   var dirtyRenderers = []
 
-  var y = 0;
-  for (var x = xMin; x <= xMax; x++) {
-    var addr = makeDeflatedAddr(x, y, gGame.map.name);
-    var existingRenerer = this.renderers[addr]
-    neededRenderers[addr] = existingRenerer || false;
+  for (var y = yMin; y <= yMax; y++) {
+    for (var x = xMin; x <= xMax; x++) {
+      var addr = makeDeflatedAddr(x, y, gGame.map.name);
+      var existingRenerer = this.renderers[addr]
+      neededRenderers[addr] = existingRenerer || false;
+    }
   }
 
   // iterate over the current renderer keys, find which ones we can reuse
