@@ -3,15 +3,15 @@ The Problem:
 We Have a bunch of chunks. The chunks that we need to render 
 will be changing frequently. Each change will introduce only
 a few new chunks. We don't want to have to call setChunk
-on EACH renderer every time we focus the World camera
-on a new chunk -- most of the chunks we need are already
-rendring.
+on EACH renderer every time a new chunk chunk comes into the 
+view-- most of the chunks we need are already rendring in one 
+of the current ChunkRenderer objects.
 
 The Solution: 
 Pass a ChunkGrid the coordinate range we need. The ChunkGrid
 will sort through it's collection of ChunkRenderers, leaving
 the ones within our range untouched, and calling setChunk
-with new coordinates on the previously obsolete Renderers.
+with new addresses on the formerly obsolete Renderers.
 
 How it works:
 When the range changes, Create:
@@ -92,7 +92,7 @@ setXRange: function(xMin, xMax) {
     var key = neededRendererKeys[i];
     var renderer = reuseables[key]
     if (!renderer) { // if we don't have a reuseable renderer, grab one from the list of dirtyRenderers
-      renderer = dirtyRenderers.pop() || new Beautiful.ChunkRenderer();
+      renderer = dirtyRenderers.pop() || new Beautiful.ChunkRenderer(); // ... or create a new one
       renderer.setChunk(inflateChunkAddr(key));
       reuseables[key] = renderer;
     }

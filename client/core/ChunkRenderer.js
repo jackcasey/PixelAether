@@ -7,13 +7,7 @@ Beautiful.ChunkRenderer = function () {
   self.canvas = document.createElement('canvas');
   self.context = self.canvas.getContext('2d');
 
-  // HACK -- use getChunkPixelSize()
-  self.canvas.width = gGame.map.chunkWidth * gGame.tileset.tileWidth;
-  self.canvas.height = gGame.map.chunkHeight * gGame.tileset.tileHeight;
-  self.center = {
-    x: Math.floor(this.canvas.width * 0.5),
-    y: Math.floor(this.canvas.height * 0.5)
-  };
+  self.center = {};
 
   self.fill(); // for testing!
 
