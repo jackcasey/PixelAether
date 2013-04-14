@@ -172,14 +172,22 @@ setTileset: function(tileset) {
 },
 
 simToWorld: function(xy) {
-  var tileset = gGame.tileset;
+  var tileset = gGame.world.getTileset();
   var cpCenter = this.chunkPixelSize.getCenter();
+  var map = this.getMap();
   var pixelX = xy.x + this.camera.x + cpCenter.x;
   var pixelY = xy.y + this.camera.y + cpCenter.y;
-  return {
-    x: Math.floor(pixelX / tileset.tileWidth),
-    y: Math.floor(pixelY / tileset.tileHeight)
+  var tileX = Math.floor(pixelX / tileset.tileWidth);
+  var tileY = Math.floor(pixelY / tileset.tileHeight);
+  var ans = {
+    xCoord: this.camera.xCoord + Math.floor(tileX / map.chunkWidth),
+    yCoord: this.camera.yCoord + Math.floor(tileY / map.chunkHeight),
+    x: tileX % map.chunkWidth,
+    y: tileY % map.chunkHeight,
   };
+  if (ans.x < 0) ans.x += map.chunkWidth;
+  if (ans.y < 0) ans.y += map.chunkHeight;
+  return ans;
 }
 
 }; // Beautiful.World.prototype

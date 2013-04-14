@@ -10,18 +10,18 @@ window.requestAnimFrame = (function(){
 })();
 
 // HACK
-function treeClicker(tileXY) {
+function treeClicker(worldPos) {
   var selector = {
-    xCoord:gGame.world.camera.xCoord,
-    yCoord:gGame.world.camera.yCoord,
+    xCoord: worldPos.xCoord,
+    yCoord: worldPos.yCoord,
     mapName: gGame.world.getMap().name
   };
   console.log('Click Map Selector:', selector);
   var chunk = Chunks.findOne(selector) 
-  var tileIndex = (chunk.width * tileXY.y) + tileXY.x;
+  var tileIndex = (chunk.width * worldPos.y) + worldPos.x;
   var tileValue = chunk.layerData.plant[tileIndex];
   tileValue = (tileValue === 1) ? 0 : 1; // if it's a tree, make it nothing. else, make it a tree
-  Meteor.call('setTile', selector, tileXY.x, tileXY.y, tileValue, 'plant');
+  Meteor.call('setTile', selector, worldPos.x, worldPos.y, tileValue, 'plant');
 };
 
 images = {}; // HACK (low quality image manager);
@@ -77,9 +77,8 @@ var setup = function() {
 
     // simulation to world coords
     if (i.up('build')) {
-      var tileXY = gGame.world.simToWorld(i.mouse.simPos);
-      console.log(tileXY);
-      treeClicker(tileXY);
+      var worldPos = gGame.world.simToWorld(i.mouse.simPos);
+      treeClicker(worldPos);
     }
     // move camera
     if (i.drag('world')) {
