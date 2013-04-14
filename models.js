@@ -4,8 +4,6 @@ Game
 gGame.world
 gGame.simulation
 gGame.input
-gGame.map
-gGame.tileset
 gGame.view - Wraps the canvas that is displayed in the DOM
 gGame.view.canvas
 gGame.view.context
@@ -38,6 +36,9 @@ Elements
 - World
   - grid
   - camera
+  - width, height -  greatest number of chunks that can fit in the view.
+  - get/set Tileset
+  - get/set Map
 
 - Grid
   - size

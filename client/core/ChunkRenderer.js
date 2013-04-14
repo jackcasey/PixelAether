@@ -58,7 +58,7 @@ renderChunk: function(chunkSelector) {
   var yCursor = 0;
 
   // for convenience
-  var tileset = gGame.tileset;
+  var tileset = gGame.world.getTileset();
   var tilesetLength = tileset.tileWidth * tileset.tileHeight;
 
   // re-size and set center of Canvas only if needed 
