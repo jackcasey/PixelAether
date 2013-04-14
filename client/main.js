@@ -17,7 +17,8 @@ function treeClicker(worldPos) {
     mapName: gGame.world.getMap().name
   };
   console.log('Click Map Selector:', selector);
-  var chunk = Chunks.findOne(selector) 
+  var chunk = Chunks.findOne(selector);
+  if (!chunk) return;
   var tileIndex = (chunk.width * worldPos.y) + worldPos.x;
   var tileValue = chunk.layerData.plant[tileIndex];
   tileValue = (tileValue === 1) ? 0 : 1; // if it's a tree, make it nothing. else, make it a tree
