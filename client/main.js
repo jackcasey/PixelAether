@@ -9,6 +9,8 @@ window.requestAnimFrame = (function(){
           };
 })();
 
+Session.setDefault('clicker', 'tree');
+
 // HACK
 function treeClicker(worldPos) {
   var selector = {
@@ -20,9 +22,22 @@ function treeClicker(worldPos) {
   var chunk = Chunks.findOne(selector);
   if (!chunk) return;
   var tileIndex = (chunk.width * worldPos.y) + worldPos.x;
-  var tileValue = chunk.layerData.plant[tileIndex];
-  tileValue = (tileValue === 1) ? 0 : 1; // if it's a tree, make it nothing. else, make it a tree
-  Meteor.call('setTile', selector, worldPos.x, worldPos.y, tileValue, 'plant');
+  if (Session.get('clicker') === 'tree') {
+    var tileValue = chunk.layerData.plant[tileIndex];
+    tileValue = (tileValue === 1) ? 0 : 1;
+  } // if it's a tree, make it nothing. else, make it a tree
+  else if (Session.get('clicker') === 'water') {
+    var tileValue = chunk.layerData.ground[tileIndex];
+    tileValue = (tileValue === 11) ? 10 : 11; // if it's a tree, make it nothing. else, make it a tree
+  }
+  else if (Session.get('clicker') === 'path') {
+    var tileValue = chunk.layerData.ground[tileIndex];
+    tileValue = (tileValue === 16) ? 10 : 16; // if it's a tree, make it nothing. else, make it a tree
+  }
+  else return;
+
+  Meteor.call('setTile', selector, worldPos.x, worldPos.y, tileValue, 
+    (Session.get('clicker') === 'tree')? 'plant' : 'ground');
 };
 
 images = {}; // HACK (low quality image manager);
@@ -66,6 +81,17 @@ var setup = function() {
     gGame.input.KEY.MOUSE1,
     'build');
 
+  gGame.input.bind(
+    gGame.input.KEY.W,
+    'water');
+
+  gGame.input.bind(
+    gGame.input.KEY.T,
+    'tree');
+
+  gGame.input.bind(
+    gGame.input.KEY.P,
+    'path');
 
   var gameLoop = function() {
     gGame.view.clear();
@@ -85,6 +111,16 @@ var setup = function() {
     if (i.drag('world')) {
       var delta = i.mouse.deltaPos;
       gGame.world.moveCamera({x: -delta.x, y: -delta.y});
+    }
+
+    if (i.up('tree')) {
+      Session.set('clicker', 'tree');
+    }
+    if (i.up('water')) {
+      Session.set('clicker', 'water');
+    }
+    if (i.up('path')) {
+      Session.set('clicker', 'path');
     }
 
     gGame.simulation.step();

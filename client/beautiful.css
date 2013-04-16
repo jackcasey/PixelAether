@@ -3,5 +3,9 @@ canvas{
 }
 
 div#content {
-	background-color: #d0d0d0;
+	/*background-color: #d0d0d0;*/
+}
+
+html * {
+	font-family: "Courier New";
 }
