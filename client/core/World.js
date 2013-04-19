@@ -16,7 +16,6 @@ Creates a .grid which keeps track of
 Expects the following to exist on instantiation:
   gGame.view (view size has been set)
   gGame.world
-  gGame.map
 ------------------------------------------------------------*/
 Beautiful.World = function(map, tileset) {
   var self = this;
@@ -39,10 +38,11 @@ Beautiful.World = function(map, tileset) {
     y: 0 };
 
   var cpSize = self.chunkPixelSize.get();
+  var viewSize = gGame.view.size.get();
 
   // how many chunks does it take to span the width of the view
-  self.width = gGame.view.canvas.width / cpSize.width;
-  self.height = gGame.view.canvas.height / cpSize.height;
+  self.width = viewSize.width / cpSize.width;
+  self.height = viewSize.height / cpSize.height;
 
   // find max number of chunks we could ever need to fill the World View
   self.width = Math.ceil(self.width + 1);
@@ -116,6 +116,7 @@ render: function() {
   var cpSize = this.chunkPixelSize.get();
   var cpCenter = this.chunkPixelSize.getCenter();
   var viewCenter = gGame.view.size.getCenter();
+  var map = this.getMap();
 
   // the distnce between the camera and the left edge of the center tile
   var xOffsetCamera = this.camera.x + cpCenter.x;
@@ -142,7 +143,7 @@ render: function() {
 
   for (var yCoord = yCoordBottom; yCoord <= yCoordTop; yCoord++) {
     for (var xCoord = xCoordLeft; xCoord <= xCoordRight; xCoord ++) {
-      var renderer = this.grid.getRenderer(xCoord, yCoord, gGame.map.name);
+      var renderer = this.grid.getRenderer(xCoord, yCoord, map.name);
       gGame.view.drawRenderer(renderer, xCursor, yCursor);
       xCursor += cpSize.width;
     } // xCoord for loop
