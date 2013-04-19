@@ -10,4 +10,21 @@ Meteor.startup(function() {
       );
     }
   }
+
+  //
+  Meteor.publish("map", function(xMin, xMax, yMin, yMax, mapName) {
+    xMin = xMin || -1;
+    xMax = xMax || 1;
+    yMin = yMin || -1;
+    yMax = yMax || 1;
+    var cursor = Chunks.find({
+      xCoord:{$gte:xMin, $lte:xMax},
+      yCoord:{$gte:yMin, $lte:yMax},
+      mapName: mapName || 'main'
+    });
+    return cursor;
+  });
+
 });
+
+  

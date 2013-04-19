@@ -43,6 +43,7 @@ Beautiful.ChunkGrid = function() {
   this.xMax = 0;
   this.yMin = 0;
   this.yMax = 0;
+  this._rangeDep = new Deps.Dependency;
   this.height = 1;
   this.width = 1;
   this.size = this.width * this.height;
@@ -51,13 +52,22 @@ Beautiful.ChunkGrid = function() {
 }
 
 /*------------------------------------------------------------
+getRange
+setRange
+getRenderer
 ------------------------------------------------------------*/
 Beautiful.ChunkGrid.prototype = {
+
+getRange: function() {
+  this._rangeDep.depend()
+  return {xMin: this.xMin, xMax: this.xMax, yMin: this.yMin, yMax: this.yMax};
+},
 
 setRange: function(xMin, xMax, yMin, yMax) {
 
   if (xMin === this.xMin && xMax === this.xMax &&
     yMin === this.yMin && yMax === this.yMax) return;
+
   console.log('ChunkGrid.setXRange: new min or max', xMin, xMax, yMin, yMax);
   this.xMin = xMin;
   this.xMax = xMax;
@@ -66,14 +76,16 @@ setRange: function(xMin, xMax, yMin, yMax) {
   this.width = xMax - xMin + 1;
   this.height = yMax - yMin + 1;
   this.size = this.width * this.height;
+  this._rangeDep.changed(); // dependency changed!
 
   var neededRenderers = {};
   var reuseables = {};
   var dirtyRenderers = []
+  var map = gGame.world.getMap();
 
   for (var y = yMin; y <= yMax; y++) {
     for (var x = xMin; x <= xMax; x++) {
-      var addr = makeDeflatedAddr(x, y, gGame.map.name);
+      var addr = makeDeflatedAddr(x, y, map.name);
       var existingRenerer = this.renderers[addr]
       neededRenderers[addr] = existingRenerer || false;
     }

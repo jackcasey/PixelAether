@@ -40,6 +40,18 @@ init: function() {
   self.simulation = new Beautiful.Simulation(); // simulate game time
   self.simulation.step();
   self.input = new Beautiful.Input(); // input depends on Simulation
+
+  // WARNING: if will call init twice, this will create two autoruns
+  Deps.autorun(function() {
+    var range = self.world.grid.getRange();
+    var map = self.world.getMap();
+    Meteor.subscribe('map',
+      range.xMin - 1,
+      range.xMax + 1,
+      range.yMin - 1,
+      range.yMax + 1,
+      map.name);
+  });
 }
   //setTileset
 };
