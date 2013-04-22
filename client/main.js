@@ -24,15 +24,15 @@ function treeClicker(worldPos) {
   var tileIndex = (chunk.width * worldPos.y) + worldPos.x;
   if (Session.get('clicker') === 'tree') {
     var tileValue = chunk.layerData.plant[tileIndex];
-    tileValue = (tileValue === 1) ? 0 : 1;
-  } // if it's a tree, make it nothing. else, make it a tree
+    tileValue = (tileValue === 1) ? 0 : 1; // if it's a tree, make it nothing. else, make it a tree
+  }
   else if (Session.get('clicker') === 'water') {
     var tileValue = chunk.layerData.ground[tileIndex];
-    tileValue = (tileValue === 11) ? 10 : 11; // if it's a tree, make it nothing. else, make it a tree
+    tileValue = (tileValue === 11) ? 10 : 11;
   }
   else if (Session.get('clicker') === 'path') {
     var tileValue = chunk.layerData.ground[tileIndex];
-    tileValue = (tileValue === 16) ? 10 : 16; // if it's a tree, make it nothing. else, make it a tree
+    tileValue = (tileValue === 16) ? 10 : 16;
   }
   else return;
 
