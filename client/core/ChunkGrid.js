@@ -68,7 +68,7 @@ setRange: function(xMin, xMax, yMin, yMax) {
   if (xMin === this.xMin && xMax === this.xMax &&
     yMin === this.yMin && yMax === this.yMax) return;
 
-  console.log('ChunkGrid.setXRange: new min or max', xMin, xMax, yMin, yMax);
+  console.log('ChunkGrid.setRange: new min or max', xMin, xMax, yMin, yMax);
   this.xMin = xMin;
   this.xMax = xMax;
   this.yMin = yMin;
