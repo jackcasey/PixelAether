@@ -17,11 +17,28 @@ Meteor.startup(function() {
     xMax = xMax || 1;
     yMin = yMin || -1;
     yMax = yMax || 1;
+    mapName = mapName || 'main'
+
     var cursor = Chunks.find({
       xCoord:{$gte:xMin, $lte:xMax},
       yCoord:{$gte:yMin, $lte:yMax},
-      mapName: mapName || 'main'
+      mapName: mapName
     });
+
+    // Create the requested chunks if necessary
+    var size =  (xMax - xMin + 1) * (yMax - yMin + 1)
+    if (cursor.count() != size) {
+      for (var x = xMin; x <= xMax; x++) {
+        for (var y = yMin; y <= yMax; y++) {
+          var selector = {xCoord:x, yCoord:y, mapName: mapName};
+          if (!Chunks.findOne(selector)) {
+            console.log('Create New Chunk:', selector);
+            Chunk.create(selector);
+          }
+        }
+      }
+    }
+
     return cursor;
   });
 
