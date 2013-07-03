@@ -3,7 +3,7 @@ PixelAether
 
 Pixel Aether is a 2D collaborative game world.
 
-Think of a 2D minecraft in creative mode -- all running in your browser.
+Think of a massivley multiplayer 2D Minecraft in creative mode -- all running in your browser.
 
 www.pixelaether.com for an example.
 
