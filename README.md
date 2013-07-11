@@ -7,8 +7,22 @@ Think of a massivley multiplayer 2D Minecraft in creative mode -- all running in
 
 www.pixelaether.com for an example.
 
+Local Setup
+-----------
+Install Meteor if you haven't already
+
+    $ curl https://install.meteor.com | /bin/sh
+    
+Clone, Run
+
+    $ git clone https://github.com/CharlesHolbrow/PixelAether.git
+    $ cd PixelAether
+    $ meteor
+    
+Navigate Browser to http://localhost:3000/
+
 How?
-====
+----
 
 PixelAether uses Meteor's Reactive Data pradigm to create and render tile-based 
 game maps using the html5 Canvas element. 
