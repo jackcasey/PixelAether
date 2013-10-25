@@ -1,15 +1,25 @@
 PixelAether
 ===========
 
-Pixel Aether is a 2D collaborative game world.
+PixelAether is a 2D JavaScript Game Engine built on the Meteor framework.
 
-Think of a massivley multiplayer 2D Minecraft in creative mode -- all running in your browser.
+Imagine a 2D minecraft creative mode sever with clients running in the browser.
 
-www.pixelaether.com for an example.
+PixelAether initializes a collaborative game world that:
+- Runs in the your browser
+- Is massivley multiplayer
+- A PixelAether instance stores map data in a MongoDB
+  - Maps of infinite size!
+  - Infinite number of maps!
+
+Example
+-------
+
+www.pixelaether.com
 
 Local Setup
 -----------
-Install Meteor if you haven't already
+Install Meteor if you haven't already. (Meteor is the only dependency -- Pure JavaScript!)
 
     $ curl https://install.meteor.com | /bin/sh
     
@@ -25,9 +35,10 @@ How?
 ----
 
 PixelAether uses Meteor's Reactive Data pradigm to create and render tile-based 
-game maps using the html5 Canvas element. 
+game maps using the html5 Canvas element.
 
-Users can edit the maps collaboratively in realtime. 
+Users can edit the maps collaboratively in realtime. Only the sections of the map 
+that you are viewing are synced with the server.
 
 Maps are divided into 'Chunks'. By default a chunk is a 16 x 16 grid of map tiles 
 sorted into two layers. A map may comtain any number of chunks. Each chunk is 
