@@ -8,7 +8,7 @@ Imagine a 2D minecraft creative mode sever with clients running in the browser.
 PixelAether initializes a collaborative game world that:
 - Runs in the your browser
 - Is massivley multiplayer
-- A PixelAether instance stores map data in a MongoDB
+- Stores map data in a MongoDB collection
   - Maps of infinite size!
   - Infinite number of maps!
 
