@@ -6,7 +6,7 @@ PixelAether is a 2D JavaScript Game Engine built on the Meteor framework.
 Imagine a 2D minecraft creative mode sever with clients running in the browser.
 
 PixelAether initializes a collaborative game world that:
-- Runs in the your browser
+- Runs in your browser
 - Is massivley multiplayer
 - Stores map data in a MongoDB collection
   - Maps of infinite size!
