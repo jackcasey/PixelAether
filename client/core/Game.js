@@ -33,9 +33,9 @@ init: function() {
     9, 3,
     28, 35,
     30, 37 );
-
+  var windowSize = getWindowSize();
   self.view = new Beautiful.View(); // wraps our DOM canvas
-  self.view.size.set(896, 560);
+  self.view.size.set(windowSize.width, windowSize.height);
   self.world = new Beautiful.World(); // Wraps chunkRenderers 
   self.simulation = new Beautiful.Simulation(); // simulate game time
   self.simulation.step();

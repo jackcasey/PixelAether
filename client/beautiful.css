@@ -4,6 +4,15 @@ canvas{
 
 div#content {
 	/*background-color: #d0d0d0;*/
+	position: fixed;
+	top: 0px;
+	left: 0px;
+}
+div#help {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	background-color: white;
 }
 
 html * {

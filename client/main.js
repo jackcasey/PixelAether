@@ -69,6 +69,11 @@ var setup = function() {
   var content = document.getElementById('content');
   content.appendChild(canvas);
 
+  window.onresize = function(){
+    var size = getWindowSize();
+    gGame.view.size.set(size.width, size.height);
+  };
+
   gGame.input.bind(
     gGame.input.KEY.SPACE,
     'fire');
