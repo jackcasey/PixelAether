@@ -24,6 +24,7 @@ Beautiful.World = function(map, tileset) {
   self._mapDep = new Deps.Dependency;
 
   self.chunkPixelSize = new Beautiful.Size2D;
+  self.size = new Beautiful.Size2D;
   self.setMap(map || Beautiful.Maps.main);
   self.setTileset(tileset || new Beautiful.Tileset(
     images['elements9x3.png'],
@@ -37,16 +38,9 @@ Beautiful.World = function(map, tileset) {
     x: 0,
     y: 0 };
 
-  var cpSize = self.chunkPixelSize.get();
-  var viewSize = gGame.view.size.get();
-
-  // how many chunks does it take to span the width of the view
-  self.width = viewSize.width / cpSize.width;
-  self.height = viewSize.height / cpSize.height;
-
-  // find max number of chunks we could ever need to fill the World View
-  self.width = Math.ceil(self.width + 1);
-  self.height = Math.ceil(self.height + 1);
+  Meteor.autorun(function(){
+    self.updateSize();
+  });
 
   self.grid = new Beautiful.ChunkGrid();
 };
@@ -59,6 +53,7 @@ render
 setMap
 setTileset
 simToWorld
+updateSize
 ------------------------------------------------------------*/
 Beautiful.World.prototype = {
 
@@ -117,6 +112,7 @@ render: function() {
   var cpCenter = this.chunkPixelSize.getCenter();
   var viewCenter = gGame.view.size.getCenter();
   var map = this.getMap();
+  var size = this.size.get();
 
   // the distnce between the camera and the left edge of the center tile
   var xOffsetCamera = this.camera.x + cpCenter.x;
@@ -132,10 +128,10 @@ render: function() {
   var yStart = -this.camera.y - (cpSize.height * chunksBelow);
   // what is the xCoord of our left most chunk?
   var xCoordLeft = this.camera.xCoord - chunksToLeft;
-  var xCoordRight = xCoordLeft + this.width - 1;
+  var xCoordRight = xCoordLeft + size.width - 1;
 
   var yCoordBottom = this.camera.yCoord - chunksBelow;
-  var yCoordTop = yCoordBottom + this.height - 1;
+  var yCoordTop = yCoordBottom + size.height - 1;
 
   this.grid.setRange(xCoordLeft, xCoordRight, yCoordBottom, yCoordTop);
   var xCursor = xStart;
@@ -189,6 +185,23 @@ simToWorld: function(xy) {
   if (ans.x < 0) ans.x += map.chunkWidth;
   if (ans.y < 0) ans.y += map.chunkHeight;
   return ans;
+},
+
+updateSize: function(){
+  var self = this;
+
+  var cpSize = self.chunkPixelSize.get();
+  var viewSize = gGame.view.size.get();
+
+  // how many chunks does it take to span the width of the view
+  var width = viewSize.width / cpSize.width;
+  var height = viewSize.height / cpSize.height;
+
+  // find max number of chunks we could ever need to fill the World View
+  width = Math.ceil(width) + 1;
+  height = Math.ceil(height) + 1;
+
+  self.size.set(width, height);
 }
 
 }; // Beautiful.World.prototype
