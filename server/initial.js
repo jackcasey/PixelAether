@@ -2,12 +2,13 @@
 Meteor.startup(function() {
   console.log('The server is starting up!');
   // Create a chunk if there isn't one already
-  console.log('Creating 10x10 chunks if needed');
+  console.log('Ensuring we have at least 10x10 chunks...');
   for (var y = -5; y < 5; y++) {
     for (var x = -5; x < 5; x++) {
       Chunk.create({xCoord:x, yCoord:y})
     }
   }
+  console.log('All 100 original chunks exist!');
 
   //
   Meteor.publish("map", function(xMin, xMax, yMin, yMax, mapName) {
