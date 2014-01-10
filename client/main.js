@@ -74,30 +74,6 @@ var setup = function() {
     gGame.view.size.set(size.width, size.height);
   };
 
-  gGame.input.bind(
-    gGame.input.KEY.SPACE,
-    'fire');
-
-  gGame.input.bind(
-    gGame.input.KEY.MOUSE2,
-    'world');
-
-  gGame.input.bind(
-    gGame.input.KEY.MOUSE1,
-    'build');
-
-  gGame.input.bind(
-    gGame.input.KEY.W,
-    'water');
-
-  gGame.input.bind(
-    gGame.input.KEY.T,
-    'tree');
-
-  gGame.input.bind(
-    gGame.input.KEY.P,
-    'path');
-
   var gameLoop = function() {
     gGame.view.clear();
     gGame.world.render();
@@ -105,26 +81,26 @@ var setup = function() {
     var i = gGame.input;
 
     // for testing
-    if (i.tap('fire')) console.log('fire!!');
+    if (i.tap(gGame.input.KEY.SPACE)) console.log('fire!!');
 
     // simulation to world coords
-    if (i.up('build')) {
+    if (i.up(gGame.input.KEY.MOUSE1)) {
       var worldPos = gGame.world.simToWorld(i.mouse.simPos);
       treeClicker(worldPos);
     }
     // move camera
-    if (i.drag('world')) {
+    if (i.drag(gGame.input.KEY.MOUSE2)) {
       var delta = i.mouse.deltaPos;
       gGame.world.moveCamera({x: -delta.x, y: -delta.y});
     }
 
-    if (i.up('tree')) {
+    if (i.up(gGame.input.KEY.T)) {
       Session.set('clicker', 'tree');
     }
-    if (i.up('water')) {
+    if (i.up(gGame.input.KEY.W)) {
       Session.set('clicker', 'water');
     }
-    if (i.up('path')) {
+    if (i.up(gGame.input.KEY.P)) {
       Session.set('clicker', 'path');
     }
 

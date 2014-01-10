@@ -30,7 +30,6 @@ keyup
 mousedown
 mousemove
 mouseup
-setSize
 ------------------------------------------------------------*/
 Beautiful.View.prototype = {
 
