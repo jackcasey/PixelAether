@@ -58,9 +58,12 @@ drag: function(keyCode) {
   var deltaY = this.mouse.simPos.y - state.downSimPos.y;
   var hyp = hypotenuse(deltaX, deltaY);
 
-  if ( (this.hold(keyCode) || (this.isDown(keyCode) && hyp >= this.DRAG_THRESH)) && // the action is holding, or we moved with this mouse down
-    this.mouse.moveFrameCount === gGame.simulation.frameCount) // mouse moved this frame
-    return true;
+  if (
+    // if the action is holding, or we moved with this mouse down
+    (this.hold(keyCode) || (this.isDown(keyCode) && hyp >= this.DRAG_THRESH)) &&
+    // and the mouse moved this frame
+    this.mouse.moveFrameCount === gGame.simulation.frameCount
+  ) return true;
 
   return false;
 },
