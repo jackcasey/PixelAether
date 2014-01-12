@@ -11,6 +11,9 @@ window.requestAnimFrame = (function(){
 
 Session.setDefault('clicker', 'tree');
 
+if (Meteor.absoluteUrl() === 'http://localhost:3000/')
+  Session.set('DEBUG', true);
+
 // HACK
 function treeClicker(worldPos) {
   var selector = {

@@ -99,7 +99,10 @@ renderChunk: function(chunkSelector) {
 
     } // iterate over layer data
   } // iterate over layers
-  this.context.strokeRect(0, 0, this.canvas.width, this.canvas.height); // outline chunk for debugging
+
+  if (Session.get('DEBUG'))
+    // outline chunk
+    this.context.strokeRect(0, 0, this.canvas.width, this.canvas.height);
 },
 
 setChunk: function(chunkSelector) {
