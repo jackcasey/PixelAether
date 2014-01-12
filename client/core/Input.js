@@ -13,8 +13,8 @@ Beautiful.Input = function() {
   // Keycodes mapped to key state
   this.states = {};
 
-  for (key in this.KEY){
-    var keyCode = this.KEY[key];
+  for (key in this.KEYS){
+    var keyCode = this.KEYS[key];
     this.states[keyCode] = new InputState;
   }
 
@@ -43,7 +43,7 @@ _mouseDown
 _mouseMove
 _mouseUp
 
-KEY
+KEYS
 ------------------------------------------------------------*/
 Beautiful.Input.prototype = {
 
@@ -152,7 +152,7 @@ _keyUp: function(keyCode, event) {
 },
 
 _mouseDown: function(event) {
-  var keyCode = (event.button === 0) ? this.KEY.MOUSE1 : this.KEY.MOUSE2;
+  var keyCode = (event.button === 0) ? this.KEYS.MOUSE1 : this.KEYS.MOUSE2;
   this._keyDown(keyCode, event);
 },
 
@@ -167,11 +167,11 @@ _mouseMove: function(position, event) {
 },
 
 _mouseUp: function(event) {
-  var keyCode= (event.button === 0) ? this.KEY.MOUSE1 : this.KEY.MOUSE2;
+  var keyCode= (event.button === 0) ? this.KEYS.MOUSE1 : this.KEYS.MOUSE2;
   this._keyUp(keyCode, event);
 },
 
-KEY: {
+KEYS: {
   'MOUSE1': -1,
   'MOUSE2': -3,
   //'MWHEEL_UP': -4,

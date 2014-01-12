@@ -1,5 +1,4 @@
-// get the appropriate requestAnimationFrame function,
-// store it in the window object
+// polyfill requestAnimationFrame function,
 window.requestAnimFrame = (function(){
   return  window.requestAnimationFrame       ||
           window.webkitRequestAnimationFrame ||
@@ -84,26 +83,26 @@ var setup = function() {
     var i = gGame.input;
 
     // for testing
-    if (i.tap(gGame.input.KEY.SPACE)) console.log('fire!!');
+    if (i.tap(gGame.input.KEYS.SPACE)) console.log('fire!!');
 
     // simulation to world coords
-    if (i.up(gGame.input.KEY.MOUSE1)) {
+    if (i.up(gGame.input.KEYS.MOUSE1)) {
       var worldPos = gGame.world.simToWorld(i.mouse.simPos);
       treeClicker(worldPos);
     }
     // move camera
-    if (i.drag(gGame.input.KEY.MOUSE2)) {
+    if (i.drag(gGame.input.KEYS.MOUSE2)) {
       var delta = i.mouse.deltaPos;
       gGame.world.moveCamera({x: -delta.x, y: -delta.y});
     }
 
-    if (i.up(gGame.input.KEY.T)) {
+    if (i.up(gGame.input.KEYS.T)) {
       Session.set('clicker', 'tree');
     }
-    if (i.up(gGame.input.KEY.W)) {
+    if (i.up(gGame.input.KEYS.W)) {
       Session.set('clicker', 'water');
     }
-    if (i.up(gGame.input.KEY.P)) {
+    if (i.up(gGame.input.KEYS.P)) {
       Session.set('clicker', 'path');
     }
 
