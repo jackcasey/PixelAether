@@ -7,10 +7,20 @@ var InputState = function() {
   this.upSimPos = {x:0, y:0};
 }
 
+var InputAction = function(keyCode, action, func) {
+  this.keyCode = keyCode;
+  this.action = action;
+  this.functions = [];
+  if (func) this.functions.push(func);
+}
+
 Beautiful.Input = function() {
 
-  // States
-  // Keycodes mapped to key state
+  // Actions - keycode-action mapped to function list
+  // ex. 73-up
+  this.actions = {};
+
+  // States - Keycodes mapped to key state
   this.states = {};
 
   for (key in this.KEYS){
@@ -31,7 +41,9 @@ Beautiful.Input = function() {
 drag
 hold
 isDown
+on
 tap
+step
 up
 
 TAP_THRESH
@@ -92,6 +104,10 @@ isDown: function(keyCode) {
   return false;
 },
 
+on: function(keyCode, action, func) {
+  this.actions[keyCode + '-' + action] = new InputAction(keyCode, action, func);
+},
+
 tap: function(keyCode) {
   var state = this.states[keyCode];
   if (!state) return null;
@@ -106,6 +122,18 @@ tap: function(keyCode) {
   }
 
   return false
+},
+
+step: function(){
+  self = this;
+  for (key in this.actions){
+    var iAction = this.actions[key]; // input action
+    if (self[iAction.action](iAction.keyCode)) {
+      for (var i = 0; i < iAction.functions.length; i++){
+        iAction.functions[i]();
+      }
+    }
+  }
 },
 
 up: function(keyCode) {

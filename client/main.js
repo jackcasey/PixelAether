@@ -76,11 +76,17 @@ var setup = function() {
     gGame.view.size.set(size.width, size.height);
   };
 
+  var i = gGame.input
+  i.on(i.KEYS.I, 'up', function(){
+    console.log('I UP!');
+  });
+
   var gameLoop = function() {
     gGame.view.clear();
     gGame.world.render();
 
     var i = gGame.input;
+    i.step();
 
     // for testing
     if (i.tap(gGame.input.KEYS.SPACE)) console.log('fire!!');
