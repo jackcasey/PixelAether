@@ -1,4 +1,4 @@
-// polyfill requestAnimationFrame function,
+// polyfill requestAnimationFrame
 window.requestAnimFrame = (function(){
   return  window.requestAnimationFrame       ||
           window.webkitRequestAnimationFrame ||
@@ -13,34 +13,6 @@ Session.setDefault('clicker', 'tree');
 if (Meteor.absoluteUrl() === 'http://localhost:3000/')
   Session.set('DEBUG', true);
 
-// HACK
-function treeClicker(worldPos) {
-  var selector = {
-    xCoord: worldPos.xCoord,
-    yCoord: worldPos.yCoord,
-    mapName: gGame.world.getMap().name
-  };
-  console.log('Click Map Selector:', selector);
-  var chunk = Chunks.findOne(selector);
-  if (!chunk) return;
-  var tileIndex = (chunk.width * worldPos.y) + worldPos.x;
-  if (Session.get('clicker') === 'tree') {
-    var tileValue = chunk.layerData.plant[tileIndex];
-    tileValue = (tileValue === 1) ? 0 : 1; // if it's a tree, make it nothing. else, make it a tree
-  }
-  else if (Session.get('clicker') === 'water') {
-    var tileValue = chunk.layerData.ground[tileIndex];
-    tileValue = (tileValue === 11) ? 10 : 11;
-  }
-  else if (Session.get('clicker') === 'path') {
-    var tileValue = chunk.layerData.ground[tileIndex];
-    tileValue = (tileValue === 16) ? 10 : 16;
-  }
-  else return;
-
-  Meteor.call('setTile', selector, worldPos.x, worldPos.y, tileValue, 
-    (Session.get('clicker') === 'tree')? 'plant' : 'ground');
-};
 
 images = {}; // HACK (low quality image manager);
 var filenames = ['elements9x3.png'];
@@ -61,6 +33,7 @@ for (var i = 0; i < filenames.length; i++) {
   image.src = filename;
 };
 
+
 var setup = function() {
 
   gGame = new Beautiful.Game();
@@ -71,47 +44,18 @@ var setup = function() {
   var content = document.getElementById('content');
   content.appendChild(canvas);
 
+  // resize the canvas with the browser window
   window.onresize = function(){
     var size = getWindowSize();
     gGame.view.size.set(size.width, size.height);
   };
 
-  var i = gGame.input
-  i.on(i.KEYS.I, 'up', function(){
-    console.log('I UP!');
-  });
+  initKeyBindings();
 
   var gameLoop = function() {
     gGame.view.clear();
     gGame.world.render();
-
-    var i = gGame.input;
-    i.step();
-
-    // for testing
-    if (i.tap(gGame.input.KEYS.SPACE)) console.log('fire!!');
-
-    // simulation to world coords
-    if (i.up(gGame.input.KEYS.MOUSE1)) {
-      var worldPos = gGame.world.simToWorld(i.mouse.simPos);
-      treeClicker(worldPos);
-    }
-    // move camera
-    if (i.drag(gGame.input.KEYS.MOUSE2)) {
-      var delta = i.mouse.deltaPos;
-      gGame.world.moveCamera({x: -delta.x, y: -delta.y});
-    }
-
-    if (i.up(gGame.input.KEYS.T)) {
-      Session.set('clicker', 'tree');
-    }
-    if (i.up(gGame.input.KEYS.W)) {
-      Session.set('clicker', 'water');
-    }
-    if (i.up(gGame.input.KEYS.P)) {
-      Session.set('clicker', 'path');
-    }
-
+    gGame.input.step();
     gGame.simulation.step();
     window.requestAnimFrame(gameLoop);
   };
