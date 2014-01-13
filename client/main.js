@@ -31,7 +31,7 @@ for (var i = 0; i < filenames.length; i++) {
     }
   };
   image.src = filename;
-};
+}
 
 
 var setup = function() {
