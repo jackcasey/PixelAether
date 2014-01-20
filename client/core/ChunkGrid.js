@@ -80,13 +80,13 @@ setRange: function(xMin, xMax, yMin, yMax) {
 
   var neededRenderers = {};
   var reuseables = {};
-  var dirtyRenderers = []
+  var dirtyRenderers = [];
   var map = gGame.world.getMap();
 
   for (var y = yMin; y <= yMax; y++) {
     for (var x = xMin; x <= xMax; x++) {
       var addr = makeDeflatedAddr(x, y, map.name);
-      var existingRenerer = this.renderers[addr]
+      var existingRenerer = this.renderers[addr];
       neededRenderers[addr] = existingRenerer || false;
     }
   }
@@ -97,9 +97,13 @@ setRange: function(xMin, xMax, yMin, yMax) {
   for (var i = 0; i < currentRendererKeys.length; i++) {
     var key = currentRendererKeys[i];
     if (neededRenderers[key]) {
-      reuseables[key] = this.renderers[key]; count++;} // can reuse
-    else
-      dirtyRenderers.push(this.renderers[key]) // can't reuse
+      // can reuse
+      reuseables[key] = this.renderers[key]; 
+      count++;
+    } else {
+      // can't reuse
+      dirtyRenderers.push(this.renderers[key]); 
+    }
   }
   console.log('Grid: Reuse Renderer Count:', count, reuseables);
 
@@ -107,7 +111,7 @@ setRange: function(xMin, xMax, yMin, yMax) {
   var neededRendererKeys = Object.keys(neededRenderers);
   for (var i = 0; i <neededRendererKeys.length; i++) {
     var key = neededRendererKeys[i];
-    var renderer = reuseables[key]
+    var renderer = reuseables[key];
     if (!renderer) { // if we don't have a reuseable renderer, grab one from the list of dirtyRenderers
       renderer = dirtyRenderers.pop() || new Beautiful.ChunkRenderer(); // ... or create a new one
       renderer.setChunk(inflateChunkAddr(key));
