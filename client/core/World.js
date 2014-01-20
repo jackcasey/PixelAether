@@ -25,12 +25,8 @@ Beautiful.World = function(map, tileset) {
 
   self.chunkPixelSize = new Beautiful.Size2D;
   self.size = new Beautiful.Size2D;
-  self.setMap(map || Beautiful.Maps.main);
-  self.setTileset(tileset || new Beautiful.Tileset(
-    images['elements9x3.png'],
-    9, 3,
-    28, 35,
-    30, 37 ));
+  self.setMap(map);
+  self.setTileset(tileset);
 
   self.camera = {
     xCoord: 0,
@@ -180,7 +176,7 @@ simToWorld: function(xy) {
     xCoord: this.camera.xCoord + Math.floor(tileX / map.chunkWidth),
     yCoord: this.camera.yCoord + Math.floor(tileY / map.chunkHeight),
     x: tileX % map.chunkWidth,
-    y: tileY % map.chunkHeight,
+    y: tileY % map.chunkHeight
   };
   if (ans.x < 0) ans.x += map.chunkWidth;
   if (ans.y < 0) ans.y += map.chunkHeight;

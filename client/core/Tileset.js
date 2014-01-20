@@ -17,8 +17,8 @@ Beautiful.Tileset = function(image, width, height, tileWidth, tileHeight, cellWi
   if (!validIndexes) {
     for (var i = 0; i < width * height; i++) {
       this.validIndexes[i] = i;
-    };
-  };
+    }
+  }
 };
 
 
@@ -32,6 +32,6 @@ getUpperLeftX: function(i) {
 
 getUpperLeftY: function(i) {
     return (Math.floor(i / this.width) * this.cellHeight) + 1;
-},
+}
 
 }; // Beautiful.Tileset.prototype

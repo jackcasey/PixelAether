@@ -4,4 +4,4 @@ Beautiful.Maps = {
     chunkWidth: 16, 
     chunkHeight: 16
   }
-}
+};
