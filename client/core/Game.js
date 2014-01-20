@@ -26,17 +26,16 @@ Beautiful.Game.prototype = {
 
 init: function() {
   var self = this;
-  console.log()
   self.map = Beautiful.Maps.main;
   self.tileset = new Beautiful.Tileset(
-    images['elements9x3.png'],
+    imageLibrary.images['elements9x3.png'],
     9, 3,
     28, 35,
     30, 37 );
   var windowSize = getWindowSize();
   self.view = new Beautiful.View(); // wraps our DOM canvas
   self.view.size.set(windowSize.width, windowSize.height);
-  self.world = new Beautiful.World(); // Wraps chunkRenderers 
+  self.world = new Beautiful.World(self.map, self.tileset); // Wraps chunkRenderers TODO: Put this in an autorun?
   self.simulation = new Beautiful.Simulation(); // simulate game time
   self.simulation.step();
   self.input = new Beautiful.Input(); // input depends on Simulation

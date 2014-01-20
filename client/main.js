@@ -14,26 +14,6 @@ if (Meteor.absoluteUrl() === 'http://localhost:3000/')
   Session.set('DEBUG', true);
 
 
-images = {}; // HACK (low quality image manager);
-var filenames = ['elements9x3.png'];
-var loadedImageCount = 0;
-
-for (var i = 0; i < filenames.length; i++) {
-  var image = new Image();
-  var filename = filenames[i];
-  images[filename] = image;
-
-  // call setup if we are ready
-  image.onload = function() {
-    loadedImageCount++;
-    if (loadedImageCount >= filenames.length) {
-      setup();
-    }
-  };
-  image.src = filename;
-}
-
-
 var setup = function() {
 
   gGame = new Beautiful.Game();
@@ -63,4 +43,5 @@ var setup = function() {
   window.requestAnimFrame(gameLoop);
 };
 
-
+imageLibrary = new Beautiful.ImageLibrary;
+imageLibrary.load('elements9x3.png', setup);
