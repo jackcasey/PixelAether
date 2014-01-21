@@ -6,6 +6,7 @@ have been initialized.
 
 Keeps Track of
   Where the Camera is looking in the world,
+  world.size - max number of chunks that could be rendered
   Range of chunks to render given the view, chunkPixelSize
   What current tileset and current map
 
@@ -36,6 +37,15 @@ Beautiful.World = function(map, tileset) {
 
   Meteor.autorun(function(){
     self.updateSize();
+  });
+
+  Meteor.autorun(function(){
+    var map = self.getMap();
+    var tileset = self.getTileset();
+    if (tileset && map)
+      self.chunkPixelSize.set(
+        tileset.tileWidth * map.chunkWidth,
+        tileset.tileHeight * map.chunkHeight);
   });
 
   self.grid = new Beautiful.ChunkGrid();
@@ -104,6 +114,8 @@ moveCamera: function(deltaXY) {
 // render to gGame.view
 render: function() {
 
+  Deps.flush();
+
   var cpSize = this.chunkPixelSize.get();
   var cpCenter = this.chunkPixelSize.getCenter();
   var viewCenter = gGame.view.size.getCenter();
@@ -146,21 +158,11 @@ render: function() {
 
 setMap: function(map) {
   this._map = map;
-    if (this._tileset && this._map)
-    this.chunkPixelSize.set(
-      this._tileset.tileWidth * this._map.chunkWidth,
-      this._tileset.tileHeight * this._map.chunkHeight);
-
   this._mapDep.changed();
 },
 
 setTileset: function(tileset) {
   this._tileset = tileset;
-  if (this._tileset && this._map)
-    this.chunkPixelSize.set(
-      this._tileset.tileWidth * this._map.chunkWidth,
-      this._tileset.tileHeight * this._map.chunkHeight);
-
   this._tilesetDep.changed();
 },
 
@@ -185,7 +187,6 @@ simToWorld: function(xy) {
 
 updateSize: function(){
   var self = this;
-
   var cpSize = self.chunkPixelSize.get();
   var viewSize = gGame.view.size.get();
 

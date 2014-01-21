@@ -34,7 +34,7 @@ init: function() {
   var windowSize = getWindowSize();
   self.view = new Beautiful.View(); // wraps our DOM canvas
   self.view.size.set(windowSize.width, windowSize.height);
-  self.world = new Beautiful.World(map, tileset); // Wraps chunkRenderers TODO: Put this in an autorun?
+  self.world = new Beautiful.World(map, tileset); // Wraps chunkRenderers
   self.simulation = new Beautiful.Simulation(); // simulate game time
   self.simulation.step();
   self.input = new Beautiful.Input(); // input depends on Simulation
