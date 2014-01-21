@@ -6,18 +6,19 @@ var treeClicker = function(worldPos) {
   };
   console.log('Click Map Selector:', selector);
   var chunk = Chunks.findOne(selector);
+  var tileValue = null;
   if (!chunk) return;
   var tileIndex = (chunk.width * worldPos.y) + worldPos.x;
   if (Session.get('clicker') === 'tree') {
-    var tileValue = chunk.layerData.plant[tileIndex];
+    tileValue = chunk.layerData.plant[tileIndex];
     tileValue = (tileValue === 1) ? 0 : 1; // if it's a tree, make it nothing. else, make it a tree
   }
   else if (Session.get('clicker') === 'water') {
-    var tileValue = chunk.layerData.ground[tileIndex];
+    tileValue = chunk.layerData.ground[tileIndex];
     tileValue = (tileValue === 11) ? 10 : 11;
   }
   else if (Session.get('clicker') === 'path') {
-    var tileValue = chunk.layerData.ground[tileIndex];
+    tileValue = chunk.layerData.ground[tileIndex];
     tileValue = (tileValue === 16) ? 10 : 16;
   }
   else return;

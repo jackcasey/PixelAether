@@ -5,7 +5,7 @@ Meteor.startup(function() {
   console.log('Ensuring we have at least 10x10 chunks...');
   for (var y = -5; y < 5; y++) {
     for (var x = -5; x < 5; x++) {
-      Chunk.create({xCoord:x, yCoord:y})
+      Chunk.create({xCoord:x, yCoord:y});
     }
   }
   console.log('All 100 original chunks exist!');
@@ -16,7 +16,7 @@ Meteor.startup(function() {
     xMax = xMax || 1;
     yMin = yMin || -1;
     yMax = yMax || 1;
-    mapName = mapName || 'main'
+    mapName = mapName || 'main';
 
     var cursor = Chunks.find({
       xCoord:{$gte:xMin, $lte:xMax},
@@ -25,7 +25,7 @@ Meteor.startup(function() {
     });
 
     // Create the requested chunks if necessary
-    var size =  (xMax - xMin + 1) * (yMax - yMin + 1)
+    var size =  (xMax - xMin + 1) * (yMax - yMin + 1);
     if (cursor.count() != size) {
       for (var x = xMin; x <= xMax; x++) {
         for (var y = yMin; y <= yMax; y++) {
