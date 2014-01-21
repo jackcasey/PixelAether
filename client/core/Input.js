@@ -6,7 +6,7 @@ var InputState = function() {
   this.upTime = new Date(1);
   this.upFrameCount = -1;
   this.upSimPos = {x:0, y:0};
-}
+};
 
 // Helper class, Stores input identifiers, and bound functions
 var InputAction = function(keyCode, action, func) {
@@ -14,7 +14,7 @@ var InputAction = function(keyCode, action, func) {
   this.action = action;
   this.functions = [];
   if (func) this.functions.push(func);
-}
+};
 
 Beautiful.Input = function() {
 
@@ -35,7 +35,7 @@ Beautiful.Input = function() {
     simPos:           {x:0, y:0},
     deltaPos:         {x:0, y:0},
     moveTime:         new Date(),
-    moveFrameCount:   0,
+    moveFrameCount:   0
   };
 };
 
@@ -125,7 +125,7 @@ tap: function(keyCode) {
     return true; 
   }
 
-  return false
+  return false;
 },
 
 step: function(){
