@@ -7,8 +7,6 @@ the global namepsace with the name 'self'.
 self.world
 self.simulation
 self.input
-self.map
-self.tileset
 self.view
 
 Some of the members above require gGame to exist before they 
@@ -32,6 +30,7 @@ init: function() {
     9, 3,
     28, 35,
     30, 37 );
+
   var windowSize = getWindowSize();
   self.view = new Beautiful.View(); // wraps our DOM canvas
   self.view.size.set(windowSize.width, windowSize.height);
