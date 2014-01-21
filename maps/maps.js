@@ -5,8 +5,8 @@ Beautiful.Maps = {
     chunkHeight: 16
   },
   second: {
-  	name: 'second',
-  	chunkWidth: 16,
-  	chunkHeight: 8
+    name: 'second',
+    chunkWidth: 16,
+    chunkHeight: 8
   }
 };
