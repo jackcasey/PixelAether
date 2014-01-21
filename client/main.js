@@ -16,8 +16,17 @@ if (Meteor.absoluteUrl() === 'http://localhost:3000/')
 
 var setup = function() {
 
+  var tileset = new Beautiful.Tileset(
+    imageLibrary.images['elements9x3.png'],
+    9, 3,
+    28, 35,
+    30, 37 );
+
   gGame = new Beautiful.Game();
   gGame.init();
+
+  gGame.world.setMap(Beautiful.Maps.main);
+  gGame.world.setTileset(tileset);
 
   // add the game canvas to the DOM
   var canvas = gGame.view.canvas;

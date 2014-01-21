@@ -18,7 +18,7 @@ Expects the following to exist on instantiation:
   gGame.view (view size has been set)
   gGame.world
 ------------------------------------------------------------*/
-Beautiful.World = function(map, tileset) {
+Beautiful.World = function() {
   var self = this;
 
   self._tilesetDep = new Deps.Dependency;
@@ -26,8 +26,6 @@ Beautiful.World = function(map, tileset) {
 
   self.chunkPixelSize = new Beautiful.Size2D;
   self.size = new Beautiful.Size2D;
-  self.setMap(map);
-  self.setTileset(tileset);
 
   self.camera = {
     xCoord: 0,

@@ -24,17 +24,10 @@ Beautiful.Game.prototype = {
 
 init: function() {
   var self = this;
-  var map = Beautiful.Maps.main;
-  var tileset = new Beautiful.Tileset(
-    imageLibrary.images['elements9x3.png'],
-    9, 3,
-    28, 35,
-    30, 37 );
-
   var windowSize = getWindowSize();
   self.view = new Beautiful.View(); // wraps our DOM canvas
   self.view.size.set(windowSize.width, windowSize.height);
-  self.world = new Beautiful.World(map, tileset); // Wraps chunkRenderers
+  self.world = new Beautiful.World(); // Wraps chunkRenderers
   self.simulation = new Beautiful.Simulation(); // simulate game time
   self.simulation.step();
   self.input = new Beautiful.Input(); // input depends on Simulation
@@ -43,6 +36,8 @@ init: function() {
   Deps.autorun(function() {
     var range = self.world.grid.getRange();
     var map = self.world.getMap();
+    if (!map) return;
+
     Meteor.subscribe('map',
       range.xMin - 1,
       range.xMax + 1,
