@@ -49,13 +49,13 @@ initKeyBindings = function() {
     Session.set('clicker', 'path')
   });
 
-  input.on('MOUSE1', 'up', function(){
+  input.on('MOUSE1', 'tap', function(){
 	  // simulation to world coords
     var worldPos = gGame.world.simToWorld(input.mouse.simPos);
     treeClicker(worldPos);
   });
 
-  input.on('MOUSE2', 'drag', function(){
+  input.on('MOUSE1', 'drag', function(){
     var delta = input.mouse.deltaPos;
     gGame.world.moveCamera({x: -delta.x, y: -delta.y});
   });
