@@ -68,6 +68,10 @@ getMap: function() {
 
 getTileset: function() {
   this._tilesetDep.depend();
+  if (this._tileset && this._tileset.image) {
+    // indicate dependency
+    imageLibrary.get(this._tileset.imageName);
+  }
   return this._tileset;
 },
 

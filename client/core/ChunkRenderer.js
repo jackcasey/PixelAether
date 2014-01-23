@@ -60,6 +60,7 @@ renderChunk: function(chunkSelector) {
   // for convenience
   var tileset = gGame.world.getTileset();
   var tilesetLength = tileset.tileWidth * tileset.tileHeight;
+  var jsImage = imageLibrary.get(tileset.imageName);
 
   // re-size and set center of Canvas only if needed 
   if (this.canvas.width !== chunk.width * tileset.tileWidth) {
@@ -91,7 +92,7 @@ renderChunk: function(chunkSelector) {
       // position the first tile in the bottom left
       yCursor = tileset.tileHeight * (chunk.height - (Math.floor(i / chunk.width)) - 1);
 
-      this.context.drawImage(tileset.image,
+      this.context.drawImage(jsImage,
         xClip, yClip,
         tileset.tileWidth, tileset.tileHeight,
         xCursor, yCursor,
@@ -107,6 +108,6 @@ renderChunk: function(chunkSelector) {
 
 setChunk: function(chunkSelector) {
   this.chunkAddress.set(chunkSelector);
-},
+}
 
 }; // Beautiful.ChunkRenderer.prototype

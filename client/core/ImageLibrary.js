@@ -1,7 +1,7 @@
 /*------------------------------------------------------------
 ------------------------------------------------------------*/
 Beautiful.ImageLibrary = function(){
-	this.images = {};
+  this.content = {};
 };
 
 /*------------------------------------------------------------
@@ -10,11 +10,19 @@ load
 
 Beautiful.ImageLibrary.prototype = {
 
-load: function(filename, onComplete) {
-	var image = new Image;
-	this.images[filename] = image;
-	image.onload = onComplete;
-	image.src = filename;
+add: function(name, filename) {
+  if (this.content[name])
+    throw 'Error: Image named "' + name + '"already exists.';
+  var item = new Deps.Dependency;
+  item.image = new Image;
+  item.image.onload = function(){ item.changed(); };
+  item.image.src = filename;
+  this.content[name] = item;
+},
+
+get: function(name) {
+  this.content[name].depend();
+  return this.content[name].image;
 }
 
-}; // prototype
+}; // Beautiful.ImageLibraru.prototype

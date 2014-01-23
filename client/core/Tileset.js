@@ -2,9 +2,9 @@
 // var ts = new TileSet( 4, 5, tileWidthInPixels, tileHeightInPixels, ... );
 // ts.loadImage('filename', onload function);;
 
-Beautiful.Tileset = function(image, width, height, tileWidth, tileHeight, cellWidth, cellHeight, validIndexes, firstgid)
+Beautiful.Tileset = function(imageName, width, height, tileWidth, tileHeight, cellWidth, cellHeight, validIndexes, firstgid)
 {
-  this.image = image;
+  this.imageName = imageName;
   this.width = width; // number tiles wide
   this.height = height; // number tiles tall
   this.tileWidth = tileWidth;
