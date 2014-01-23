@@ -21,6 +21,14 @@ var treeClicker = function(worldPos) {
     tileValue = chunk.layerData.ground[tileIndex];
     tileValue = (tileValue === 16) ? 10 : 16;
   }
+  else if (Session.get('clicker') === 'lava') {
+    tileValue = chunk.layerData.ground[tileIndex];
+    tileValue = (tileValue === 14) ? 15 : 14;
+  }
+  else if (Session.get('clicker') === 'sand') {
+    tileValue = chunk.layerData.ground[tileIndex];
+    tileValue = (tileValue === 18) ? 10 : 18;
+  }
   else return;
 
   Meteor.call('setTile', selector, worldPos.x, worldPos.y, tileValue, 
@@ -45,8 +53,14 @@ initKeyBindings = function() {
   input.on('W', 'up', function(){
     Session.set('clicker', 'water');
   });
+  input.on('P', 'up', function(){
+    Session.set('clicker', 'path');
+  });
   input.on('S', 'up', function(){
-    Session.set('clicker', 'path')
+    Session.set('clicker', 'sand');
+  });
+  input.on('L', 'up', function(){
+    Session.set('clicker', 'lava');
   });
 
   input.on('MOUSE1', 'tap', function(){
