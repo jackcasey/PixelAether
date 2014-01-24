@@ -85,7 +85,6 @@ renderChunk: function(chunkSelector) {
       if (!tileIndex) continue;
 
       // Get the coordinates of the tile in the tileset
-      tileIndex = tileIndex - tileset.firstgid;
       xClip = tileset.getUpperLeftX(tileIndex % tilesetLength);
       yClip = tileset.getUpperLeftY(tileIndex % tilesetLength);
       xCursor = tileset.tileWidth * (i % chunk.width);
