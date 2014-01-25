@@ -30,7 +30,7 @@ Beautiful.ChunkAddress.prototype = {
       this._private = {
         xCoord: chunk.xCoord,
         yCoord: chunk.yCoord,
-        mapName: chunk.mapName,
+        mapName: chunk.mapName
       };
     if (chunk._id) this._private._id = chunk._id;
     }

@@ -5,6 +5,7 @@ if (Meteor.absoluteUrl() === 'http://localhost:3000/')
 
 imageLibrary = new Beautiful.ImageLibrary;
 imageLibrary.add('elements', 'elements9x3.png');
+imageLibrary.add('characters', 'characters5x1.png');
 gGame = new Beautiful.Game();
 
 var setup = function() {
