@@ -107,7 +107,7 @@ isDown: function(keyCode) {
 },
 
 on: function(key, action, func) {
-  // alow string or number
+  // allow string or number
   var keyCode = (typeof key === 'string') ? this.KEYS[key.toUpperCase()] : key;
   this.actions[keyCode + '-' + action] = new InputAction(keyCode, action, func);
 },
@@ -138,6 +138,8 @@ step: function(){
       }
     }
   }
+  this.mouse.deltaPos.x = 0;
+  this.mouse.deltaPos.y = 0;
 },
 
 up: function(keyCode) {
@@ -189,8 +191,8 @@ _mouseDown: function(event) {
 },
 
 _mouseMove: function(position, event) {
-  this.mouse.deltaPos.x = position.x - this.mouse.simPos.x;
-  this.mouse.deltaPos.y = position.y - this.mouse.simPos.y;
+  this.mouse.deltaPos.x += (position.x - this.mouse.simPos.x);
+  this.mouse.deltaPos.y += (position.y - this.mouse.simPos.y);
   this.mouse.simPos.x = position.x;
   this.mouse.simPos.y = position.y;
   this.mouse.moveTime = gGame.simulation.frameTime;

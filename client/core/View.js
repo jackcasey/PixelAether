@@ -57,7 +57,7 @@ drawRenderer: function(renderer, x, y) {
   // window style coordinates to draw the canvas at
   var drawX = center.x + x;
   var drawY = center.y - y - renderer.canvas.height;
-  drawY++; // fix the fencpost error
+  drawY++; // fix the fencepost error
   if (renderer.center) {
     drawX -= renderer.center.x;
     drawY += renderer.center.y;
@@ -104,6 +104,6 @@ mousemove: function(event) {
 
 mouseup: function(event) {
   gGame.input._mouseUp(event);
-},
+}
 
 }; // Beautiful.View.prototype
