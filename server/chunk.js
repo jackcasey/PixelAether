@@ -7,6 +7,7 @@ layerNames  - optional array of layer names, default ['ground', 'plant']
 Assume:
   gGame.map[chunkId.mapName] has a width and height
 ------------------------------------------------------------*/
+Chunk = {};
 Chunk.create = function(chunkId, layerNames) {
 
   chunkId.mapName = chunkId.mapName || 'main';
