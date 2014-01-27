@@ -17,7 +17,7 @@ Chunk.create = function(chunkId, layerNames) {
     return [false, 'Chunk.create error: chunkId must specify xCoord and yCoord'];
 
   // verify that there is a map with this name
-  if (typeof Beautiful.Maps[chunkId.mapName] === 'undefined')
+  if (typeof Maps.findOne({name:chunkId.mapName}) === 'undefined')
     return [false, 'Chunk.create error: chunkId.mapName is not in Beautiful.Maps:', chunkId.mapName];
 
   // verify that it doesn't already exist

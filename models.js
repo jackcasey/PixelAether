@@ -100,5 +100,6 @@ Meteor.methods ({
 
     // everything except the Chunks.update call can probably be done on the client side
     Chunks.update(chunkId, setOptions); // what happens when layerName does not exist?
-  },
+    return [true, 'Success'];
+  }
 });

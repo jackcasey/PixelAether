@@ -14,8 +14,8 @@ Tilesets = new Meteor.Collection(null, {
 });
 
 Tilesets.create = function(options) {
+  if (typeof options.name !== 'string') return;
   var tileset = {
-    name: options.name,
     imageName: options.imageName,
     width: options.width, // number tiles wide
     height: options.height, // number tiles tall
@@ -24,7 +24,15 @@ Tilesets.create = function(options) {
     cellWidth: options.cellWidth || options.tileWidth,
     cellHeight: options.cellHeight || options.tileHeight
   };
-  Tilesets.insert(tileset);
+  Tilesets.upsert(
+    {name: options.name},
+    {$set: tileset},
+    false,
+    function(error, count){
+    if (error)
+      console.log('Error updating Tilesets:', error);
+    }
+  );
 };
 
 var prototype = {
@@ -45,6 +53,17 @@ Tilesets.create({
   imageName:'elements',
   width: 9,
   height: 3,
+  tileWidth: 28,
+  tileHeight: 35,
+  cellWidth: 30,
+  cellHeight: 37
+});
+
+Tilesets.create({
+  name:'characters',
+  imageName:'characters',
+  width: 5,
+  height: 1,
   tileWidth: 28,
   tileHeight: 35,
   cellWidth: 30,
