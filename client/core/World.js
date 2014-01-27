@@ -163,9 +163,13 @@ setMap: function(map) {
   this._mapDep.changed();
 },
 
-setTileset: function(tileset) {
-  this._tileset = tileset;
-  this._tilesetDep.changed();
+// oh god this is hideous. TODO NEEDS FIX WTF
+setTileset: function(selector) {
+  var self = this;
+  Deps.autorun(function(){
+    self._tileset = Tilesets.findOne(selector);
+    self._tilesetDep.changed();
+  });
 },
 
 simToWorld: function(xy) {

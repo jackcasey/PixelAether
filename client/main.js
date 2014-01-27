@@ -3,6 +3,17 @@ Session.setDefault('clicker', 'tree');
 if (Meteor.absoluteUrl() === 'http://localhost:3000/')
   Session.set('DEBUG', true);
 
+Tilesets.create({
+  name:'elements',
+  imageName:'elements',
+  width: 9, 
+  height: 3, 
+  tileWidth: 28,
+  tileHeight: 35,
+  cellWidth: 30, 
+  cellHeight: 37
+});
+
 imageLibrary = new Beautiful.ImageLibrary;
 imageLibrary.add('elements', 'elements9x3.png');
 imageLibrary.add('characters', 'characters5x1.png');
@@ -12,12 +23,7 @@ var setup = function() {
 
   gGame.init();
 
-  var tileset = new Beautiful.Tileset(
-    'elements',
-    9, 3,
-    28, 35,
-    30, 37 );
-  gGame.world.setTileset(tileset);
+  gGame.world.setTileset({name: 'elements'});
   gGame.world.setMap(Beautiful.Maps.main);
 
   // add the game canvas to the DOM
