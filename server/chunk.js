@@ -11,14 +11,15 @@ Chunk = {};
 Chunk.create = function(chunkId, layerNames) {
 
   chunkId.mapName = chunkId.mapName || 'main';
+  var map = Maps.findOne({name:chunkId.mapName});
 
   // verify that the chunkId specifies a location
   if (!(isInt(chunkId.xCoord) && isInt(chunkId.yCoord)))
     return [false, 'Chunk.create error: chunkId must specify xCoord and yCoord'];
 
   // verify that there is a map with this name
-  if (typeof Maps.findOne({name:chunkId.mapName}) === 'undefined')
-    return [false, 'Chunk.create error: chunkId.mapName is not in Beautiful.Maps:', chunkId.mapName];
+  if (typeof map === 'undefined')
+    return [false, 'Chunk.create error: chunkId.mapName is not a Map:', chunkId.mapName];
 
   // verify that it doesn't already exist
   var chunk = Chunks.findOne(chunkId);
@@ -31,8 +32,8 @@ Chunk.create = function(chunkId, layerNames) {
     mapName:    chunkId.mapName, 
     xCoord:     chunkId.xCoord, 
     yCoord:     chunkId.yCoord, 
-    width:      Beautiful.Maps[chunkId.mapName].chunkWidth, 
-    height:     Beautiful.Maps[chunkId.mapName].chunkHeight,
+    width:      map.chunkWidth,
+    height:     map.chunkHeight,
     layerNames: layerNames || ['ground', 'plant'],
     layerData:  {}
   };
