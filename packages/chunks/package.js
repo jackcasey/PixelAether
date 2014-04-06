@@ -6,7 +6,7 @@ Package.describe({
 Package.on_use(function(api){
   api.use('meteor', ['client', 'server']);
   api.export('Chunks');
-  api.add_files('collection.js', ['client', 'server']);
+  api.add_files('Chunks.js', ['client', 'server']);
   api.add_files('shared.js', ['client', 'server']);
   api.add_files('server.js', 'server');
 });
