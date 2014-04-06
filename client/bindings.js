@@ -11,7 +11,7 @@ var treeClicker = function(worldPos) {
   var tileIndex = (chunk.width * worldPos.y) + worldPos.x;
   if (Session.get('clicker') === 'tree') {
     tileValue = chunk.layerData.plant[tileIndex];
-    tileValue = (tileValue === 1) ? 0 : 1; // if it's a tree, make it nothing. else, make it a tree
+    tileValue = (tileValue === 1) ? 0 : 0;
   }
   else if (Session.get('clicker') === 'water') {
     tileValue = chunk.layerData.ground[tileIndex];
