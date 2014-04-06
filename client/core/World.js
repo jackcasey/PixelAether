@@ -163,6 +163,7 @@ setMap: function(map) {
   this._mapDep.changed();
 },
 
+// oh god this is hideous. TODO NEEDS FIX WTF
 setTileset: function(tileset) {
   this._tileset = tileset;
   this._tilesetDep.changed();

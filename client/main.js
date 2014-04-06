@@ -11,14 +11,8 @@ gGame = new Beautiful.Game();
 var setup = function() {
 
   gGame.init();
-
-  var tileset = new Beautiful.Tileset(
-    'elements',
-    9, 3,
-    28, 35,
-    30, 37 );
-  gGame.world.setTileset(tileset);
-  gGame.world.setMap(Beautiful.Maps.main);
+  gGame.world.setTileset(Tilesets.findOne({name:'elements'}));
+  gGame.world.setMap(Maps.findOne({name:'main'}));
 
   // add the game canvas to the DOM
   var canvas = gGame.view.canvas;

@@ -5,10 +5,9 @@ chunkId     - mongodb style selector
 layerNames  - optional array of layer names, default ['ground', 'plant']
 
 Assume:
-  gGame.map[chunkId.mapName] has a width and height
+  Maps collection contains a map with .name  === chunkId.name
 ------------------------------------------------------------*/
-Chunk = {};
-Chunk.create = function(chunkId, layerNames) {
+Chunks.create = function(chunkId, layerNames) {
 
   chunkId.mapName = chunkId.mapName || 'main';
   var map = Maps.findOne({name:chunkId.mapName});

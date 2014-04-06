@@ -1,3 +1,36 @@
 Next Objectives:
-  Clean and modularize main.js
-  Fix Drag Input Method, so it checks for a distance.
+  Clean and modularize main.js(Done?)
+  Fix Drag Input Method, so it checks for a distance.(done?)
+  Allow subscriptions to other servers
+
+There are two ways to allow edits:
+- Allow/Deny
+
+I want to do all my editing through Methods:
+-- I can call methods on remote servers.
+-- I can more closely tie permissions to actions
+
+Advantages to using allow deny:
+-- centralize the permission code
+
+What happens if I use both?
+- Stubs are not trusted
+- Not sure if allow/deny will work on remote servers. I need to login to Meteor's accounts system on the remote server as well as the primary.
+
+Here's what happens:
+We are authenticated with the primary.
+We have these by default on the client:
+{
+  username: "cool_kid_13", // unique name
+  emails: [
+    // each email address can only belong to one user.
+    { address: "cool@example.com", verified: true },
+    { address: "another@different.com", verified: false }
+  ],
+  profile: {
+    // The profile is writable by the user by default.
+    name: "Joe Schmoe"
+  },
+}
+
+Meter
