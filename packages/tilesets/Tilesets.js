@@ -5,6 +5,9 @@ The tile indexes start at 1 in the upper leftmost tile:
 |1|2|3|
 |4|5|6|
 |7|8|9|
+
+Tilesets are unlikely to change so we may not need to maintain 
+a connection to the server for the Collection. 
 ------------------------------------------------------------*/
 Tilesets = new Meteor.Collection(null, {
   transform: function(tileset){
@@ -35,6 +38,9 @@ Tilesets.create = function(options) {
   );
 };
 
+/*------------------------------------------------------------
+Instance methods
+------------------------------------------------------------*/
 var prototype = {
   getUpperLeftX: function(i) {
     return (((i-1) % this.width) * this.cellWidth) + 1;
@@ -44,28 +50,3 @@ var prototype = {
     return (Math.floor((i-1) / this.width) * this.cellHeight) + 1;
   }
 };
-
-/*------------------------------------------------------------
-Static Content
-------------------------------------------------------------*/
-Tilesets.create({
-  name:'elements',
-  imageName:'elements',
-  width: 9,
-  height: 3,
-  tileWidth: 28,
-  tileHeight: 35,
-  cellWidth: 30,
-  cellHeight: 37
-});
-
-Tilesets.create({
-  name:'characters',
-  imageName:'characters',
-  width: 5,
-  height: 1,
-  tileWidth: 28,
-  tileHeight: 35,
-  cellWidth: 30,
-  cellHeight: 37
-});

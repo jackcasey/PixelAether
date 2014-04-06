@@ -2,11 +2,15 @@
 Meteor.startup(function() {
   console.log('The server is starting up!');
 
+  // static content
+  createMaps();
+  createTilesets();
+
   // Create a chunk if there isn't one already
   console.log('Ensuring we have at least 5x5 chunks...');
   for (var y = -2; y < 3; y++) {
     for (var x = -2; x < 3; x++) {
-      Chunk.create({xCoord:x, yCoord:y});
+      Chunks.create({xCoord:x, yCoord:y});
     }
   }
   console.log('All 25 original chunks exist!');
@@ -33,7 +37,7 @@ Meteor.startup(function() {
           var selector = {xCoord:x, yCoord:y, mapName: mapName};
           if (!Chunks.findOne(selector)) {
             console.log('Create New Chunk:', selector);
-            Chunk.create(selector);
+            Chunks.create(selector);
           }
         }
       }
