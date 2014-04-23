@@ -1,6 +1,4 @@
 Next Objectives:
-  Clean and modularize main.js(Done?)
-  Fix Drag Input Method, so it checks for a distance.(done?)
   Allow subscriptions to other servers
 
 There are two ways to allow edits:

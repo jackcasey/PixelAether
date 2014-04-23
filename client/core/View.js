@@ -1,3 +1,10 @@
+/*------------------------------------------------------------
+Beautiful.View
+
+- Create, wrap a canvas   this.canvas, this.context
+- Has reactive .size      this.size
+- Wrap browser event listeners: window.mousedown, etc
+------------------------------------------------------------*/
 Beautiful.View = function() {
   var self = this;
   self.canvas = document.createElement('canvas');

@@ -1,22 +1,18 @@
 /*------------------------------------------------------------
-Because the world is very dependent on the map chunksize,
-tileset tile size, and view size, the global world object,
-gGame.world should be created AFTER the map, view, and tileset
-have been initialized.
-
 Keeps Track of
   Where the Camera is looking in the world,
   world.size - max number of chunks that could be rendered
   Range of chunks to render given the view, chunkPixelSize
-  What current tileset and current map
+  Current tileset and current map
 
 Creates a .grid which keeps track of
   Which chunks are we currently rendering
   Where on the view we should render chunks to
 
-Expects the following to exist on instantiation:
-  gGame.view (view size has been set)
-  gGame.world
+Method dependencies
+.render     - depends on gGame.view
+.updateSize - depends on gGame.view
+.simToWorld - depends on gGame.world
 ------------------------------------------------------------*/
 Beautiful.World = function() {
   var self = this;
@@ -163,7 +159,6 @@ setMap: function(map) {
   this._mapDep.changed();
 },
 
-// oh god this is hideous. TODO NEEDS FIX WTF
 setTileset: function(tileset) {
   this._tileset = tileset;
   this._tilesetDep.changed();
