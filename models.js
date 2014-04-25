@@ -1,7 +1,7 @@
 /* 
 Global Objects
 Game
-gGame.world
+gGame.perspective
 gGame.simulation
 gGame.input
 gGame.view - Wraps the canvas that is displayed in the DOM
@@ -33,10 +33,10 @@ Elements
 - View
   - size
 
-- World
+- Perspective
   - grid
   - camera
-  - width, height -  greatest number of chunks that can fit in the view.
+  - size  - dimensions of greatest number of chunks that can fit in the view
   - get/set Tileset
   - get/set Map
 

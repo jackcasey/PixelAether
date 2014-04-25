@@ -1,9 +1,9 @@
 /*------------------------------------------------------------
-Logic to render a map to the view, manage map subscriptions
+Render a map to the view, manage map subscriptions
 
 Keeps Track of
   Map position the Camera is centered on
-  world.size - max number of chunks that could be rendered
+  perspective.size - max number of chunks that could be rendered
   Range of chunks to render given the view, chunkPixelSize
   Current tileset and current map
 
@@ -14,9 +14,9 @@ Creates a .grid which keeps track of
 Method dependencies
 .render     - depends on gGame.view
 .updateSize - depends on gGame.view
-.simToWorld - depends on gGame.world
+.simToWorld - depends on gGame.perspective
 ------------------------------------------------------------*/
-Beautiful.World = function() {
+Beautiful.Perspective = function() {
   var self = this;
 
   self._tilesetDep = new Deps.Dependency;
@@ -57,7 +57,7 @@ setTileset
 simToWorld
 updateSize
 ------------------------------------------------------------*/
-Beautiful.World.prototype = {
+Beautiful.Perspective.prototype = {
 
 getMap: function() {
   this._mapDep.depend();
@@ -107,7 +107,7 @@ moveCamera: function(deltaXY) {
   }
 
   if (changedChunk) {
-    console.log('World.js - camera:', this.camera);
+    console.log('Perspective.js - camera:', this.camera);
   }
 },
 
@@ -167,7 +167,7 @@ setTileset: function(tileset) {
 },
 
 simToWorld: function(xy) {
-  var tileset = gGame.world.getTileset();
+  var tileset = gGame.perspective.getTileset();
   var cpCenter = this.chunkPixelSize.getCenter();
   var map = this.getMap();
   var pixelX = xy.x + this.camera.x + cpCenter.x;
@@ -194,11 +194,11 @@ updateSize: function(){
   var width = viewSize.width / cpSize.width;
   var height = viewSize.height / cpSize.height;
 
-  // find max number of chunks we could ever need to fill the World View
+  // find max number of chunks we could ever need to fill the View
   width = Math.ceil(width) + 1;
   height = Math.ceil(height) + 1;
 
   self.size.set(width, height);
 }
 
-}; // Beautiful.World.prototype
+}; // Beautiful.Perspective.prototype

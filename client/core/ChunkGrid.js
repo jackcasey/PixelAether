@@ -81,7 +81,7 @@ setRange: function(xMin, xMax, yMin, yMax) {
   var neededRenderers = {};
   var reusableRenderers = {};
   var dirtyRenderers = [];
-  var map = gGame.world.getMap();
+  var map = gGame.perspective.getMap();
 
   for (var y = yMin; y <= yMax; y++) {
     for (var x = xMin; x <= xMax; x++) {

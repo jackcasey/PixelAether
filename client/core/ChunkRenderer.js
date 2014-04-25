@@ -58,7 +58,7 @@ renderChunk: function(chunkSelector) {
   var yCursor = 0;
 
   // for convenience
-  var tileset = gGame.world.getTileset();
+  var tileset = gGame.perspective.getTileset();
   var tilesetLength = tileset.tileWidth * tileset.tileHeight;
   var jsImage = imageLibrary.get(tileset.imageName);
 

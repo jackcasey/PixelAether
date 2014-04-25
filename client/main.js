@@ -15,8 +15,8 @@ createMaps();
 var setup = function() {
 
   gGame.init();
-  gGame.world.setTileset(Tilesets.findOne({name:'elements'}));
-  gGame.world.setMap(Maps.findOne({name:'main'}));
+  gGame.perspective.setTileset(Tilesets.findOne({name:'elements'}));
+  gGame.perspective.setMap(Maps.findOne({name:'main'}));
 
   // add the game canvas to the DOM
   var canvas = gGame.view.canvas;
@@ -33,7 +33,7 @@ var setup = function() {
 
   var gameLoop = function() {
     gGame.view.clear();
-    gGame.world.render();
+    gGame.perspective.render();
     gGame.input.step();
     gGame.simulation.step();
     window.requestAnimFrame(gameLoop);

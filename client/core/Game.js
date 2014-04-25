@@ -4,7 +4,7 @@ our game engine.
 Many objects expect there to be a single instance of Game in 
 the global namepsace with the name 'self'. 
 
-self.world
+self.perspective
 self.simulation
 self.input
 self.view
@@ -27,15 +27,15 @@ init: function() {
   var windowSize = getWindowSize();
   self.view = new Beautiful.View(); // wraps our DOM canvas
   self.view.size.set(windowSize.width, windowSize.height);
-  self.world = new Beautiful.World(); // Wraps chunkRenderers
+  self.perspective = new Beautiful.Perspective(); // Wraps chunkRenderers
   self.simulation = new Beautiful.Simulation(); // simulate game time
   self.simulation.step();
   self.input = new Beautiful.Input(); // input depends on Simulation
 
   // WARNING: if init is called twice, two autoruns will be created
   Deps.autorun(function() {
-    var range = self.world.grid.getRange();
-    var map = self.world.getMap();
+    var range = self.perspective.grid.getRange();
+    var map = self.perspective.getMap();
     if (!map) return;
 
     Meteor.subscribe('map',
