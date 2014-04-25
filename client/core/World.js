@@ -1,6 +1,8 @@
 /*------------------------------------------------------------
+Logic for rendering a map to the view
+
 Keeps Track of
-  Where the Camera is looking in the world,
+  Map position the Camera is centered on
   world.size - max number of chunks that could be rendered
   Range of chunks to render given the view, chunkPixelSize
   Current tileset and current map
@@ -120,7 +122,7 @@ render: function() {
   var map = this.getMap();
   var size = this.size.get();
 
-  // the distnce between the camera and the left edge of the center tile
+  // the distance between the camera and the left edge of the center tile
   var xOffsetCamera = this.camera.x + cpCenter.x;
   var yOffsetCamera = this.camera.y + cpCenter.y;
   // the distance between the edge of the chunk and the edge of the screen

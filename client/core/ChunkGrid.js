@@ -130,7 +130,7 @@ getRenderer: function(xCoord, yCoord, mapName) {
 
 /*------------------------------------------------------------
 ------------------------------------------------------------*/
-deflateChunkAddr = function(addr) {
+var deflateChunkAddr = function(addr) {
   if (!addr.hasOwnProperty('xCoord') || 
       !addr.hasOwnProperty('yCoord') || 
       !addr.hasOwnProperty('mapName')) return false;
@@ -138,7 +138,7 @@ deflateChunkAddr = function(addr) {
   return makeDeflatedAddr(addr.xCoord, addr.yCoord, addr.mapName);
 };
 
-inflateChunkAddr = function(str) {
+var inflateChunkAddr = function(str) {
   var a = str.match(/(.*?)\|(.*?)\|(.*)/); // *? means match as few as possible
   if (a.length !== 4) return false;
 
@@ -151,7 +151,7 @@ inflateChunkAddr = function(str) {
   return addr;
 };
 
-makeDeflatedAddr = function(xCoord, yCoord, mapName) {
+var makeDeflatedAddr = function(xCoord, yCoord, mapName) {
   return xCoord + '|' + yCoord + '|' + mapName;
 };
 
