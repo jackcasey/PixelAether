@@ -4,14 +4,14 @@ We Have a bunch of chunks. The chunks that we need to render
 will be changing frequently. Each change will introduce only
 a few new chunks. We don't want to have to call setChunk
 on EACH renderer every time a new chunk chunk comes into the 
-view-- most of the chunks we need are already rendring in one 
-of the current ChunkRenderer objects.
+view -- most of the chunks we need are already rendering in 
+one of the current ChunkRenderer objects.
 
 The Solution: 
 Pass a ChunkGrid the coordinate range we need. The ChunkGrid
 will sort through it's collection of ChunkRenderers, leaving
 the ones within our range untouched, and calling setChunk
-with new addresses on the formerly obsolete Renderers.
+with new addresses on the formerly obsolete renderers.
 
 How it works:
 When the range changes, Create:
@@ -21,20 +21,20 @@ When the range changes, Create:
                     currently rendering the chunk, or 'false'
                     if no renderer is currently set to render
                     this chunk.
-  reuseable       - For each deflated address key in 
+  reusable        - For each deflated address key in 
                     this.renderers, check if that key is in 
                     neededRenderers. If it is, add that key/
-                    value pair to the reuseable object. If 
-                    that renderer is not is not reuseable, 
+                    value pair to the reusable object. If 
+                    that renderer is not is not reusable, 
                     push it to the dirtyRenderers list
   dirtyRenderers  - List of renderers (described above)
 
 Iterate over a list of the keys in neededRenderers. For each
-key, check if there is a re-useable render. If not, pop a 
+key, check if there is a reusable render. If not, pop a 
 renderer from the dirtyRenderers list, set its chunk, and
-add it to the reuseable object. 
+add it to the reusable object. 
 
-Finally, set this.renderers identifier to the reuseable object.
+Finally, set this.renderers identifier to the reusable object.
 
 ------------------------------------------------------------*/
 
@@ -79,7 +79,7 @@ setRange: function(xMin, xMax, yMin, yMax) {
   this._rangeDep.changed(); // dependency changed!
 
   var neededRenderers = {};
-  var reuseables = {};
+  var reusableRenderers = {};
   var dirtyRenderers = [];
   var map = gGame.world.getMap();
 
@@ -98,26 +98,26 @@ setRange: function(xMin, xMax, yMin, yMax) {
     var key = currentRendererKeys[i];
     if (neededRenderers[key]) {
       // can reuse
-      reuseables[key] = this.renderers[key]; 
+      reusableRenderers[key] = this.renderers[key];
       count++;
     } else {
       // can't reuse
-      dirtyRenderers.push(this.renderers[key]); 
+      dirtyRenderers.push(this.renderers[key]);
     }
   }
-  console.log('Grid: Reuse Renderer Count:', count, reuseables);
+  console.log('Grid: Reuse Renderer Count:', count, reusableRenderers);
 
   // Iterate over the needed renderers.
   var neededRendererKeys = Object.keys(neededRenderers);
   for (var i = 0; i <neededRendererKeys.length; i++) {
     var key = neededRendererKeys[i];
-    var renderer = reuseables[key];
-    if (!renderer) { // if we don't have a reuseable renderer, grab one from the list of dirtyRenderers
+    var renderer = reusableRenderers[key];
+    if (!renderer) { // if we don't have a reusable renderer, grab one from the list of dirtyRenderers
       renderer = dirtyRenderers.pop() || new Beautiful.ChunkRenderer(); // ... or create a new one
       renderer.setChunk(inflateChunkAddr(key));
-      reuseables[key] = renderer;
+      reusableRenderers[key] = renderer;
     }
-    this.renderers = reuseables;
+    this.renderers = reusableRenderers;
   }
 },
 
