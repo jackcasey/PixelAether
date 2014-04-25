@@ -1,5 +1,5 @@
 /*------------------------------------------------------------
-Logic for rendering a map to the view
+Logic to render a map to the view, manage map subscriptions
 
 Keeps Track of
   Map position the Camera is centered on

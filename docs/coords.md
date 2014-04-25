@@ -22,9 +22,9 @@
 
 ```
 {
-  host: 'www.pixelaether.com',  // Not implemented
-  mapName: 'main', // This should be a collection
-  collection: 'mapMain'
+  url: 'www.pixelaether.com',   // Not implemented
+  mapName: 'main',              // old method for designating maps
+  map: 'mapMain',               // New method for designating maps
 
   // 3D coordinate of chunk within the map
   xCoord:  3,
