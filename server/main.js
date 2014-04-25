@@ -13,7 +13,7 @@ Meteor.startup(function() {
       Chunks.create({xCoord:x, yCoord:y});
     }
   }
-  console.log('All 25 original chunks exist!');
+  console.log('All 25 initial chunks exist!');
 
   // allow subscription to a range of chunks
   Meteor.publish('map', function(xMin, xMax, yMin, yMax, mapName) {
