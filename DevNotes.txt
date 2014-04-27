@@ -31,4 +31,3 @@ We have these by default on the client:
   },
 }
 
-Meter
