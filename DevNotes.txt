@@ -1,5 +1,17 @@
 Next Objectives:
-  Allow subscriptions to other servers
+  Allow subscriptions to other servers (done)
+    Allow Method Calls on other servers (not done)
+
+  Better Map Structure
+    I would like to store 1 map per collection
+    get chunkWidth/height from map, not chunk
+    better definition of what an address is?
+
+  Think about
+    when we connect to a server, how do we know which methods are available? 
+    how much custom functionality is allowed/encouraged on a server?
+      To answer this, I need to just start building games.
+
 
 There are two ways to allow edits:
 - Allow/Deny

@@ -78,6 +78,7 @@ Beautiful.World.prototype = {
 
 
 /*------------------------------------------------------------
+Wraps a server connection, and collections from that server
 ------------------------------------------------------------*/
 var Portal = function(url){
   this.collections = {};
