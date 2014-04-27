@@ -25,9 +25,10 @@ init: function() {
   Deps.autorun(function() {
     var range = self.world.perspective.grid.getRange();
     var map = self.world.perspective.getMap();
-    if (!map) return;
+    var connection = self.world.getConnection();
+    if (!map || !connection) return;
 
-    Meteor.subscribe('map',
+    connection.subscribe('map',
       range.xMin - 1,
       range.xMax + 1,
       range.yMin - 1,
