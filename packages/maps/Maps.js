@@ -5,15 +5,24 @@ Maps = new Meteor.Collection(null, {
   }
 });
 
+var prototype = {
+};
+
+/*------------------------------------------------------------
+{ name: 'main',
+  tilesetName: 'elements',
+  chunkWidth: 16,
+  chunkHeight: 16 }
+------------------------------------------------------------*/
 Maps.create = function(options) {
   var map = {
     name: options.name,
     tilesetName: options.tilesetName,
-    chunkWidth: options.chunkWidth, 
+    chunkWidth: options.chunkWidth,
     chunkHeight: options.chunkHeight
   };
-  Maps.insert(map);
-};
-
-var prototype = {
+  Maps.upsert(
+    {name:options.name},
+    map
+  );
 };
