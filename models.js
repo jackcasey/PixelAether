@@ -1,12 +1,13 @@
 /* 
 Global Objects
 Game
-gGame.perspective
 gGame.simulation
 gGame.input
-gGame.view - Wraps the canvas that is displayed in the DOM
-gGame.view.canvas
-gGame.view.context
+
+gGame.world.view - Wraps the canvas that is displayed in the DOM
+gGame.world.view.canvas
+gGame.world.view.context
+gGame.world.perspective
 
 Elements
 - Chunk

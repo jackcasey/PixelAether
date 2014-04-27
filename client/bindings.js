@@ -2,7 +2,7 @@ var treeClicker = function(worldPos) {
   var selector = {
     xCoord: worldPos.xCoord,
     yCoord: worldPos.yCoord,
-    mapName: gGame.perspective.getMap().name
+    mapName: gGame.world.perspective.getMap().name
   };
   console.log('Click Map Selector:', selector);
   var chunk = Chunks.findOne(selector);
@@ -65,13 +65,13 @@ initKeyBindings = function() {
 
   input.on('MOUSE1', 'tap', function(){
 	  // simulation to world coords
-    var worldPos = gGame.perspective.simToWorld(input.mouse.simPos);
+    var worldPos = gGame.world.perspective.simToWorld(input.mouse.simPos);
     treeClicker(worldPos);
   });
 
   input.on('MOUSE1', 'drag', function(){
     var delta = input.mouse.deltaPos;
-    gGame.perspective.moveCamera({x: -delta.x, y: -delta.y});
+    gGame.world.perspective.moveCamera({x: -delta.x, y: -delta.y});
   });
 
 };

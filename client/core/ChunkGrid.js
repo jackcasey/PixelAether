@@ -81,7 +81,7 @@ setRange: function(xMin, xMax, yMin, yMax) {
   var neededRenderers = {};
   var reusableRenderers = {};
   var dirtyRenderers = [];
-  var map = gGame.perspective.getMap();
+  var map = gGame.world.perspective.getMap();
 
   for (var y = yMin; y <= yMax; y++) {
     for (var x = xMin; x <= xMax; x++) {
@@ -105,7 +105,8 @@ setRange: function(xMin, xMax, yMin, yMax) {
       dirtyRenderers.push(this.renderers[key]);
     }
   }
-  console.log('Grid: Reuse Renderer Count:', count, reusableRenderers);
+  if (Session.get('DEBUG'))
+    console.log('Grid: Reuse Renderer Count:', count);
 
   // Iterate over the needed renderers.
   var neededRendererKeys = Object.keys(neededRenderers);

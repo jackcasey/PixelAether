@@ -10,14 +10,13 @@ Keeps Track of
 Creates a .grid which keeps track of
   Which chunks are we currently rendering
   Where on the view we should render chunks to
-
-Method dependencies
-.render     - depends on gGame.view
-.updateSize - depends on gGame.view
-.simToWorld - depends on gGame.perspective
 ------------------------------------------------------------*/
-Beautiful.Perspective = function() {
+Beautiful.Perspective = function(view) {
   var self = this;
+
+  if (! view instanceof Beautiful.View)
+    throw new Error("view is not an instance of Beautiful.View");
+  self._view = view;
 
   self._tilesetDep = new Deps.Dependency;
   self._mapDep = new Deps.Dependency;
@@ -111,14 +110,14 @@ moveCamera: function(deltaXY) {
   }
 },
 
-// render to gGame.view
+// render to this._view
 render: function() {
 
   Deps.flush();
 
   var cpSize = this.chunkPixelSize.get();
   var cpCenter = this.chunkPixelSize.getCenter();
-  var viewCenter = gGame.view.size.getCenter();
+  var viewCenter = this._view.size.getCenter();
   var map = this.getMap();
   var size = this.size.get();
 
@@ -148,7 +147,7 @@ render: function() {
   for (var yCoord = yCoordBottom; yCoord <= yCoordTop; yCoord++) {
     for (var xCoord = xCoordLeft; xCoord <= xCoordRight; xCoord ++) {
       var renderer = this.grid.getRenderer(xCoord, yCoord, map.name);
-      gGame.view.drawRenderer(renderer, xCursor, yCursor);
+      this._view.drawRenderer(renderer, xCursor, yCursor);
       xCursor += cpSize.width;
     } // xCoord for loop
     yCursor += cpSize.height;
@@ -167,7 +166,7 @@ setTileset: function(tileset) {
 },
 
 simToWorld: function(xy) {
-  var tileset = gGame.perspective.getTileset();
+  var tileset = this.getTileset();
   var cpCenter = this.chunkPixelSize.getCenter();
   var map = this.getMap();
   var pixelX = xy.x + this.camera.x + cpCenter.x;
@@ -188,7 +187,7 @@ simToWorld: function(xy) {
 updateSize: function(){
   var self = this;
   var cpSize = self.chunkPixelSize.get();
-  var viewSize = gGame.view.size.get();
+  var viewSize = this._view.size.get();
 
   // how many chunks does it take to span the width of the view
   var width = viewSize.width / cpSize.width;
