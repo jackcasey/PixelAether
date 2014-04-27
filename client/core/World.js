@@ -27,12 +27,6 @@ For ChunkRenderer to get the correct data+tileset we need:
     - we call connection.subscribe to subscribe
   Chunks collection from the connected server
 
-We also may need to re-think ChunkAddress - the autorun 
-function inside ChunkRenderer's initiazlier can get the 
-Chunks collection, and then the renderer can use the newly 
-retrived Collection object's .find instead of the global 
-variable
-
 connect
 getChunks
 getConnection

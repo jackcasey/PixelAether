@@ -21,7 +21,6 @@ init: function() {
   self.simulation.step();
   self.input = new Beautiful.Input(); // input depends on Simulation
 
-  // WARNING: if init is called twice, two autoruns will be created
   Deps.autorun(function() {
     var range = self.world.perspective.grid.getRange();
     var map = self.world.perspective.getMap();
