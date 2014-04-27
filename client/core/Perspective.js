@@ -156,8 +156,12 @@ render: function() {
 },
 
 setMap: function(map) {
-  this._map = map;
-  this._mapDep.changed();
+  if (this._tileset && map.tilesetName !== this._tileset.name)
+    this.setTileset(Tilesets.findOne({name:map.tilesetName}));
+  if (map !== this._map){
+    this._map = map;
+    this._mapDep.changed();
+  }
 },
 
 setTileset: function(tileset) {

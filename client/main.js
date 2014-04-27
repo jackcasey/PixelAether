@@ -8,7 +8,7 @@ imageLibrary.add('elements', 'elements9x3.png');
 imageLibrary.add('characters', 'characters5x1.png');
 gGame = new Beautiful.Game();
 
-// static content
+// ./static.js
 createTilesets();
 createMaps();
 
