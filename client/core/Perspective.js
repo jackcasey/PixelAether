@@ -53,7 +53,6 @@ moveCamera
 render
 setMap
 setTileset
-simToWorld
 updateSize
 ------------------------------------------------------------*/
 Beautiful.Perspective.prototype = {
@@ -167,25 +166,6 @@ setMap: function(map) {
 setTileset: function(tileset) {
   this._tileset = tileset;
   this._tilesetDep.changed();
-},
-
-simToWorld: function(xy) {
-  var tileset = this.getTileset();
-  var cpCenter = this.chunkPixelSize.getCenter();
-  var map = this.getMap();
-  var pixelX = xy.x + this.camera.x + cpCenter.x;
-  var pixelY = xy.y + this.camera.y + cpCenter.y;
-  var tileX = Math.floor(pixelX / tileset.tileWidth);
-  var tileY = Math.floor(pixelY / tileset.tileHeight);
-  var ans = {
-    xCoord: this.camera.xCoord + Math.floor(tileX / map.chunkWidth),
-    yCoord: this.camera.yCoord + Math.floor(tileY / map.chunkHeight),
-    x: tileX % map.chunkWidth,
-    y: tileY % map.chunkHeight
-  };
-  if (ans.x < 0) ans.x += map.chunkWidth;
-  if (ans.y < 0) ans.y += map.chunkHeight;
-  return ans;
 },
 
 updateSize: function(){

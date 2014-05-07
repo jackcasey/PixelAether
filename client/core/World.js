@@ -28,10 +28,12 @@ For ChunkRenderer to get the correct data+tileset we need:
   Chunks collection from the connected server
 
 connect
+draw
 getChunks
 getConnection
 getUrl
 go
+simToWorld
 ------------------------------------------------------------*/
 Beautiful.World.prototype = {
 
@@ -55,6 +57,10 @@ Beautiful.World.prototype = {
     this._portalDep.changed();
   },
 
+  draw: function(/* ?? */){
+    // add me
+  },
+
   getChunks: function(){
     this._portalDep.depend();
     return this._portal.getCollection('chunks');
@@ -72,7 +78,27 @@ Beautiful.World.prototype = {
 
   go: function(options){
     // see coords.md docs for details
-  }
+  },
+
+  simToWorld: function(xy) {
+    var perspective = this.perspective;
+    var tileset = perspective.getTileset();
+    var cpCenter = perspective.chunkPixelSize.getCenter();
+    var map = perspective.getMap();
+    var pixelX = xy.x + perspective.camera.x + cpCenter.x;
+    var pixelY = xy.y + perspective.camera.y + cpCenter.y;
+    var tileX = Math.floor(pixelX / tileset.tileWidth);
+    var tileY = Math.floor(pixelY / tileset.tileHeight);
+    var ans = {
+      xCoord: perspective.camera.xCoord + Math.floor(tileX / map.chunkWidth),
+      yCoord: perspective.camera.yCoord + Math.floor(tileY / map.chunkHeight),
+      x: tileX % map.chunkWidth,
+      y: tileY % map.chunkHeight
+    };
+    if (ans.x < 0) ans.x += map.chunkWidth;
+    if (ans.y < 0) ans.y += map.chunkHeight;
+    return ans;
+  },
 
 } // Beautiful.World.prototype
 

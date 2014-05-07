@@ -65,7 +65,7 @@ initKeyBindings = function() {
 
   input.on('MOUSE1', 'tap', function(){
 	  // simulation to world coords
-    var worldPos = gGame.world.perspective.simToWorld(input.mouse.simPos);
+    var worldPos = gGame.world.simToWorld(input.mouse.simPos);
     treeClicker(worldPos);
   });
 
