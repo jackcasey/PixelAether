@@ -3,7 +3,6 @@ Beautiful.Renderer Wraps a canvas and a chunk
 ------------------------------------------------------------*/
 Beautiful.ChunkRenderer = function () {
   var self = this;
-  self.chunk = null;
   self.canvas = document.createElement('canvas');
   self.context = self.canvas.getContext('2d');
 
@@ -12,9 +11,17 @@ Beautiful.ChunkRenderer = function () {
   self.fill(); // for testing!
 
   // Reactivity
-  self.chunkAddress = new Beautiful.ChunkAddress();
+  self.chunk = null;
+  self.chunkSelector = null;
+  self._dep = new Deps.Dependency;
+
   Deps.autorun(function() {
-    self.renderChunk(self.chunkAddress.get());
+    self._dep.depend();
+    var chunks = gGame.world.getChunks();
+    if (!chunks) return;
+    self.chunk = chunks.findOne(self.chunkSelector);
+    if (!self.chunk) return;
+    self.renderChunk();
   });
 };
 
@@ -41,8 +48,6 @@ fill: function(fillColor, strokeColor) {
 },
 
 renderChunk: function(chunkSelector) {
-  // get the chunk
-  this.chunk = Chunks.findOne(chunkSelector);
   if (!this.chunk) {
     this.fill();
     return;
@@ -106,7 +111,8 @@ renderChunk: function(chunkSelector) {
 },
 
 setChunk: function(chunkSelector) {
-  this.chunkAddress.set(chunkSelector);
+  this.chunkSelector = chunkSelector;
+  this._dep.changed();
 }
 
 }; // Beautiful.ChunkRenderer.prototype

@@ -23,8 +23,7 @@
 ```
 {
   url: 'www.pixelaether.com',   // Not implemented
-  mapName: 'main',              // Old method for designating maps
-  map: 'mapMain',               // New method for designating maps
+  mapName: 'main',              // method for designating maps
 
   // 3D coordinate of chunk within the map
   xCoord:  3,

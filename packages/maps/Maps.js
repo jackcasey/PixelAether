@@ -1,12 +1,4 @@
-Maps = new Meteor.Collection(null, {
-  transform: function(map){
-    _.extend(map, prototype);
-    return map;
-  }
-});
-
-var prototype = {
-};
+Maps = new Meteor.Collection(null, {});
 
 /*------------------------------------------------------------
 { name: 'main',
