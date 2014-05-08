@@ -33,8 +33,14 @@
   // x, y are pixel position within chunk
   // 0, 0 is the center of the chunk
   // y axis increases as we move up
-  // NOTE: these are NOT chunk tile coordinates
-  x: 40,
-  y: 70
+  x: 4,
+  y: 7
 }
 ```
+
+Note: currently x,y are implemented inconsistently
+For the camera, x, y are pixel position within chunk
+
+For the worldToSim function, x, y are tile position within the chunk
+
+how should we implement this?
