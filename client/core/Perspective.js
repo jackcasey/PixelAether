@@ -55,6 +55,7 @@ setMap
 setTileset
 simToWorld
 updateSize
+worldToSim
 ------------------------------------------------------------*/
 Beautiful.Perspective.prototype = {
 
@@ -202,6 +203,14 @@ updateSize: function(){
   height = Math.ceil(height) + 1;
 
   self.size.set(width, height);
+},
+
+worldToSim: function(addr){
+  var cpCenter = this.chunkPixelSize.getCenter();
+  var tileset = this.getTileset();
+
+  return return
+
 }
 
 }; // Beautiful.Perspective.prototype
