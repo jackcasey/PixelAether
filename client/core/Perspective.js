@@ -206,11 +206,19 @@ updateSize: function(){
 },
 
 worldToSim: function(addr){
-  var cpCenter = this.chunkPixelSize.getCenter();
+  // assume we have cx, cy and px, py
+  var cpSize = this.chunkPixelSize.get();
   var tileset = this.getTileset();
+  var newPx = (addr.px - this.camera.px);
+  var newPy = (addr.py - this.camera.py);
+  // if camera and addr are on the same chunk, we are done
+  newPx += cpSize.width * (addr.cx - this.camera.cx);
+  newPy += cpSize.height * (addr.cy - this.camera.cy);
 
-  return;
-
+  return {
+    x: newPx,
+    y: newPy
+  };
 }
 
 }; // Beautiful.Perspective.prototype
