@@ -13,8 +13,8 @@ Chunks.create = function(chunkId, layerNames) {
   var map = Maps.findOne({name:chunkId.mapName});
 
   // verify that the chunkId specifies a location
-  if (!(isInt(chunkId.xCoord) && isInt(chunkId.yCoord)))
-    return [false, 'Chunk.create error: chunkId must specify xCoord and yCoord'];
+  if (!(isInt(chunkId.cx) && isInt(chunkId.cy)))
+    return [false, 'Chunk.create error: chunkId must specify cx and cy'];
 
   // verify that there is a map with this name
   if (typeof map === 'undefined')
@@ -23,14 +23,14 @@ Chunks.create = function(chunkId, layerNames) {
   // verify that it doesn't already exist
   var chunk = Chunks.findOne(chunkId);
   if (chunk) 
-    return [false, 'Chunk.create: Chunk exists, not creating - ' + chunkId.mapName + ' ' + chunkId.xCoord + ', ' + chunkId.yCoord];
+    return [false, 'Chunk.create: Chunk exists, not creating - ' + chunkId.mapName + ' ' + chunkId.cx + ', ' + chunkId.cy];
 
 
   // build the chunk
   chunk = {
     mapName:    chunkId.mapName, 
-    xCoord:     chunkId.xCoord, 
-    yCoord:     chunkId.yCoord, 
+    cx:         chunkId.cx,
+    cy:         chunkId.cy,
     width:      map.chunkWidth,
     height:     map.chunkHeight,
     layerNames: layerNames || ['ground', 'plant'],

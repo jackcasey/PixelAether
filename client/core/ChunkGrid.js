@@ -122,8 +122,8 @@ setRange: function(xMin, xMax, yMin, yMax) {
   }
 },
 
-getRenderer: function(xCoord, yCoord, mapName) {
-  return this.renderers[makeDeflatedAddr(xCoord, yCoord, mapName)];
+getRenderer: function(cx, cy, mapName) {
+  return this.renderers[makeDeflatedAddr(cx, cy, mapName)];
 }
 
 }; // Beautiful.ChunkGrid.prototype
@@ -132,11 +132,11 @@ getRenderer: function(xCoord, yCoord, mapName) {
 /*------------------------------------------------------------
 ------------------------------------------------------------*/
 var deflateChunkAddr = function(addr) {
-  if (!addr.hasOwnProperty('xCoord') || 
-      !addr.hasOwnProperty('yCoord') || 
+  if (!addr.hasOwnProperty('cx') ||
+      !addr.hasOwnProperty('cy') ||
       !addr.hasOwnProperty('mapName')) return false;
 
-  return makeDeflatedAddr(addr.xCoord, addr.yCoord, addr.mapName);
+  return makeDeflatedAddr(addr.cx, addr.cy, addr.mapName);
 };
 
 var inflateChunkAddr = function(str) {
@@ -144,15 +144,15 @@ var inflateChunkAddr = function(str) {
   if (a.length !== 4) return false;
 
   var addr = {
-    xCoord: +a[1], // unary plus converts string in integer form to typeof number
-    yCoord: +a[2], 
+    cx: +a[1], // unary plus converts string in integer form to typeof number
+    cy: +a[2],
     mapName: a[3]
   };
 
   return addr;
 };
 
-var makeDeflatedAddr = function(xCoord, yCoord, mapName) {
-  return xCoord + '|' + yCoord + '|' + mapName;
+var makeDeflatedAddr = function(cx, cy, mapName) {
+  return cx + '|' + cy + '|' + mapName;
 };
 

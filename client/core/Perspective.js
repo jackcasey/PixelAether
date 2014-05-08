@@ -25,10 +25,10 @@ Beautiful.Perspective = function(view) {
   self.size = new Beautiful.Size2D;
 
   self.camera = {
-    xCoord: 0,
-    yCoord: 0,
-    x: 0,
-    y: 0 };
+    cx: 0,
+    cy: 0,
+    px: 0,
+    py: 0 };
 
   Meteor.autorun(function(){
     self.updateSize();
@@ -74,8 +74,8 @@ getTileset: function() {
 },
 
 moveCamera: function(deltaXY) {
-  var newX = this.camera.x += deltaXY.x;
-  var newY = this.camera.y += deltaXY.y;
+  var newX = this.camera.px += deltaXY.x;
+  var newY = this.camera.py += deltaXY.y;
 
   var cpSize = this.chunkPixelSize.get();
   var cpCenter = this.chunkPixelSize.getCenter();
@@ -84,25 +84,25 @@ moveCamera: function(deltaXY) {
   // check if the camera is no longer looking over the chunk
   var checkX = newX + cpCenter.x;
   if (checkX >= cpSize.width) {
-    this.camera.x -= cpSize.width;
-    this.camera.xCoord += 1;
+    this.camera.px -= cpSize.width;
+    this.camera.cx += 1;
     changedChunk = true;
   }
   else if (checkX < 0) {
-    this.camera.x += cpSize.width;
-    this.camera.xCoord -= 1;
+    this.camera.px += cpSize.width;
+    this.camera.cx -= 1;
     changedChunk = true;
   }
 
   var checkY = newY + cpCenter.y;
   if (checkY >= cpSize.height) {
-    this.camera.y -= cpSize.height;
-    this.camera.yCoord += 1;
+    this.camera.py -= cpSize.height;
+    this.camera.cy += 1;
     changedChunk = true;
   }
   else if (checkY < 0) {
-    this.camera.y += cpSize.height;
-    this.camera.yCoord -= 1;
+    this.camera.py += cpSize.height;
+    this.camera.cy -= 1;
     changedChunk = true;
   }
 
@@ -123,8 +123,8 @@ render: function() {
   var size = this.size.get();
 
   // the distance between the camera and the left edge of the center tile
-  var xOffsetCamera = this.camera.x + cpCenter.x;
-  var yOffsetCamera = this.camera.y + cpCenter.y;
+  var xOffsetCamera = this.camera.px + cpCenter.x;
+  var yOffsetCamera = this.camera.py + cpCenter.y;
   // the distance between the edge of the chunk and the edge of the screen
   var xOffsetCenterChunk = viewCenter.x - xOffsetCamera;
   var yOffsetCenterChunk = viewCenter.y - yOffsetCamera;
@@ -132,28 +132,28 @@ render: function() {
   var chunksToLeft = Math.ceil(xOffsetCenterChunk / cpSize.width);
   var chunksBelow = Math.ceil(yOffsetCenterChunk / cpSize.height);
   // where do we position our first chunk
-  var xStart = -this.camera.x - (cpSize.width * chunksToLeft);
-  var yStart = -this.camera.y - (cpSize.height * chunksBelow);
-  // what is the xCoord of our left most chunk?
-  var xCoordLeft = this.camera.xCoord - chunksToLeft;
-  var xCoordRight = xCoordLeft + size.width - 1;
+  var xStart = -this.camera.px - (cpSize.width * chunksToLeft);
+  var yStart = -this.camera.py - (cpSize.height * chunksBelow);
+  // what is the cx of our left most chunk?
+  var cxLeft = this.camera.cx - chunksToLeft;
+  var cxRight = cxLeft + size.width - 1;
 
-  var yCoordBottom = this.camera.yCoord - chunksBelow;
-  var yCoordTop = yCoordBottom + size.height - 1;
+  var cyBottom = this.camera.cy - chunksBelow;
+  var cyTop = cyBottom + size.height - 1;
 
-  this.grid.setRange(xCoordLeft, xCoordRight, yCoordBottom, yCoordTop);
+  this.grid.setRange(cxLeft, cxRight, cyBottom, cyTop);
   var xCursor = xStart;
   var yCursor = yStart;
 
-  for (var yCoord = yCoordBottom; yCoord <= yCoordTop; yCoord++) {
-    for (var xCoord = xCoordLeft; xCoord <= xCoordRight; xCoord ++) {
-      var renderer = this.grid.getRenderer(xCoord, yCoord, map.name);
+  for (var cy = cyBottom; cy <= cyTop; cy++) {
+    for (var cx = cxLeft; cx <= cxRight; cx ++) {
+      var renderer = this.grid.getRenderer(cx, cy, map.name);
       this._view.drawRenderer(renderer, xCursor, yCursor);
       xCursor += cpSize.width;
-    } // xCoord for loop
+    } // cx for loop
     yCursor += cpSize.height;
     xCursor = xStart;
-  } // yCoord for loop
+  } // cy for loop
 },
 
 setMap: function(map) {
@@ -174,18 +174,18 @@ simToWorld: function(xy) {
   var tileset = this.getTileset();
   var cpCenter = this.chunkPixelSize.getCenter();
   var map = this.getMap();
-  var pixelX = xy.x + this.camera.x + cpCenter.x;
-  var pixelY = xy.y + this.camera.y + cpCenter.y;
+  var pixelX = xy.x + this.camera.px + cpCenter.x;
+  var pixelY = xy.y + this.camera.py + cpCenter.y;
   var tileX = Math.floor(pixelX / tileset.tileWidth);
   var tileY = Math.floor(pixelY / tileset.tileHeight);
   var ans = {
-    xCoord: this.camera.xCoord + Math.floor(tileX / map.chunkWidth),
-    yCoord: this.camera.yCoord + Math.floor(tileY / map.chunkHeight),
-    x: tileX % map.chunkWidth,
-    y: tileY % map.chunkHeight
+    cx: this.camera.cx + Math.floor(tileX / map.chunkWidth),
+    cy: this.camera.cy + Math.floor(tileY / map.chunkHeight),
+    tx: tileX % map.chunkWidth,
+    ty: tileY % map.chunkHeight
   };
-  if (ans.x < 0) ans.x += map.chunkWidth;
-  if (ans.y < 0) ans.y += map.chunkHeight;
+  if (ans.tx < 0) ans.tx += map.chunkWidth;
+  if (ans.ty < 0) ans.ty += map.chunkHeight;
   return ans;
 },
 

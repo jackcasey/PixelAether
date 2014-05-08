@@ -7,13 +7,6 @@ Meteor.startup(function() {
   createTilesets();
 
   // Create a chunk if there isn't one already
-  console.log('Ensuring we have at least 5x5 chunks...');
-  for (var y = -2; y < 3; y++) {
-    for (var x = -2; x < 3; x++) {
-      Chunks.create({xCoord:x, yCoord:y});
-    }
-  }
-  console.log('All 25 initial chunks exist!');
 
   // allow subscription to a range of chunks
   Meteor.publish('map', function(xMin, xMax, yMin, yMax, mapName) {
@@ -24,8 +17,8 @@ Meteor.startup(function() {
     mapName = mapName || 'main';
 
     var cursor = Chunks.find({
-      xCoord:{$gte:xMin, $lte:xMax},
-      yCoord:{$gte:yMin, $lte:yMax},
+      cx:{$gte:xMin, $lte:xMax},
+      cy:{$gte:yMin, $lte:yMax},
       mapName: mapName
     });
 
@@ -34,7 +27,7 @@ Meteor.startup(function() {
     if (cursor.count() != size) {
       for (var x = xMin; x <= xMax; x++) {
         for (var y = yMin; y <= yMax; y++) {
-          var selector = {xCoord:x, yCoord:y, mapName: mapName};
+          var selector = {cx:x, cy:y, mapName: mapName};
           if (!Chunks.findOne(selector)) {
             console.log('Create New Chunk:', selector);
             Chunks.create(selector);

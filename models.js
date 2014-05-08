@@ -13,8 +13,8 @@ Elements
 - Chunk
   - mapName
   - width, height
-  - xCoord (within Map)
-  - yCoord (within Map)
+  - cx (within Map)
+  - cy (within Map)
   - layerNames [array of names]
   - layers {layerName: [data0, data1, ...] }
 
@@ -74,13 +74,13 @@ Meteor.methods ({
   /*------------------------------------------------------------
   Edit a single tile in the chunk, identified by chunkId
 
-  Chunks.update({xCoord:0}, {$set:{'layerData.plant.29':12}})
-  Chunks.update({xCoord:0}, {$set:{'layerData.<layerName>.<tileIndex>':<tilesetIndex>}})
+  Chunks.update({cx:0}, {$set:{'layerData.plant.29':12}})
+  Chunks.update({cx:0}, {$set:{'layerData.<layerName>.<tileIndex>':<tilesetIndex>}})
   ------------------------------------------------------------*/
   setTile: function (chunkId, x, y, i, layerName) {
 
     // default values save testing time
-    chunkId = chunkId || {xCoord:0, yCoord:0};
+    chunkId = chunkId || {cx:0, cy:0};
     chunkId.mapName = chunkId.mapName || 'main';
     layerName = layerName || 'ground';
 

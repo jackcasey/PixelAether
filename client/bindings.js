@@ -1,14 +1,14 @@
 var treeClicker = function(worldPos) {
   var selector = {
-    xCoord: worldPos.xCoord,
-    yCoord: worldPos.yCoord,
+    cx: worldPos.cx,
+    cy: worldPos.cy,
     mapName: gGame.world.perspective.getMap().name
   };
   console.log('Click Map Selector:', selector);
   var chunk = Chunks.findOne(selector);
   var tileValue = null;
   if (!chunk) return;
-  var tileIndex = (chunk.width * worldPos.y) + worldPos.x;
+  var tileIndex = (chunk.width * worldPos.ty) + worldPos.tx;
   if (Session.get('clicker') === 'tree') {
     tileValue = chunk.layerData.plant[tileIndex];
     tileValue = (tileValue === 1) ? 0 : 0;
@@ -31,7 +31,7 @@ var treeClicker = function(worldPos) {
   }
   else return;
 
-  Meteor.call('setTile', selector, worldPos.x, worldPos.y, tileValue, 
+  Meteor.call('setTile', selector, worldPos.tx, worldPos.ty, tileValue,
     (Session.get('clicker') === 'tree')? 'plant' : 'ground');
 };
 

@@ -26,15 +26,18 @@
   mapName: 'main',              // method for designating maps
 
   // 3D coordinate of chunk within the map
-  xCoord:  3,
-  yCoord: -1,
-  zCoord:  0, // Default = 0, not implemented
+  cx:  3,
+  cy: -1,
+  cz:  0, // Default = 0, not implemented
 
-  // x, y are pixel position within chunk
-  // 0, 0 is the center of the chunk
-  // y axis increases as we move up
-  x: 4,
-  y: 7
+  // tx, ty are pixel position within chunk
+  tx: 4,
+  ty: 7,
+
+  // px, py are a pixel position within the chunk
+  // center of chunk is 0, 0
+  px: 49,
+  py: 55
 }
 ```
 
