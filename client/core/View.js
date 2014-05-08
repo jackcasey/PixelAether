@@ -19,9 +19,16 @@ Beautiful.View = function() {
   };
 
   // wrap input event listeners
-  window.addEventListener('mousedown', function(event) {self.mousedown(event)});
-  window.addEventListener('mouseup', function(event) {self.mouseup(event)});
-  window.addEventListener('mousemove', function(event) {self.mousemove(event)});
+  window.addEventListener('mousedown', function(event) {
+    self.mousedown(event);
+  });
+  window.addEventListener('mouseup', function(event) {
+    self.mouseup(event);
+  });
+  window.addEventListener('mousemove', function(event) {
+    event.preventDefault(); // prevent drag to select text
+    self.mousemove(event);
+  });
   window.addEventListener('keydown', function(event) {self.keydown(event)});
   window.addEventListener('keyup', function(event) {self.keyup(event)});
 };

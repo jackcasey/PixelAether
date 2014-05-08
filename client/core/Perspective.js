@@ -209,7 +209,7 @@ worldToSim: function(addr){
   var cpCenter = this.chunkPixelSize.getCenter();
   var tileset = this.getTileset();
 
-  return return
+  return;
 
 }
 
