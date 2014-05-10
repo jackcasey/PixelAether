@@ -1,6 +1,18 @@
 Next Objectives:
+
+  Define prototcol for asset + metadata retrieval
+    option 1 - js object:
+    {
+      url:
+      name:
+    }
+
+    options 2 - string
+    www.pixelaether.com|image|somename
+    www.pixelaether.com|sound|somename
+
   Allow subscriptions to other servers (done)
-    Allow Method Calls on other servers (not done)
+    Allow Method Calls on other servers (NOT done)
 
   Better Map Structure
     I would like to store 1 map per collection

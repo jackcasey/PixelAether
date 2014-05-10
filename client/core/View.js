@@ -76,25 +76,22 @@ drawRenderer: function(renderer, x, y) {
   this.context.drawImage(renderer.canvas, drawX, drawY);
 },
 
-drawTile: function(tileset, index, x, y) {
+drawFigure: function(figure, x, y, width, height) {
   // x, y are simulation style coords to place center of tile
-  var jsImage = imageLibrary.get(tileset.imageName);
-  var xClip = tileset.getUpperLeftX(index);
-  var yClip = tileset.getUpperLeftY(index);
-  var cCenter = this.size.getCenter();
-  var tileCenter = {
-    x: tileset.tileWidth / 2,
-    y: tileset.tileHeight / 2
-  };
+  var canvasSize = this.size.get();
+  var figureSize = figure.size.get();
 
-  var xCursor = cCenter.x + x - tileCenter.x;
-  var yCursor = cCenter.y - y - tileCenter.y;
+  if (typeof width !== 'number') width = figureSize.width;
+  if (typeof height !== 'number') height = figureSize.height;
 
-  this.context.drawImage(jsImage,
-    xClip, yClip,
-    tileset.tileWidth, tileset.tileHeight,
+  var xCursor = canvasSize.centerX + x - (width * 0.5);
+  var yCursor = canvasSize.centerY - y - (height * 0.5);
+
+  this.context.drawImage(figure.jsImage,
+    figure.upperLeftX, figure.upperLeftY,
+    figureSize.width, figureSize.height,
     xCursor, yCursor,
-    tileset.tileWidth, tileset.tileHeight);
+    width, height);
 },
 
 keydown: function(event) {
