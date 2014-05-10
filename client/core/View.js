@@ -36,9 +36,9 @@ Beautiful.View = function() {
 
 /*------------------------------------------------------------
 canvasToSimulation
-canvasToWorld
 clear
 drawRenderer
+drawTile
 keydown
 keyup
 mousedown
@@ -55,16 +55,12 @@ canvasToSimulation: function(coords) {
  };
 },
 
-canvasToWorld: function(coords) {
-
-},
-
 clear: function() {
   this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 },
 
 drawRenderer: function(renderer, x, y) {
-  // x, y are simulation style coords to place the bottom left 
+  // x, y are simulation style coords to place the bottom left
   // corner of the renderer canvas
   var center = this.size.getCenter();
 
@@ -78,7 +74,27 @@ drawRenderer: function(renderer, x, y) {
   }
 
   this.context.drawImage(renderer.canvas, drawX, drawY);
+},
 
+drawTile: function(tileset, index, x, y) {
+  // x, y are simulation style coords to place center of tile
+  var jsImage = imageLibrary.get(tileset.imageName);
+  var xClip = tileset.getUpperLeftX(index);
+  var yClip = tileset.getUpperLeftY(index);
+  var cCenter = this.size.getCenter();
+  var tileCenter = {
+    x: tileset.tileWidth / 2,
+    y: tileset.tileHeight / 2
+  };
+
+  var xCursor = cCenter.x + x - tileCenter.x;
+  var yCursor = cCenter.y - y - tileCenter.y;
+
+  this.context.drawImage(jsImage,
+    xClip, yClip,
+    tileset.tileWidth, tileset.tileHeight,
+    xCursor, yCursor,
+    tileset.tileWidth, tileset.tileHeight);
 },
 
 keydown: function(event) {
