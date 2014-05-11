@@ -206,9 +206,17 @@ updateSize: function(){
 },
 
 worldToSim: function(addr){
-  // assume we have cx, cy and px, py
   var cpSize = this.chunkPixelSize.get();
   var tileset = this.getTileset();
+
+  // if addr has tx instead of px
+  if (typeof addr.px !== 'number'){
+    var tCenterX = tileset.tileWidth * 0.5;
+    var tCenterY = tileset.tileHeight * 0.5;
+    addr.px = (addr.tx * tileset.tileWidth) + tCenterX - cpSize.centerX;
+    addr.py = (addr.ty * tileset.tileHeight) + tCenterY - cpSize.centerY;
+  }
+
   var newPx = (addr.px - this.camera.px);
   var newPy = (addr.py - this.camera.py);
   // if camera and addr are on the same chunk, we are done
