@@ -76,16 +76,17 @@ drawRenderer: function(renderer, x, y) {
   this.context.drawImage(renderer.canvas, drawX, drawY);
 },
 
-drawFigure: function(figure, x, y, width, height) {
-  // x, y are simulation style coords to place center of tile
+drawFigure: function(figure, xy, size) {
+  // xy.x, xy.y are simulation style coords to place center of tile
+  // size.width and size.height are size on the canvas
+
   var canvasSize = this.size.get();
   var figureSize = figure.size.get();
+  var width = size ? size.width : figureSize.width;
+  var height = size ? size.height : figureSize.height;
 
-  if (typeof width !== 'number') width = figureSize.width;
-  if (typeof height !== 'number') height = figureSize.height;
-
-  var xCursor = canvasSize.centerX + x - (width * 0.5);
-  var yCursor = canvasSize.centerY - y - (height * 0.5);
+  var xCursor = canvasSize.centerX + xy.x - (width * 0.5);
+  var yCursor = canvasSize.centerY - xy.y - (height * 0.5);
 
   this.context.drawImage(figure.jsImage,
     figure.upperLeftX, figure.upperLeftY,

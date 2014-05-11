@@ -28,6 +28,7 @@ For ChunkRenderer to get the correct data+tileset we need:
   Chunks collection from the connected server
 
 connect
+drawFigure
 getChunks
 getConnection
 getUrl
@@ -53,6 +54,13 @@ Beautiful.World.prototype = {
     }
 
     this._portalDep.changed();
+  },
+
+  drawFigure: function(figure, addr, size){
+    this.view.drawFigure(
+      figure,
+      this.perspective.worldToSim(addr),
+      size);
   },
 
   getChunks: function(){
