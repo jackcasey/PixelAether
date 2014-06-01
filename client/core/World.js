@@ -1,6 +1,6 @@
 /*------------------------------------------------------------
 Aggregate interface, behavior surrounding connecting to
-servers, choosing a map, etc
+servers, choosing and viewing a map, etc
 ------------------------------------------------------------*/
 Beautiful.World = function(){
   var windowSize = getWindowSize();
@@ -17,7 +17,7 @@ Beautiful.World = function(){
 }
 
 /*------------------------------------------------------------
-world.perspective currently stores the map.tileset accessible via
+world.perspective stores the map.tileset accessible via
 setters and getters. Is this the best place?
 
 For ChunkRenderer to get the correct data+tileset we need:
