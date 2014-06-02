@@ -31,7 +31,7 @@
   cz:  0, // Default = 0, not implemented
 
   // tx, ty are tile position within chunk
-  // 1, 1 is the lower left of the chunk
+  // 0, 0 is the lower left of the chunk
   tx: 4,
   ty: 7,
 
