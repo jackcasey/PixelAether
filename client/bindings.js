@@ -32,7 +32,7 @@ var treeClicker = function(worldPos) {
   else return;
 
   Meteor.call('setTile', selector, worldPos.tx, worldPos.ty, tileValue,
-    (Session.get('clicker') === 'tree')? 'plant' : 'ground');
+    (Session.get('clicker') === 'tree')? 'plants' : 'ground');
 };
 
 initKeyBindings = function() {
