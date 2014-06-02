@@ -85,7 +85,7 @@ renderChunk: function(chunkSelector) {
 
     // iterate over layer Data
     for (var i=0; i < chunk.width * chunk.height; i++) {
-      var tileIndex = chunk.layerData[layerName][i];
+      var tileIndex = chunk[layerName][i];
 
       if (!tileIndex) continue;
 

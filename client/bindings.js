@@ -10,23 +10,23 @@ var treeClicker = function(worldPos) {
   if (!chunk) return;
   var tileIndex = (chunk.width * worldPos.ty) + worldPos.tx;
   if (Session.get('clicker') === 'tree') {
-    tileValue = chunk.layerData.plant[tileIndex];
+    tileValue = chunk.plants[tileIndex];
     tileValue = (tileValue === 1) ? 0 : 0;
   }
   else if (Session.get('clicker') === 'water') {
-    tileValue = chunk.layerData.ground[tileIndex];
+    tileValue = chunk.ground[tileIndex];
     tileValue = (tileValue === 11) ? 10 : 11;
   }
   else if (Session.get('clicker') === 'path') {
-    tileValue = chunk.layerData.ground[tileIndex];
+    tileValue = chunk.ground[tileIndex];
     tileValue = (tileValue === 16) ? 10 : 16;
   }
   else if (Session.get('clicker') === 'lava') {
-    tileValue = chunk.layerData.ground[tileIndex];
+    tileValue = chunk.ground[tileIndex];
     tileValue = (tileValue === 14) ? 15 : 14;
   }
   else if (Session.get('clicker') === 'sand') {
-    tileValue = chunk.layerData.ground[tileIndex];
+    tileValue = chunk.ground[tileIndex];
     tileValue = (tileValue === 18) ? 10 : 18;
   }
   else return;

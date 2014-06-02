@@ -16,7 +16,7 @@ Elements
   - cx (within Map)
   - cy (within Map)
   - layerNames [array of names]
-  - layers {layerName: [data0, data1, ...] }
+  - layers .layerName: [data0, data1, ...] 
 
 - TileSet
   - name
@@ -45,7 +45,7 @@ Elements
   - size
 
 - Layers (Don't implement this until I actually need it!!)
-  - name [ground, plant, ]
+  - name [ground, plants, ...]
   - tileSetName
 
 - GameObjects
@@ -74,8 +74,9 @@ Meteor.methods ({
   /*------------------------------------------------------------
   Edit a single tile in the chunk, identified by chunkId
 
-  Chunks.update({cx:0}, {$set:{'layerData.plant.29':12}})
-  Chunks.update({cx:0}, {$set:{'layerData.<layerName>.<tileIndex>':<tilesetIndex>}})
+  // new flat object style
+  Chunks.update({cx:0}, {$set:{'plant.29':12}})
+  Chunks.update({cx:0}, {$set:{'<layerName>.<tileIndex>':<tilesetIndex>}})
   ------------------------------------------------------------*/
   setTile: function (chunkId, x, y, i, layerName) {
 
@@ -96,11 +97,11 @@ Meteor.methods ({
 
     var tileIndex = y * chunk.width + x; // convert xy to index
 
-    var setOptions = {$set:{}};
-    setOptions.$set['layerData.' + layerName + '.' + tileIndex] = i; 
+    var options = {$set:{}};
+    options.$set[layerName + '.' + tileIndex] = i;
 
     // everything except the Chunks.update call can probably be done on the client side
-    Chunks.update(chunkId, setOptions); // what happens when layerName does not exist?
+    Chunks.update(chunkId, options); // what happens when layerName does not exist?
     return [true, 'Success'];
   }
 });

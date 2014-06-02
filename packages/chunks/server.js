@@ -28,13 +28,12 @@ Chunks.create = function(chunkId, layerNames) {
 
   // build the chunk
   chunk = {
-    mapName:    chunkId.mapName, 
+    mapName:    chunkId.mapName,
     cx:         chunkId.cx,
     cy:         chunkId.cy,
     width:      map.chunkWidth,
     height:     map.chunkHeight,
-    layerNames: layerNames || ['ground', 'plant'],
-    layerData:  {}
+    layerNames: layerNames || ['ground', 'plants'],
   };
 
   var size = chunk.width * chunk.height;
@@ -44,9 +43,9 @@ Chunks.create = function(chunkId, layerNames) {
     var layerName = chunk.layerNames[i];
     var data = new Array(size);
 
-    // populate layerData
+    // populate layers
     for (var j = 0; j < size; j++) {
-      if (layerName === 'plant') {
+      if (layerName === 'plants') {
         data[j] = 1; // 1 = tree
       } 
       else { 
@@ -54,7 +53,7 @@ Chunks.create = function(chunkId, layerNames) {
       }
     } // populate layer data loop
 
-    chunk.layerData[layerName] = data;
+    chunk[layerName] = data;
   } // iterate over layers
 
   Chunks.insert(chunk);
