@@ -8,12 +8,6 @@ Beautiful.World = function(){
   this.view.size.set(windowSize.width, windowSize.height);
   this.perspective = new Beautiful.Perspective(this.view); // Wraps chunkRenderers
 
-  this._portal = new Portal();  // current portal
-  this._portals = {};           // all portals 
-  this._portals[this._portal.url] = this._portal;
-
-  // Connection, server, chunks
-  this._portalDep = new Deps.Dependency;
 }
 
 /*------------------------------------------------------------
@@ -31,29 +25,12 @@ connect
 drawFigure
 getChunks
 getConnection
-getUrl
 go
 ------------------------------------------------------------*/
 Beautiful.World.prototype = {
 
   connect: function(url){
-    if (url === this._portal.url)
-      // already connecting/connected
-      return;
-
-    if (this._portals[url]){
-      // we have previously connected to this server
-      this._portal = this._portals[url];
-    }
-
-    else {
-      // first time connecting
-      this._portal = new Portal(url);
-      this._portals[url] = this._portal;
-      this._portal.getCollection('chunks');
-    }
-
-    this._portalDep.changed();
+    Rift.open(url);
   },
 
   drawFigure: function(figure, addr, size){
@@ -64,18 +41,12 @@ Beautiful.World.prototype = {
   },
 
   getChunks: function(){
-    this._portalDep.depend();
-    return this._portal.getCollection('chunks');
+    Rift.connection(); // depend on current rift
+    return Rift.collection('chunks');
   },
 
   getConnection: function(){
-    this._portalDep.depend();
-    return this._portal.connection;
-  },
-
-  getUrl: function(){
-    this._portalDep.depend();
-    return this._portal.url;
+    return Rift.connection();
   },
 
   go: function(options){
@@ -84,24 +55,3 @@ Beautiful.World.prototype = {
 
 } // Beautiful.World.prototype
 
-
-/*------------------------------------------------------------
-Wraps a server connection, and collections from that server
-------------------------------------------------------------*/
-var Portal = function(url){
-  this.collections = {};
-  this.connection = url ? DDP.connect(url) : Meteor;
-  this.url = url || Meteor.absoluteUrl();
-}
-
-Portal.prototype = {
-
-  getCollection: function(name){
-    if (this.url === Meteor.absoluteUrl() && name === 'chunks')
-      return Chunks;
-    if (!this.collections[name])
-      this.collections[name] = new Meteor.Collection(name, this.connection);
-    return this.collections[name]
-  }
-
-}; // Portal.prototype
