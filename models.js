@@ -44,12 +44,6 @@ Elements
 - Grid
   - size
 
-- Layers (Don't implement this until I actually need it!!)
-  - name [ground, plants, ...]
-  - tileSetName
-
-- GameObjects
-
 Permissions
 - Chunk
   - publishings
@@ -80,20 +74,23 @@ Meteor.methods ({
   ------------------------------------------------------------*/
   setTile: function (chunkId, x, y, i, layerName) {
 
-    // default values save testing time
-    chunkId = chunkId || {cx:0, cy:0};
+    if (Meteor.isServer)
+      var chunks = Chunks;
+    else
+      var chunks = Rift.collection('chunks');
+
     chunkId.mapName = chunkId.mapName || 'main';
     layerName = layerName || 'ground';
 
     // get the chunk height and width. If this is too slow, we can cache it
-    var chunk = Chunks.findOne(chunkId, {width: true, height: true});
+    var chunk = chunks.findOne(chunkId, {width: true, height: true});
 
     // sanity check x, y, i
     if ( x >= chunk.width || y >= chunk.height || x < 0 || y < 0) 
-      return [false, 'Chunk.setTile: Fail! x or y out of bounds!'];
+      return [false, 'Chunk setTile Fail! x or y out of bounds!'];
 
     if (typeof i !== 'number')
-      return [false, 'Chunk.setTile: Fail! Index is not a number!'];
+      return [false, 'Chunk setTile Fail! Index is not a number!'];
 
     var tileIndex = y * chunk.width + x; // convert xy to index
 
@@ -101,7 +98,7 @@ Meteor.methods ({
     options.$set[layerName + '.' + tileIndex] = i;
 
     // everything except the Chunks.update call can probably be done on the client side
-    Chunks.update(chunkId, options); // what happens when layerName does not exist?
+    chunks.update(chunkId, options); // what happens when layerName does not exist?
     return [true, 'Success'];
   }
 });

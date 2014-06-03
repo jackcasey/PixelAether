@@ -21,6 +21,7 @@ Rift.add = function(url){
 
 // get collection by name
 Rift.collection = function(name, url){
+  // if (name === 'chunks') return Chunks;
   _portalDep.depend();
   var portal = url ? _portals[stripUrl(url)] : _portal;
   return portal.getCollection(name);
@@ -35,6 +36,10 @@ Rift.connection = function(url){
   }
   _portalDep.depend();
   return _portal.connection;
+};
+
+Rift.list = function(){
+  return Object.keys(_portals);
 };
 
 // open a rift

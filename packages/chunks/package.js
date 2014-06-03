@@ -5,8 +5,11 @@ Package.describe({
 
 Package.on_use(function(api){
   api.use('meteor', ['client', 'server']);
-  api.export('Chunks');
-  api.add_files('Chunks.js', ['client', 'server']);
-  api.add_files('shared.js', ['client', 'server']);
+  api.use('rift', 'client');
+
+  api.export('Chunks', 'server');
+  api.export('getChunks', 'client');
+  api.add_files('client.js', 'client');
   api.add_files('server.js', 'server');
+  api.add_files('shared.js', ['client', 'server']);
 });

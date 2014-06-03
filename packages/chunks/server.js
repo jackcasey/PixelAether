@@ -7,6 +7,8 @@ layerNames  - optional array of layer names, default ['ground', 'plant']
 Assume:
   Maps collection contains a map with .name  === chunkId.name
 ------------------------------------------------------------*/
+Chunks = new Meteor.Collection('chunks');
+
 Chunks.create = function(chunkId, layerNames) {
 
   chunkId.mapName = chunkId.mapName || 'main';
@@ -24,7 +26,6 @@ Chunks.create = function(chunkId, layerNames) {
   var chunk = Chunks.findOne(chunkId);
   if (chunk) 
     return [false, 'Chunk.create: Chunk exists, not creating - ' + chunkId.mapName + ' ' + chunkId.cx + ', ' + chunkId.cy];
-
 
   // build the chunk
   chunk = {

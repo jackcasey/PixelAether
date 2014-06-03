@@ -11,10 +11,11 @@ Portal = function(url){
 Portal.prototype = {
 
   getCollection: function(name){
-    if (this.url === stripUrl(Meteor.absoluteUrl()) && name === 'chunks')
-      return Chunks;
+    // Careful: passing Meteor as 2nd arg to Collection breaks things
+    var connection = (this.url === stripUrl(Meteor.absoluteUrl())) ?
+      undefined : this.connection;
     if (!this.collections[name])
-      this.collections[name] = new Meteor.Collection(name, this.connection);
+      this.collections[name] = new Meteor.Collection(name, connection);
     return this.collections[name]
   }
 

@@ -5,7 +5,7 @@ var treeClicker = function(worldPos) {
     mapName: gGame.world.perspective.getMap().name
   };
   console.log('Click Map Selector:', selector);
-  var chunk = Chunks.findOne(selector);
+  var chunk = Rift.collection('chunks').findOne(selector);
   var tileValue = null;
   if (!chunk) return;
   var tileIndex = (chunk.width * worldPos.ty) + worldPos.tx;

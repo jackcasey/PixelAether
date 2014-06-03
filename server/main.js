@@ -23,7 +23,7 @@ Meteor.startup(function() {
     });
 
     // Create the requested chunks if necessary
-    var size =  (xMax - xMin + 1) * (yMax - yMin + 1);
+    var size = (xMax - xMin + 1) * (yMax - yMin + 1);
     if (cursor.count() != size) {
       for (var x = xMin; x <= xMax; x++) {
         for (var y = yMin; y <= yMax; y++) {
@@ -35,7 +35,6 @@ Meteor.startup(function() {
         }
       }
     }
-
     return cursor;
   });
 

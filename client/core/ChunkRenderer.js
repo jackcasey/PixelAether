@@ -17,7 +17,7 @@ Beautiful.ChunkRenderer = function () {
 
   Deps.autorun(function() {
     self._dep.depend();
-    var chunks = gGame.world.getChunks();
+    var chunks = Rift.collection('chunks');
     if (!chunks) return;
     self.chunk = chunks.findOne(self.chunkSelector);
     if (!self.chunk) return;
