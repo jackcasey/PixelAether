@@ -24,7 +24,7 @@ init: function() {
   Deps.autorun(function() {
     var range = self.world.perspective.grid.getRange();
     var map = self.world.perspective.getMap();
-    var connection = self.world.getConnection();
+    var connection = Rift.connection();
     if (!map || !connection) return;
 
     connection.subscribe('map',

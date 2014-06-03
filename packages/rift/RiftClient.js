@@ -62,6 +62,7 @@ Rift.connection = function(){
 };
 
 Rift.collection = function(name, url){
+  _portalDep.depend();
   var portal = url ? _portals[url] : _portal;
   return portal.getCollection(name);
 }
