@@ -35,5 +35,5 @@ init: function() {
       map.name);
   });
 }
-  //setTileset
+
 };

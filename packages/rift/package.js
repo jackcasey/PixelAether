@@ -8,9 +8,9 @@ Package.describe({
 Package.on_use(function(api){
   api.use('meteor', 'client');
   api.use('deps', 'client');
+  api.use('url-tools', ['client', 'server']);
   api.export('Rift');
-  // api.add_files('shared.js', ['client', 'server']);
-  // api.add_files('server.js', 'server');
-  api.add_files('RiftClient.js', 'client');
+  api.add_files('Portal.js', 'client');
+  api.add_files('Rift.js', 'client');
 });
 
