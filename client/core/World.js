@@ -13,15 +13,10 @@ Beautiful.World = function(){
 world.perspective stores the map.tileset accessible via
 setters and getters. Is this the best place?
 
-connect
 drawFigure
 go
 ------------------------------------------------------------*/
 Beautiful.World.prototype = {
-
-  connect: function(url){
-    Rift.open(url);
-  },
 
   drawFigure: function(figure, addr, size){
     this.view.drawFigure(
